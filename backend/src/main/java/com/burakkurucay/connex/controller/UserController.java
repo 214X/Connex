@@ -6,7 +6,7 @@ import com.burakkurucay.connex.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/User")
+@RequestMapping("/api/users")
 public class UserController {
     private final UserService userService;
 

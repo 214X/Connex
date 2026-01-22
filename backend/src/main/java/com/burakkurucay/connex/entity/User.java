@@ -21,7 +21,9 @@ public class User {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    // Constructor
+    // empty constructor for Hibernate
+    protected User() {}
+
     public User(String email, String password) {
         this.email = email;
         this.password = password;
