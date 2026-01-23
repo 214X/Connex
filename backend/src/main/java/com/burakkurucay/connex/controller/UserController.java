@@ -2,6 +2,8 @@ package com.burakkurucay.connex.controller;
 
 import com.burakkurucay.connex.entity.User;
 import com.burakkurucay.connex.service.UserService;
+import com.burakkurucay.connex.dto.user.UserResponse;
+import com.burakkurucay.connex.dto.user.UserCreateRequest;
 
 import org.springframework.web.bind.annotation.*;
 
@@ -15,16 +17,20 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/{email}")
-    public User getUserByEmail(@PathVariable String email) {
-        return userService.getUserByEmail(email);
+    @PostMapping
+    public UserResponse createUser( @RequestBody UserCreateRequest req ) {
+        User created = userService.createUser(req.getEmail(), req.getPassword());
+        System.out.println(req.getEmail() + req.getPassword());
+        return toResponse(created);
     }
 
-    @PostMapping
-    public User createUser(
-        @RequestParam String email,
-        @RequestParam String password
-    ) {
-        return userService.createUser(email, password);
+    @GetMapping("/{email}")
+    public UserResponse getUserByEmail(@PathVariable String email) {
+        User founded = userService.getUserByEmail(email);
+        return toResponse(founded);
+    }
+
+    private UserResponse toResponse(User user) {
+        return new UserResponse(user.getId(), user.getEmail(), user.getCreatedAt());
     }
 }
