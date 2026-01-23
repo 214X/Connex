@@ -7,6 +7,8 @@ import com.burakkurucay.connex.dto.user.UserCreateRequest;
 
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -18,9 +20,8 @@ public class UserController {
     }
 
     @PostMapping
-    public UserResponse createUser( @RequestBody UserCreateRequest req ) {
+    public UserResponse createUser( @Valid @RequestBody UserCreateRequest req ) {
         User created = userService.createUser(req.getEmail(), req.getPassword());
-        System.out.println(req.getEmail() + req.getPassword());
         return toResponse(created);
     }
 

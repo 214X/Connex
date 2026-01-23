@@ -1,6 +1,8 @@
 package com.burakkurucay.connex.service;
 
 import com.burakkurucay.connex.entity.User;
+import com.burakkurucay.connex.exception.user.UserNotFoundException;
+import com.burakkurucay.connex.exception.user.UserAlreadyExistsException;
 import com.burakkurucay.connex.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,10 @@ public class UserService {
      *  Function to create new user
      * */
     public User createUser(String email, String password) {
+        if (userRepo.existsByEmail(email)) {
+            throw new UserAlreadyExistsException("email", email);
+        }
+
         User user = new User(email, password);
         return userRepo.save(user);
     }
@@ -30,10 +36,9 @@ public class UserService {
 
         // check if the user with same email is exist
         if (user == null) {
-            throw new IllegalArgumentException("User not found with email: " + email);
+            throw new UserNotFoundException("email", email);
         }
 
         return user;
     }
-
 }
