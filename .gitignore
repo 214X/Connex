@@ -1,2 +1,44 @@
-.DS_store
+# OS / Editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Environment variables
 .env
+.env.*
+!.env.example
+
+# Backend (Spring Boot / Maven)
+backend/target/
+backend/.mvn/wrapper/maven-wrapper.jar
+
+# Frontend (Next.js / Node)
+fontend/node_modules/
+fontend/.next/
+fontend/out/
+fontend/.turbo/
+fontend/.cache/
+
+# Logs
+fontend/npm-debug.log*
+fontend/yarn-debug.log*
+fontend/yarn-error.log*
+fontend/pnpm-debug.log*
+
+# TypeScript
+*.tsbuildinfo
+
+# Test / Coverage
+coverage/
+*.lcov
+
+# Build artifacts (general)
+dist/
+build/
+
+# Docker
+*.log
+docker-compose.override.yml
