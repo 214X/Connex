@@ -1,0 +1,17 @@
+:root {
+    /* purples */
+    --purple-primary: #7C5CFA;
+    --purple-hover:   #6A4EF0;
+    --purple-soft:    #EFEAFF;
+
+    /* text */
+    --black-primary-text:   #101622;
+    --black-secondary-text: #6B7280;
+    --black-hint-text:      #9CA3AF;
+
+    --white-primary-text:   #FFFFFF;
+    --white-hint-text:      #D1D5DB;
+
+    /* backgrounds */
+    --white-bg:       #FFFFFF;
+}

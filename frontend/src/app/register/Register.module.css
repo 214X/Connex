@@ -1,0 +1,161 @@
+@import "../../styles/globals.css";
+
+.page {
+    min-height: 100vh;
+    background-color: var(--white-bg);
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mainCard {
+    width: 100%;
+    max-width: 960px;
+    min-height: 40vh;
+
+    margin: 15px;
+
+    border-radius: 15px;
+    box-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.5);
+
+    display: grid;
+    grid-template-columns: 4fr 3fr;
+
+    overflow: hidden; 
+}
+
+.cardLeft {
+    background-color: var(--purple-primary);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;  
+
+    padding: 24px;
+    color: var(--white-primary-text);
+}
+
+.cardRight {
+    background-color: var(--white-bg);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;  
+
+}
+
+.leftTitle {
+    font-weight: 800;
+    font-size: 45px;
+    
+    text-align: left;
+    padding: 10px;
+
+    color: var(--white-primary-text)
+}
+
+.description {
+    font-size: 16px;
+    
+    text-align: left;
+    padding: 10px;
+
+    color: var(--white-hint-text)
+}
+
+.rightTitle {
+    font-weight: 800;
+    font-size: 40px;
+    
+    text-align: left;
+    padding: 10px;
+
+    color: var(--purple-primary)
+}
+
+
+.input {
+    width: 90%;
+    padding: 12px 14px;
+    margin: 5px;
+
+    font-size: 14px;
+    color: var(--black-primary-text);
+
+    background-color: var(--white-bg);
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input::placeholder {
+    color: var(--black-hint-text);
+}
+
+.input:focus {
+    border-color: var(--purple-primary);
+    box-shadow: 0 0 0 3px rgba(124, 92, 250, 0.15);
+}
+
+.button {
+    padding: 10px 30px;
+    margin: 10px;
+
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--white-primary-text);
+
+    border-radius: 20px;
+
+    background-color: var(--purple-primary);
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.button:hover {
+    background-color: var(--purple-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 16px rgba(124, 92, 250, 0.25);
+}
+
+.error {
+    width: 90%;
+    padding: 10px 12px;
+    margin: 10 0;
+
+    background-color: #FEF2F2;
+    color: #991B1B;
+
+    border: 1px solid #FCA5A5;
+    border-radius: 8px;
+
+    font-size: 14px;
+    text-align: center;
+    animation: fadeIn 0.2s ease;
+    
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+
+
