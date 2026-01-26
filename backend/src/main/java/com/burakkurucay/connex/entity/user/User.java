@@ -3,8 +3,6 @@ package com.burakkurucay.connex.entity.user;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
-import com.burakkurucay.connex.entity.user.UserProfileType;
-
 @Entity
 @Table(name = "users")
 public class User {
@@ -22,28 +20,28 @@ public class User {
     private boolean isActive;
 
     @Enumerated(EnumType.STRING)
-    @Column(name="profile_type", nullable = false)
-    private UserProfileType profileType;
+    @Column(name="profile_type")
+    private AccountType profileType;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    @Column(name="updated_at")
+    @Column(name="updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
     // empty constructor for Hibernate
     protected User() {}
 
-    public User(String email, String password, UserProfileType profileType) {
+    public User(String email, String password, AccountType profileType, boolean isActive) {
         this.email = email;
         this.password = password;
         this.profileType = profileType;
+        this.isActive = false;
     }
 
     // pre businesses
     @PrePersist
     public void onCreate() {
-        isActive = true;
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
     }
@@ -65,7 +63,7 @@ public class User {
         return password;
     }
 
-    public UserProfileType getProfileType() { return profileType; }
+    public AccountType getAccountType() { return profileType; }
 
     public boolean isActive() { return isActive; }
 

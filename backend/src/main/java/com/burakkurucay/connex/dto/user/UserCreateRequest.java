@@ -1,6 +1,6 @@
 package com.burakkurucay.connex.dto.user;
 
-import com.burakkurucay.connex.entity.user.UserProfileType;
+import com.burakkurucay.connex.entity.user.AccountType;
 import jakarta.validation.constraints.*;
 
 public class UserCreateRequest {
@@ -19,7 +19,10 @@ public class UserCreateRequest {
     private String password;
 
     @NotNull(message = "Profile type must be declared")
-    private UserProfileType profileType;
+    private AccountType accountType;
+
+    @NotNull(message = "Activity of the user be declared")
+    private boolean isActive;
 
     // constructor
     public UserCreateRequest() {}
@@ -33,6 +36,10 @@ public class UserCreateRequest {
     public void setPassword(String password) { this.password = password; }
 
     // profile type getter and setter
-    public UserProfileType getProfileType() { return profileType; }
-    public void setProfileType(UserProfileType profileType) { this.profileType = profileType; }
+    public AccountType getProfileType() { return accountType; }
+    public void setProfileType(AccountType profileType) { this.accountType = profileType; }
+
+    // is active getter and setter
+    public boolean isActive() { return isActive; }
+    public void setActivity(boolean isActive) { this.isActive = isActive; }
 }

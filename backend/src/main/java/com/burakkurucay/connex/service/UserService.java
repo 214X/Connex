@@ -1,10 +1,14 @@
 package com.burakkurucay.connex.service;
 
+import com.burakkurucay.connex.dto.user.UserRegisterRequest;
 import com.burakkurucay.connex.entity.user.User;
-import com.burakkurucay.connex.entity.user.UserProfileType;
+import com.burakkurucay.connex.entity.user.AccountType;
+import com.burakkurucay.connex.exception.codes.ErrorCode;
+import com.burakkurucay.connex.exception.common.BusinessException;
 import com.burakkurucay.connex.exception.user.UserNotFoundException;
 import com.burakkurucay.connex.exception.user.UserAlreadyExistsException;
 import com.burakkurucay.connex.repository.UserRepository;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -26,16 +30,28 @@ public class UserService {
      * */
     public User createUser(String email,
                            String rawPassword,
-                           UserProfileType type) {
+                           AccountType accountType,
+                           boolean isActive) {
 
-        if (userRepo.existsByEmail(email)) {
-            throw new UserAlreadyExistsException("email", email);
+        // normalize the email
+        String normalizedEmail = email.toLowerCase().trim();
+
+        // check if the email exists in db
+        if (userRepo.existsByEmail(normalizedEmail)) {
+            throw new UserAlreadyExistsException("email", normalizedEmail);
         }
 
+        // hash the password
         String hashedPassword = passwordEncoder.encode(rawPassword);
 
-        User user = new User(email, hashedPassword, type);
-        return userRepo.save(user);
+        User user = new User(normalizedEmail, hashedPassword, accountType, isActive);
+
+        // try catch for race condition
+        try {
+            return userRepo.save(user);
+        } catch (DataIntegrityViolationException ex) {
+            throw new UserAlreadyExistsException("email", normalizedEmail);
+        }
     }
 
     /*
@@ -44,5 +60,21 @@ public class UserService {
     public User getUserById(Long ID) {
         return userRepo.findById(ID)
             .orElseThrow(() -> new UserNotFoundException("ID", ID.toString()));
+    }
+
+    public User register(UserRegisterRequest req) {
+
+        // check password mismatching
+        if(!req.getPassword().equals(req.getConfirmPassword())) {
+            throw new BusinessException("Password and confirm password are not matching",
+                ErrorCode.PASSWORD_MISSMATCH);
+        }
+
+        return createUser(
+            req.getEmail(),
+            req.getPassword(),
+            null,
+            false
+        );
     }
 }

@@ -7,8 +7,11 @@ public enum ErrorCode {
     BUSINESS_ERROR,
     INTERNAL_ERROR,
 
+    // register errors
+    PASSWORD_MISSMATCH,
+    USER_ALREADY_EXISTS,
+
     // user errors
     USER_NOT_FOUND,
-    USER_ALREADY_EXISTS
 }
 
