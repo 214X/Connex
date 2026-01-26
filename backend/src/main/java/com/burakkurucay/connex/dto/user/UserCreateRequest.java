@@ -1,18 +1,25 @@
 package com.burakkurucay.connex.dto.user;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import com.burakkurucay.connex.entity.user.UserProfileType;
+import jakarta.validation.constraints.*;
 
 public class UserCreateRequest {
 
     @NotBlank(message = "Email must not be blank")
     @Email(message = "Email must be a valid email address")
+    @Size(max = 255, message = "Email must not exceed 255 characters")
     private String email;
 
     @NotBlank(message = "Password must not be blank")
-    @Size(min = 8, message = "Password must be at least 8 characters long")
+    @Size(min = 8, max = 64, message = "Password must be between 8 and 64 characters")
+    @Pattern(
+        regexp = "^(?=.*[A-Za-z])(?=.*\\d).+$",
+        message = "Password must contain at least one letter and one number"
+    )
     private String password;
+
+    @NotNull(message = "Profile type must be declared")
+    private UserProfileType profileType;
 
     // constructor
     public UserCreateRequest() {}
@@ -25,4 +32,7 @@ public class UserCreateRequest {
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
 
+    // profile type getter and setter
+    public UserProfileType getProfileType() { return profileType; }
+    public void setProfileType(UserProfileType profileType) { this.profileType = profileType; }
 }

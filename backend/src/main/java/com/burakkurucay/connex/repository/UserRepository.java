@@ -1,12 +1,13 @@
 package com.burakkurucay.connex.repository;
 
-import com.burakkurucay.connex.entity.User;
+import com.burakkurucay.connex.entity.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
     boolean existsByEmail(String email);
 
-    User findByEmail(String email);
-
+    // do not forget to use Optional<>
 }

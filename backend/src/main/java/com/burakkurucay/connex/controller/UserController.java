@@ -1,6 +1,6 @@
 package com.burakkurucay.connex.controller;
 
-import com.burakkurucay.connex.entity.User;
+import com.burakkurucay.connex.entity.user.User;
 import com.burakkurucay.connex.service.UserService;
 import com.burakkurucay.connex.dto.user.UserResponse;
 import com.burakkurucay.connex.dto.user.UserCreateRequest;
@@ -21,17 +21,21 @@ public class UserController {
 
     @PostMapping
     public UserResponse createUser( @Valid @RequestBody UserCreateRequest req ) {
-        User created = userService.createUser(req.getEmail(), req.getPassword());
+        User created = userService.createUser(req.getEmail(), req.getPassword(), req.getProfileType());
         return toResponse(created);
     }
 
-    @GetMapping("/{email}")
-    public UserResponse getUserByEmail(@PathVariable String email) {
-        User founded = userService.getUserByEmail(email);
-        return toResponse(founded);
+    @GetMapping("/{id}")
+    public UserResponse getUserById(@PathVariable Long id) {
+        User user = userService.getUserById(id);
+        return toResponse(user);
     }
 
     private UserResponse toResponse(User user) {
-        return new UserResponse(user.getId(), user.getEmail(), user.getCreatedAt());
+        return new UserResponse(user.getId(),
+                                user.getEmail(),
+                                user.getProfileType(),
+                                user.getCreatedAt(),
+                                user.getUpdatedAt());
     }
 }
