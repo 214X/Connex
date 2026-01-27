@@ -1,4 +1,6 @@
-import api from "./api";
+import api from "./client";
+import axios from "axios";
+import { ApiResponse } from "./types";
 
 export interface RegisterRequest {
     email: string;
@@ -6,17 +8,27 @@ export interface RegisterRequest {
     confirmPassword: string;
 }
 
-export interface RegisterResponse {
+export interface UserResponse {
     id: number;
     email: string;
     accountType: string;
     createdAt: string;
-    updatedAt: String;
+    updatedAt: string;
 }
 
 export const register = async (
     data: RegisterRequest
-): Promise<RegisterResponse> => {
-    const response = await api.post("/api/auth/register", data);
-    return response.data;
+): Promise<ApiResponse<UserResponse>> => {
+    try {
+        const res = await api.post<ApiResponse<UserResponse>>(
+            "/api/auth/register",
+            data
+        );
+        return res.data;
+    } catch (err) {
+        if (axios.isAxiosError(err)) {
+            throw err.response?.data as ApiResponse<never>;
+        }
+        throw err;
+    }
 };

@@ -11,13 +11,13 @@
 
 .mainCard {
     width: 100%;
-    max-width: 960px;
+    max-width: 50%;
     min-height: 40vh;
 
     margin: 15px;
 
     border-radius: 15px;
-    box-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 10px 80px -8px rgba(0, 0, 0, 0.5);
 
     display: grid;
     grid-template-columns: 4fr 3fr;
@@ -39,6 +39,7 @@
 
 .cardRight {
     background-color: var(--white-bg);
+    width: 100%;
 
     display: flex;
     flex-direction: column;
@@ -86,11 +87,11 @@
     color: var(--black-primary-text);
 
     background-color: var(--white-bg);
-    border: 1px solid #E5E7EB;
+    border: 0.8px solid var(--black-secondary-text);
     border-radius: 8px;
 
     outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s;
+    transition: box-shadow 0.2s;
 }
 
 .input::placeholder {
@@ -98,8 +99,8 @@
 }
 
 .input:focus {
-    border-color: var(--purple-primary);
-    box-shadow: 0 0 0 3px rgba(124, 92, 250, 0.15);
+    border: 1.2px solid var(--purple-primary);
+    box-shadow: 0 0 0 5px rgba(124, 92, 250, 0.15);
 }
 
 .button {
@@ -142,7 +143,7 @@
     font-size: 14px;
     text-align: center;
     animation: fadeIn 0.2s ease;
-    
+
 }
 
 @keyframes fadeIn {

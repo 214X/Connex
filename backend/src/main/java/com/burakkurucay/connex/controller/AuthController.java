@@ -1,5 +1,6 @@
 package com.burakkurucay.connex.controller;
 
+import com.burakkurucay.connex.dto.common.ApiResponse;
 import com.burakkurucay.connex.dto.user.UserRegisterRequest;
 import com.burakkurucay.connex.dto.user.UserResponse;
 import com.burakkurucay.connex.entity.user.User;
@@ -22,9 +23,11 @@ public class AuthController {
     // ----- POST MAPPINGS -----
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserResponse register(@Valid @RequestBody UserRegisterRequest req) {
+    public ApiResponse<UserResponse> register(
+            @Valid @RequestBody UserRegisterRequest req) {
+
         User registered = userService.register(req);
-        return UserMapper.toResponse(registered);
+        UserResponse userResponse = UserMapper.toResponse(registered);
+        return ApiResponse.success(userResponse);
     }
 }
-

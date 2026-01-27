@@ -20,25 +20,50 @@ export default function RegisterPage() {
         e.preventDefault();
         setError(null);
 
+        // check if user filled all the fields
         if (!email || !password || !confirmPassword) {
             setError("Please fill all fields");
             return;
         }
 
+        // check if the password and confirm password are same
         if (password !== confirmPassword) {
             setError("Passwords do not match");
             return;
         }
 
+        // API call
         try {
-            await register({
+            const res = await register({
                 email,
                 password,
-                confirmPassword: confirmPassword,
+                confirmPassword,
             });
 
-            router.push("/register");
-        } catch (error) {
+            // check if backend sent success code
+            if (res.success && res.data) {
+                console.log("Registered user:", res.data);
+                // örn: router.push("/login");
+                return;
+            }
+
+            // defensive programming
+            setError("Unexpected response from server.");
+        } catch (err: any) {
+            const apiError = err?.error;
+
+            // check if it is email or user already exists error
+            if (apiError?.code === "USER_ALREADY_EXISTS") {
+                setError("This email is already registered.");
+                return;
+            }
+
+            // log generic message for other errors
+            if (apiError?.message) {
+                setError(apiError.message);
+                return;
+            }
+
             setError("Something went wrong. Please try again.");
         }
     };
