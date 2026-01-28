@@ -1,5 +1,7 @@
 package com.burakkurucay.connex.config;
 
+import com.burakkurucay.connex.security.JwtAuthenticationFilter;
+import com.burakkurucay.connex.security.SecurityExceptionHandlers;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.Customizer;
@@ -8,29 +10,43 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 public class SecurityConfig {
 
+    JwtAuthenticationFilter jwtAuthFilter;
+    SecurityExceptionHandlers securityHandlers;
+
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthFilter, SecurityExceptionHandlers securityHandlers) {
+        this.jwtAuthFilter = jwtAuthFilter;
+        this.securityHandlers = securityHandlers;
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            // Stateless API
-            .sessionManagement(session ->
-                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            )
+                // Stateless API: session yok, her request token taşır
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-            // CSRF disabled (for REST API)
-            .csrf(csrf -> csrf.disable())
+                // CSRF disabled (JWT + stateless REST)
+                .csrf(csrf -> csrf.disable())
 
-            // CORS active
-            .cors(Customizer.withDefaults())
+                // CORS aktif
+                .cors(Customizer.withDefaults())
 
-            // permit everything for now
-            .authorizeHttpRequests(auth -> auth
-                .anyRequest().permitAll()
-            );
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint(securityHandlers)
+                        .accessDeniedHandler(securityHandlers))
+
+                // Public vs Protected endpointler
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/health/**").permitAll()
+                        .anyRequest().authenticated())
+
+                // JWT filter: Authorization: Bearer token kontrolü
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

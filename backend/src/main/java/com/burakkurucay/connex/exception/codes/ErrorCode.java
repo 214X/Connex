@@ -13,5 +13,10 @@ public enum ErrorCode {
 
     // user errors
     USER_NOT_FOUND,
+
+    // --- Security ---
+    AUTH_UNAUTHORIZED,      // no / invalid Token
+    AUTH_FORBIDDEN,         // no authorization
+    AUTH_TOKEN_EXPIRED,     // auth token expired
 }
 

@@ -29,8 +29,14 @@ public class GlobalExceptionHandler {
         ErrorCode.USER_ALREADY_EXISTS, HttpStatus.CONFLICT,
         ErrorCode.VALIDATION_ERROR, HttpStatus.BAD_REQUEST,
         ErrorCode.BUSINESS_ERROR, HttpStatus.BAD_REQUEST,
-        ErrorCode.INTERNAL_ERROR, HttpStatus.INTERNAL_SERVER_ERROR
+
+        ErrorCode.INTERNAL_ERROR, HttpStatus.INTERNAL_SERVER_ERROR,
+
+        ErrorCode.AUTH_UNAUTHORIZED, HttpStatus.UNAUTHORIZED,
+        ErrorCode.AUTH_TOKEN_EXPIRED, HttpStatus.UNAUTHORIZED,
+        ErrorCode.AUTH_FORBIDDEN, HttpStatus.FORBIDDEN
     );
+
 
     /**
      * Handle domain / business exceptions
