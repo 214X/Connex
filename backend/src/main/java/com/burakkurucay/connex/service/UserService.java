@@ -62,6 +62,7 @@ public class UserService {
             .orElseThrow(() -> new UserNotFoundException("ID", ID.toString()));
     }
 
+    // TODO: This method must be at the AuthService
     public User register(UserRegisterRequest req) {
 
         // check password mismatching

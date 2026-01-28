@@ -4,6 +4,9 @@ import com.burakkurucay.connex.dto.common.ApiResponse;
 import com.burakkurucay.connex.exception.base.BaseException;
 import com.burakkurucay.connex.exception.codes.ErrorCode;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -18,52 +21,90 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    private static final Map<ErrorCode, HttpStatus> STATUS_MAP = Map.of(
-            ErrorCode.USER_NOT_FOUND, HttpStatus.NOT_FOUND,
-            ErrorCode.USER_ALREADY_EXISTS, HttpStatus.CONFLICT,
-            ErrorCode.VALIDATION_ERROR, HttpStatus.BAD_REQUEST,
-            ErrorCode.BUSINESS_ERROR, HttpStatus.BAD_REQUEST,
-            ErrorCode.INTERNAL_ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
+    private static final Logger log =
+        LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    // Handle domain / business exceptions
+    private static final Map<ErrorCode, HttpStatus> STATUS_MAP = Map.of(
+        ErrorCode.USER_NOT_FOUND, HttpStatus.NOT_FOUND,
+        ErrorCode.USER_ALREADY_EXISTS, HttpStatus.CONFLICT,
+        ErrorCode.VALIDATION_ERROR, HttpStatus.BAD_REQUEST,
+        ErrorCode.BUSINESS_ERROR, HttpStatus.BAD_REQUEST,
+        ErrorCode.INTERNAL_ERROR, HttpStatus.INTERNAL_SERVER_ERROR
+    );
+
+    /**
+     * Handle domain / business exceptions
+     * These are expected errors → WARN level
+     */
     @ExceptionHandler(BaseException.class)
     public ResponseEntity<ApiResponse<Void>> handleBaseException(BaseException ex) {
+
+        log.warn(
+            "Business exception | code={} | message={}",
+            ex.getErrorCode(),
+            ex.getMessage()
+        );
+
         HttpStatus status = STATUS_MAP.getOrDefault(
-                ex.getErrorCode(),
-                HttpStatus.INTERNAL_SERVER_ERROR);
+            ex.getErrorCode(),
+            HttpStatus.INTERNAL_SERVER_ERROR
+        );
 
         ApiResponse<Void> response = ApiResponse.error(
-                ex.getErrorCode().name(),
-                ex.getMessage());
+            ex.getErrorCode().name(),
+            ex.getMessage()
+        );
 
         return ResponseEntity.status(status).body(response);
     }
 
-    // Handle Bean Validation (DTO validation)
+    /**
+     * Handle Bean Validation (DTO validation errors)
+     * Client-side problem → WARN level
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<Void>> handleMethodArgumentNotValid(
-            MethodArgumentNotValidException ex) {
+        MethodArgumentNotValidException ex) {
+
         List<String> details = ex.getBindingResult()
-                .getFieldErrors()
-                .stream()
-                .map(FieldError::getDefaultMessage)
-                .toList();
+            .getFieldErrors()
+            .stream()
+            .map(FieldError::getDefaultMessage)
+            .toList();
+
+        log.warn(
+            "Validation failed | details={}",
+            details
+        );
 
         ApiResponse<Void> response = ApiResponse.error(
-                ErrorCode.VALIDATION_ERROR.name(),
-                "Validation failed",
-                details);
+            ErrorCode.VALIDATION_ERROR.name(),
+            "Validation failed",
+            details
+        );
 
         return ResponseEntity.badRequest().body(response);
     }
 
-    // Handle unexpected / unhandled exceptions
+    /**
+     * Handle unexpected / unhandled exceptions
+     * Real crashes → ERROR + full stacktrace
+     */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Void>> handleUnexpectedException(Exception ex) {
-        ApiResponse<Void> response = ApiResponse.error(
-                ErrorCode.INTERNAL_ERROR.name(),
-                "Unexpected error occurred");
 
-        return ResponseEntity.internalServerError().body(response);
+        log.error(
+            "Unexpected exception occurred",
+            ex
+        );
+
+        ApiResponse<Void> response = ApiResponse.error(
+            ErrorCode.INTERNAL_ERROR.name(),
+            "Unexpected error occurred"
+        );
+
+        return ResponseEntity
+            .status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body(response);
     }
 }
