@@ -18,5 +18,9 @@ public enum ErrorCode {
     AUTH_UNAUTHORIZED, // no / invalid Token
     AUTH_FORBIDDEN, // no authorization
     AUTH_TOKEN_EXPIRED, // auth token expired
-    AUTH_INVALID_CREDENTIALS // wrong email or password
+    AUTH_INVALID_CREDENTIALS,
+
+    // profile
+    PROFILE_ALREADY_EXISTS,
+    PROFILE_NOT_FOUND
 }

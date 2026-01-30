@@ -9,6 +9,8 @@ import com.burakkurucay.connex.exception.user.UserNotFoundException;
 import com.burakkurucay.connex.exception.user.UserAlreadyExistsException;
 import com.burakkurucay.connex.repository.UserRepository;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -62,7 +64,6 @@ public class UserService {
             .orElseThrow(() -> new UserNotFoundException("ID", ID.toString()));
     }
 
-    // TODO: This method must be at the AuthService
     public User register(UserRegisterRequest req) {
 
         // check password mismatching
@@ -77,5 +78,47 @@ public class UserService {
             null,
             false
         );
+    }
+
+    // TODO: errors
+    public User getCurrentUser() {
+
+        Authentication authentication =
+            SecurityContextHolder.getContext().getAuthentication();
+
+        // if it is not authenticated
+        if (authentication == null
+            || !authentication.isAuthenticated()
+            || "anonymousUser".equals(authentication.getPrincipal())) {
+            throw new BusinessException(
+                "User is not authenticated",
+                ErrorCode.AUTH_UNAUTHORIZED
+            );
+        }
+
+        Object principal = authentication.getPrincipal();
+
+        // JWT filter sets user id as principal
+        if (principal == null) {
+            throw new BusinessException(
+                "Invalid authentication context",
+                ErrorCode.AUTH_UNAUTHORIZED
+            );
+        }
+
+        Long userId;
+        try {
+            userId = Long.valueOf(principal.toString());
+        } catch (NumberFormatException ex) {
+            throw new BusinessException(
+                "Invalid user identity in token",
+                ErrorCode.AUTH_UNAUTHORIZED
+            );
+        }
+
+        return userRepo.findById(userId)
+            .orElseThrow(() ->
+                new UserNotFoundException("ID", userId.toString())
+            );
     }
 }
