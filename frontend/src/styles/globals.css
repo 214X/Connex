@@ -2,10 +2,24 @@
     DESIGN TOKENS
 ================================ */
 @import "./tokens/colors.css";
-
+@import "./tokens/typography.css";
 
 /* ================================
-    BASE
+    BASE / RESET
 ================================ */
 @import "./base.css";
 
+/* ================================
+    GLOBAL ELEMENT STYLES
+================================ */
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+body {
+    background-color: var(--color-background, #ffffff);
+    color: var(--color-foreground, #111111);
+}

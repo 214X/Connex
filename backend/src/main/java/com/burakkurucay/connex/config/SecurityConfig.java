@@ -1,7 +1,7 @@
 package com.burakkurucay.connex.config;
 
 import com.burakkurucay.connex.security.JwtAuthenticationFilter;
-import com.burakkurucay.connex.security.SecurityExceptionHandlers;
+import com.burakkurucay.connex.exception.handler.SecurityExceptionHandlers;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.Customizer;

@@ -17,15 +17,13 @@ public class AuthService {
     PasswordEncoder passwordEncoder;
 
     public AuthService(
-        UserRepository userRepo,
-        JwtService jwtService,
-        PasswordEncoder passwordEncoder
-    ) {
+            UserRepository userRepo,
+            JwtService jwtService,
+            PasswordEncoder passwordEncoder) {
         this.userRepo = userRepo;
         this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
     }
-
 
     public LoginResponse login(LoginRequest loginReq) {
         // check if the email exists
@@ -36,14 +34,14 @@ public class AuthService {
         // get the user data
         // TODO: exception
         User usr = userRepo.findByEmail(loginReq.getEmail())
-            .orElseThrow(() -> new UserNotFoundException("email", loginReq.getEmail()));
+                .orElseThrow(() -> new UserNotFoundException("email", loginReq.getEmail()));
 
         // check if the password is correct
         // TODO: exception
         if (!passwordEncoder.matches(loginReq.getPassword(), usr.getPassword())) {
             throw new BusinessException(
-                "AUTH_INVALID_CREDENTIALS"
-            );
+                    "Invalid credentials",
+                    com.burakkurucay.connex.exception.codes.ErrorCode.AUTH_INVALID_CREDENTIALS);
         }
 
         // generate a new token

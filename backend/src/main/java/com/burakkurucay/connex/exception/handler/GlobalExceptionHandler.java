@@ -34,12 +34,14 @@ public class GlobalExceptionHandler {
 
         ErrorCode.AUTH_UNAUTHORIZED, HttpStatus.UNAUTHORIZED,
         ErrorCode.AUTH_TOKEN_EXPIRED, HttpStatus.UNAUTHORIZED,
-        ErrorCode.AUTH_FORBIDDEN, HttpStatus.FORBIDDEN
+        ErrorCode.AUTH_FORBIDDEN, HttpStatus.FORBIDDEN,
+        ErrorCode.AUTH_INVALID_CREDENTIALS, HttpStatus.UNAUTHORIZED
     );
 
 
     /**
      * Handle domain / business exceptions
+
      * These are expected errors → WARN level
      */
     @ExceptionHandler(BaseException.class)
@@ -64,6 +66,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(status).body(response);
     }
 
+
+    
     /**
      * Handle Bean Validation (DTO validation errors)
      * Client-side problem → WARN level

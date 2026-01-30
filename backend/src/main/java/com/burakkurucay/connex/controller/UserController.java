@@ -8,6 +8,7 @@ import com.burakkurucay.connex.service.UserService;
 import com.burakkurucay.connex.dto.user.UserResponse;
 import com.burakkurucay.connex.dto.user.UserCreateRequest;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
@@ -28,6 +29,14 @@ public class UserController {
         User user = userService.getUserById(id);
         UserResponse userResponse = UserMapper.toResponse(user);
         return ApiResponse.success(userResponse);
+    }
+
+    @GetMapping("/me")
+    public ApiResponse<UserResponse> me(
+        @AuthenticationPrincipal Long userId
+    ) {
+        User user = userService.getUserById(userId);
+        return ApiResponse.success(UserMapper.toResponse(user));
     }
 
     // ----- POST MAPPINGS -----

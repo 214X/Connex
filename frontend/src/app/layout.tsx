@@ -1,15 +1,7 @@
 import type { Metadata } from "next";
-import "./globals.css";
+import "@/styles/globals.css";
 import StoreProvider from "@/store/provider";
-
-import { Inter } from "next/font/google";
-
-const inter = Inter({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-inter",
-  display: "swap",
-});
+import AuthGate from "@/components/auth/AuthGate";
 
 export const metadata: Metadata = {
   title: "Connex",
@@ -22,9 +14,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en">
       <body>
-        <StoreProvider>{children}</StoreProvider>
+        <StoreProvider>
+          <AuthGate>{children}</AuthGate>
+        </StoreProvider>
       </body>
     </html>
   );

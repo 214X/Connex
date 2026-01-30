@@ -1,4 +1,4 @@
-package com.burakkurucay.connex.security;
+package com.burakkurucay.connex.exception.handler;
 
 import com.burakkurucay.connex.dto.common.ApiResponse;
 import com.burakkurucay.connex.exception.codes.ErrorCode;
@@ -18,7 +18,7 @@ import java.util.List;
 
 @Component
 public class SecurityExceptionHandlers
-    implements AuthenticationEntryPoint, AccessDeniedHandler {
+        implements AuthenticationEntryPoint, AccessDeniedHandler {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -27,22 +27,20 @@ public class SecurityExceptionHandlers
      */
     @Override
     public void commence(
-        HttpServletRequest request,
-        HttpServletResponse response,
-        org.springframework.security.core.AuthenticationException authException
-    ) throws IOException {
+            HttpServletRequest request,
+            HttpServletResponse response,
+            org.springframework.security.core.AuthenticationException authException) throws IOException {
 
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
         ApiResponse<Void> body = ApiResponse.error(
-            ErrorCode.AUTH_UNAUTHORIZED.name(),
-            "Authentication required",
-            List.of("Missing, invalid or expired token")
-        );
+                ErrorCode.AUTH_UNAUTHORIZED.name(),
+                "Authentication required",
+                List.of("Missing, invalid or expired token"));
 
         response.getWriter()
-            .write(objectMapper.writeValueAsString(body));
+                .write(objectMapper.writeValueAsString(body));
     }
 
     /**
@@ -50,21 +48,19 @@ public class SecurityExceptionHandlers
      */
     @Override
     public void handle(
-        HttpServletRequest request,
-        HttpServletResponse response,
-        AccessDeniedException accessDeniedException
-    ) throws IOException {
+            HttpServletRequest request,
+            HttpServletResponse response,
+            AccessDeniedException accessDeniedException) throws IOException {
 
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
         ApiResponse<Void> body = ApiResponse.error(
-            ErrorCode.AUTH_FORBIDDEN.name(),
-            "Access denied",
-            List.of("You do not have permission to access this resource")
-        );
+                ErrorCode.AUTH_FORBIDDEN.name(),
+                "Access denied",
+                List.of("You do not have permission to access this resource"));
 
         response.getWriter()
-            .write(objectMapper.writeValueAsString(body));
+                .write(objectMapper.writeValueAsString(body));
     }
 }

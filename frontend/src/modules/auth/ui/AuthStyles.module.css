@@ -1,0 +1,268 @@
+/* ===== PAGE ===== */
+.pageContainer {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    /* senin gradient hangisiyse */
+    background: linear-gradient(
+        135deg,
+        #ffffff,
+        #6a6fff,
+        #1822b2
+    );
+}
+
+
+/* ===== MAIN LAYOUT ===== */
+.mainCard {
+    width: 100%;
+    max-width: 68rem;
+
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 3rem;
+
+    margin-top: auto;
+    margin-bottom: auto;
+
+    align-items: center;
+}
+
+
+/* ===== WELCOMER ===== */
+.welcomerCard {
+    padding: 2rem;
+    max-width: 34rem;
+}
+
+.welcomerTitle {
+    font-size: 6.5rem;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: var(--purple-dark-2);
+    margin-bottom: 1.25rem;
+}
+
+.welcomerDescription {
+    font-size: 1.5rem;
+    line-height: 1.7; 
+    color: var(--black-text-muted);  
+    max-width: 30rem; 
+}
+
+
+
+/* ===== FORM CARD ===== */
+.formCard {
+    width: 100%;
+    max-width: 38rem;
+
+    background-color: #ffffff;
+    padding: 3rem;
+
+    border-radius: 22px;
+
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12);
+}
+
+
+/* ===== FORM TITLE ===== */
+.formTitle {
+    text-align: center;
+    font-size: 2.1rem;
+    font-weight: 900;
+    color: var(--purple-primary);
+    margin-bottom: 1.5rem;
+}
+
+
+/* ===== INPUT ===== */
+.formInput {
+    width: 100%;
+    padding: 0.95rem 1.15rem;
+    margin: 0.85rem 0;
+
+    font-size: 1rem;
+    color: #111;
+
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.18);
+    border-radius: 12px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.formInput:focus {
+    border-color: var(--purple-primary);
+    box-shadow: 0 0 0 3px rgba(78, 72, 217, 0.25);
+}
+
+.formInput::placeholder {
+    color: rgba(0, 0, 0, 0.45);
+}
+
+.formInput:disabled {
+    background-color: #f4f4f4;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+
+/* ===== SUBMIT BUTTON ===== */
+.submitButton {
+    width: 100%;
+    padding: 0.95rem 1.2rem;
+    margin: 1.2rem 0 0.75rem;
+
+    border: none;
+    border-radius: 12px;
+
+    color: #ffffff;
+    font-size: 1.05rem;
+    font-weight: 600;
+
+    background-color: var(--purple-primary);
+    cursor: pointer;
+
+    transition:
+        filter 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.15s ease;
+}
+
+.submitButton:hover {
+    filter: brightness(1.08);
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.28);
+}
+
+.submitButton:active {
+    transform: translateY(1px);
+    filter: brightness(0.95);
+    box-shadow: 0 5px 14px rgba(0, 0, 0, 0.3);
+}
+
+.submitButton:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(78, 72, 217, 0.35);
+}
+
+.submitButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+
+/* ===== REGISTER BUTTON ===== */
+.registerButton {
+    width: 100%;
+    padding: 0.9rem 1.2rem;
+
+    border: none;
+    border-radius: 12px;
+
+    background-color: #2E2F38;
+    color: #ffffff;
+
+    font-size: 1.05rem;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.15s ease;
+}
+
+.registerButton:hover {
+    background-color: #3A3B46;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.28);
+}
+
+.registerButton:active {
+    transform: translateY(1px);
+    background-color: #26272F;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+}
+
+.registerButton:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(78, 72, 217, 0.35);
+}
+
+.registerButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+
+/* ===== ERRORS ===== */
+.formError {
+    
+    font-size: 0.95rem;
+    text-align: center;
+    color: #d9534f;
+}
+
+
+@media (max-width: 940px) {
+
+    .pageContainer {
+        padding: 1.25rem;
+        align-items: flex-start;
+        
+        display: grid;
+        justify-content: center;
+    }
+
+    .mainCard {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        width: 100%;
+    }
+
+    .welcomerCard {
+        padding: 1rem 0.5rem;
+        max-width: 100%;
+        text-align: left;
+    }
+
+    .welcomerTitle {
+        font-size: 4.5rem;
+        line-height: 1.05;
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+
+    .welcomerDescription {
+        font-size: 1.05rem;
+        line-height: 1.6;
+        max-width: 100%;
+        text-align: center;
+    }
+
+    .formCard {
+        padding: 2rem 1.75rem;
+        border-radius: 18px;
+    }
+
+    .formTitle {
+        font-size: 1.8rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .submitButton,
+    .registerButton {
+        font-size: 1rem;
+        padding: 0.85rem 1.1rem;
+    }
+}
+

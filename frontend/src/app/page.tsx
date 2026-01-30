@@ -1,14 +1,9 @@
-"use client";
+// app/page.tsx
+// This is the ONLY route - represents authenticated content
+// Auth logic is handled by AuthGate in layout.tsx
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import HomeScreen from "@/modules/app/ui/HomeScreen";
 
-export default function HomePage() {
-  const router = useRouter();
-
-  useEffect(() => {
-    router.replace("/register");
-  }, [router]);
-
-  return null;
+export default function Page() {
+  return <HomeScreen />;
 }

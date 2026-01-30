@@ -1,3 +1,21 @@
+/* ================================
+    BASE – VISUAL FIXES ONLY
+================================ */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
 body {
-    font-family: var(--font-sans);
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+body {
+    min-height: 100vh;
+    background-color: var(--color-background, #ffffff);
+    color: var(--color-foreground, #111111);
+    font-family: var(--font-sans, Arial, Helvetica, sans-serif);
 }

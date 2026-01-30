@@ -1,14 +1,9 @@
-/**
- * Uygulamanın global durum takipçisi
- * Bütün durumlar burada kayıtlı olucak ve bu noktadan kontrol edilicekler
- */
-
 import { configureStore } from "@reduxjs/toolkit";
-import dummyReducer from "./dummySlice";
+import { authReducer } from "@/modules/auth";
 
 export const store = configureStore({
     reducer: {
-        dummy: dummyReducer,
+        auth: authReducer,
     },
     devTools: process.env.NODE_ENV !== "production",
 });

@@ -15,8 +15,8 @@ public enum ErrorCode {
     USER_NOT_FOUND,
 
     // --- Security ---
-    AUTH_UNAUTHORIZED,      // no / invalid Token
-    AUTH_FORBIDDEN,         // no authorization
-    AUTH_TOKEN_EXPIRED,     // auth token expired
+    AUTH_UNAUTHORIZED, // no / invalid Token
+    AUTH_FORBIDDEN, // no authorization
+    AUTH_TOKEN_EXPIRED, // auth token expired
+    AUTH_INVALID_CREDENTIALS // wrong email or password
 }
-

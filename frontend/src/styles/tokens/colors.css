@@ -1,6 +1,8 @@
 :root {
     /* purples */
-    --purple-primary: #7C5CFA;
+    --purple-dark-2: #3833B8;
+    --purple-dark-1: #433ECC;
+    --purple-primary: #4E48D9;
     --purple-hover:   #6A4EF0;
     --purple-soft:    #EFEAFF;
 
@@ -8,6 +10,8 @@
     --black-primary-text:   #101622;
     --black-secondary-text: #6B7280;
     --black-hint-text:      #9CA3AF;
+
+    --black-text-muted: #2F2F2F;
 
     --white-primary-text:   #FFFFFF;
     --white-hint-text:      #D1D5DB;
