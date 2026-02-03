@@ -11,7 +11,10 @@ export default function AppLayout({
             <header className={styles.header}>
                 <Navbar></Navbar>
             </header>
-            <main className={styles.main}>{children}</main>
+            <main className={styles.main}>
+                <div className={styles.navbarBack}></div>
+                {children}
+            </main>
         </div>
     );
 }

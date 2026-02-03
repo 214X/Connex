@@ -12,3 +12,16 @@
 
     z-index: 1000;
 }
+
+.navbarBack {
+    height: 5rem;
+    align-self: stretch;
+    background: linear-gradient(
+        0deg,
+        #ffffff,
+        #7e82f0,
+        #343ba5
+    );
+    background: white;
+    background-color: white;
+}

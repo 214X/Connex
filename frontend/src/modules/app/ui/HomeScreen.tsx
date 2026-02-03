@@ -13,50 +13,28 @@ export default function HomeScreen() {
     };
 
     return (
-        <div style={{ padding: "2rem" }}>
+        <div style={{ 
+            padding: "2rem",
+            display: "grid",
+            alignItems: "center",
+            justifyContent: "center"
+            }}>
+
+            <h1 style={{textAlign:"center"}}>Welcome to Connex | Welcome to Connex</h1>
+            <h2 style={{textAlign:"center"}}>This is your homescreen | This is your homescreen</h2>
+            <br></br><br></br><br></br><br></br><br></br>
+
+            <h1 style={{textAlign:"center"}}>Welcome to Connex | Welcome to Connex</h1>
+            <h2 style={{textAlign:"center"}}>This is your homescreen | This is your homescreen</h2>
+            <br></br><br></br><br></br><br></br><br></br>
+
+            <h1 style={{textAlign:"center"}}>Welcome to Connex | Welcome to Connex</h1>
+            <h2 style={{textAlign:"center"}}>This is your homescreen | This is your homescreen</h2>
+            <br></br><br></br><br></br><br></br><br></br>
             
-            <h2>Welcome{user?.email ? `, ${user.email}` : ""}!</h2>
-            <p>This is your home screen.</p>
-
-            <h2>Welcome{user?.email ? `, ${user.email}` : ""}!</h2>
-            <p>This is your home screen.</p>
-
-            <h2>Welcome{user?.email ? `, ${user.email}` : ""}!</h2>
-            <p>This is your home screen.</p>
-
-            <h2>Welcome{user?.email ? `, ${user.email}` : ""}!</h2>
-            <p>This is your home screen.</p>
-
-            <h2>Welcome{user?.email ? `, ${user.email}` : ""}!</h2>
-            <p>This is your home screen.</p>
-
-            <h2>Welcome{user?.email ? `, ${user.email}` : ""}!</h2>
-            <p>This is your home screen.</p>
-
-            <h2>Welcome{user?.email ? `, ${user.email}` : ""}!</h2>
-            <p>This is your home screen.</p>
-
-            <h2>Welcome{user?.email ? `, ${user.email}` : ""}!</h2>
-            <p>This is your home screen.</p>
-
-            <h2>Welcome{user?.email ? `, ${user.email}` : ""}!</h2>
-            <p>This is your home screen.</p>
-
-            <h2>Welcome{user?.email ? `, ${user.email}` : ""}!</h2>
-            <p>This is your home screen.</p>
-
-            
-
-            <button
-                onClick={handleLogout}
-                style={{
-                    padding: "0.5rem 1rem",
-                    marginTop: "1rem",
-                    cursor: "pointer"
-                }}
-            >
-                Sign out
-            </button>
+            <h1 style={{textAlign:"center"}}>Welcome to Connex | Welcome to Connex</h1>
+            <h2 style={{textAlign:"center"}}>This is your homescreen | This is your homescreen</h2>
+            <br></br><br></br><br></br><br></br><br></br>
         </div>
     );
 }
