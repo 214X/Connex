@@ -4,8 +4,10 @@ import { useState } from "react";
 import styles from "./AuthStyles.module.css";
 
 import { register } from "@/lib/api/auth/auth.api";
+import { useRouter } from "next/navigation";
 
 export default function RegisterForm() {
+    const router = useRouter();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -43,10 +45,6 @@ export default function RegisterForm() {
             }
 
             console.log("Registered user:", res.data);
-            // TODO: maybe
-            // - auto login
-            // - change mode
-            // - show toast
         } catch (err: any) {
             // network / unexpected error
             setError(

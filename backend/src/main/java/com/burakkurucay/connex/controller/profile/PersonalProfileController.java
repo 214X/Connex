@@ -35,6 +35,7 @@ public class PersonalProfileController {
         );
     }
 
+
     /**
      * Update current user's personal profile
      */

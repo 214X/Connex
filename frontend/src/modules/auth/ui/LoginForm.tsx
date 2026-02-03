@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import styles from "./AuthStyles.module.css";
 import { AppDispatch } from "@/store";
-import { setAuthenticated } from "@/modules/auth/state/authSlice";
+import { initializeAuth } from "@/modules/auth/state/authThunks";
 import { login, getMe } from "@/lib/api/auth/auth.api";
 import { setAccessToken } from "@/lib/api/auth/token";
 
@@ -40,20 +40,9 @@ export default function LoginForm() {
             }
 
             const { token } = res.data;
-
             setAccessToken(token);
 
-            // Fetch user details
-            const userRes = await getMe();
-
-            if (userRes.success && userRes.data) {
-                dispatch(setAuthenticated({
-                    id: String(userRes.data.id),
-                    email: userRes.data.email
-                }));
-            } else {
-                throw new Error("Failed to fetch user profile");
-            }
+            dispatch(initializeAuth());
         } catch (err: any) {
             // network / unexpected
             setError(

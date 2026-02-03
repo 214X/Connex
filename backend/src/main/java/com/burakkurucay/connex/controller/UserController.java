@@ -1,7 +1,6 @@
 package com.burakkurucay.connex.controller;
 
 import com.burakkurucay.connex.dto.common.ApiResponse;
-import com.burakkurucay.connex.dto.user.UserRegisterRequest;
 import com.burakkurucay.connex.entity.user.User;
 import com.burakkurucay.connex.mapper.UserMapper;
 import com.burakkurucay.connex.service.UserService;
@@ -33,8 +32,7 @@ public class UserController {
 
     @GetMapping("/me")
     public ApiResponse<UserResponse> me(
-        @AuthenticationPrincipal Long userId
-    ) {
+            @AuthenticationPrincipal Long userId) {
         User user = userService.getUserById(userId);
         return ApiResponse.success(UserMapper.toResponse(user));
     }
@@ -47,7 +45,7 @@ public class UserController {
                 req.getEmail(),
                 req.getPassword(),
                 req.getProfileType(),
-                req.isActive());
+                req.getStatus());
         UserResponse userResponse = UserMapper.toResponse(created);
         return ApiResponse.success(userResponse);
     }

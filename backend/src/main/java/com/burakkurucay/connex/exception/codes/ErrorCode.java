@@ -19,6 +19,8 @@ public enum ErrorCode {
     AUTH_FORBIDDEN, // no authorization
     AUTH_TOKEN_EXPIRED, // auth token expired
     AUTH_INVALID_CREDENTIALS,
+    AUTH_ACCOUNT_LOCKED, // account suspended
+    AUTH_ACCOUNT_DISABLED, // account inactive
 
     // profile
     PROFILE_ALREADY_EXISTS,

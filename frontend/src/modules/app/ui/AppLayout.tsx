@@ -1,3 +1,6 @@
+import Navbar from "@/modules/navbar/ui/Navbar";
+import styles from "./AppLayoutStyles.module.css";
+
 export default function AppLayout({
     children,
 }: {
@@ -5,14 +8,10 @@ export default function AppLayout({
 }) {
     return (
         <div>
-            <header>
-                <h1>Connex</h1>
-                <nav>
-                    <span>Home</span>
-                    <span>Profile</span>
-                </nav>
+            <header className={styles.header}>
+                <Navbar></Navbar>
             </header>
-            <main>{children}</main>
+            <main className={styles.main}>{children}</main>
         </div>
     );
 }

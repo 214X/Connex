@@ -20,7 +20,9 @@ export const initializeAuth = () => async (dispatch: AppDispatch) => {
         if (response.success && response.data) {
             dispatch(setAuthenticated({
                 id: String(response.data.id),
-                email: response.data.email
+                email: response.data.email,
+                userStatus: response.data.status,
+                accountType: response.data.accountType,
             }));
         } else {
             console.error("Token validation failed:", response.error);

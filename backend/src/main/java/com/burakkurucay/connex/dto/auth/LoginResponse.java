@@ -19,9 +19,7 @@ public class LoginResponse {
         return token;
     }
 
-    public String getTokenType() {
-        return tokenType;
-    }
+    public String getTokenType() { return tokenType; }
 
     public long getExpiresIn() {
         return expiresIn;

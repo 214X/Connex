@@ -26,6 +26,7 @@ export interface UserResponse {
     id: number;
     email: string;
     accountType: "PERSONAL" | "COMPANY";
+    status: "ONBOARDING" | "ACTIVE" | "INACTIVE" | "SUSPENDED";
     createdAt: string;
     updatedAt: string;
 }
@@ -72,6 +73,54 @@ export const getMe = async (): Promise<ApiResponse<UserResponse>> => {
     try {
         const res = await authClient.get<ApiResponse<UserResponse>>(
             "/api/users/me"
+        );
+        return res.data;
+    } catch (err) {
+        if (axios.isAxiosError(err)) {
+            throw err.response?.data as ApiResponse<never>;
+        }
+        throw err;
+    }
+};
+
+/* ---------- ONBOARDING ---------- */
+
+export interface PersonalOnboardingRequest {
+    firstName: string;
+    lastName: string;
+    description: string;
+}
+
+export interface CompanyOnboardingRequest {
+    name: string;
+    industry: string;
+    description: string;
+}
+
+export const completePersonalOnboarding = async (
+    data: PersonalOnboardingRequest
+): Promise<ApiResponse<any>> => {
+    try {
+        const res = await authClient.post<ApiResponse<any>>(
+            "/api/onboarding/complete/personal",
+            data
+        );
+        return res.data;
+    } catch (err) {
+        if (axios.isAxiosError(err)) {
+            throw err.response?.data as ApiResponse<never>;
+        }
+        throw err;
+    }
+};
+
+export const completeCompanyOnboarding = async (
+    data: CompanyOnboardingRequest
+): Promise<ApiResponse<any>> => {
+    try {
+        const res = await authClient.post<ApiResponse<any>>(
+            "/api/onboarding/complete/company",
+            data
         );
         return res.data;
     } catch (err) {

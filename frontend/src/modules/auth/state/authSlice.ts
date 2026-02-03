@@ -1,10 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type AuthStatus = "loading" | "authenticated" | "unauthenticated";
+export type UserStatus = "ONBOARDING" | "ACTIVE" | "INACTIVE" | "SUSPENDED";
 
 export interface AuthUser {
     id: string;
     email: string;
+    userStatus: UserStatus;
+    accountType: "PERSONAL" | "COMPANY" | null;
 }
 
 export interface AuthState {

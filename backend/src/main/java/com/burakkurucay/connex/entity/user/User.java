@@ -17,27 +17,29 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private boolean isActive;
+    private UserStatus status;
 
     @Enumerated(EnumType.STRING)
-    @Column(name="profile_type")
-    private AccountType profileType;
+    @Column(name = "profile_type")
+    private AccountType accountType;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @Column(name="updated_at", nullable = false)
+    @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
     // empty constructor for Hibernate
-    protected User() {}
+    protected User() {
+    }
 
-    public User(String email, String password, AccountType profileType, boolean isActive) {
+    public User(String email, String password, AccountType profileType, UserStatus status) {
         this.email = email;
         this.password = password;
-        this.profileType = profileType;
-        this.isActive = false;
+        this.accountType = profileType;
+        this.status = status;
     }
 
     // pre businesses
@@ -47,7 +49,8 @@ public class User {
         updatedAt = LocalDateTime.now();
     }
 
-    @PreUpdate void onUpdate() {
+    @PreUpdate
+    void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
 
@@ -64,13 +67,24 @@ public class User {
         return password;
     }
 
-    public AccountType getAccountType() { return profileType; }
+    public AccountType getAccountType() {
+        return accountType;
+    }
 
-    public boolean isActive() { return isActive; }
+    public UserStatus getStatus() {
+        return status;
+    }
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    // Setters
+    public void setStatus(UserStatus status) { this.status = status; }
+
+    public void setAccountType(AccountType accountType) { this.accountType = accountType; }
 }

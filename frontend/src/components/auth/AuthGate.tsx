@@ -6,6 +6,7 @@ import type { AppDispatch, RootState } from "@/store";
 import { initializeAuth } from "@/modules/auth/state/authThunks";
 import AuthScreen from "@/modules/auth/ui/AuthScreen";
 import AppLayout from "@/modules/app/ui/AppLayout";
+import OnboardingScreen from "@/modules/onboarding/ui/OnboardingScreen";
 
 export default function AuthGate({
     children,
@@ -13,25 +14,30 @@ export default function AuthGate({
     children: React.ReactNode;
 }) {
     const dispatch = useDispatch<AppDispatch>();
-    const authStatus = useSelector(
-        (state: RootState) => state.auth.status
+
+    const { status: authStatus, user } = useSelector(
+        (state: RootState) => state.auth
     );
 
-    // Initialize auth on mount
     useEffect(() => {
         dispatch(initializeAuth());
     }, [dispatch]);
 
-    // Loading state
+    // 1️⃣ Still loading auth state
     if (authStatus === "loading") {
-        return null;
+        return null; // or <SplashScreen />
     }
 
-    // Unauthenticated → show AuthScreen (login/register)
+    // 2️⃣ Not logged in
     if (authStatus === "unauthenticated") {
         return <AuthScreen />;
     }
 
-    // Authenticated → show app
+    // 3️⃣ Logged in BUT onboarding not completed
+    if (user && user.userStatus === "ONBOARDING") {
+        return <OnboardingScreen />;
+    }
+
+    // 4️⃣ Logged in and active
     return <AppLayout>{children}</AppLayout>;
 }

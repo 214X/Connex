@@ -2,7 +2,7 @@ package com.burakkurucay.connex.service;
 
 import com.burakkurucay.connex.dto.auth.LoginRequest;
 import com.burakkurucay.connex.dto.auth.LoginResponse;
-import com.burakkurucay.connex.dto.common.ApiResponse;
+
 import com.burakkurucay.connex.entity.user.User;
 import com.burakkurucay.connex.exception.user.UserNotFoundException;
 import com.burakkurucay.connex.repository.UserRepository;
@@ -42,6 +42,19 @@ public class AuthService {
             throw new BusinessException(
                     "Invalid credentials",
                     com.burakkurucay.connex.exception.codes.ErrorCode.AUTH_INVALID_CREDENTIALS);
+        }
+
+        // check user status
+        if (usr.getStatus() == com.burakkurucay.connex.entity.user.UserStatus.SUSPENDED) {
+            throw new BusinessException(
+                    "Account suspended",
+                    com.burakkurucay.connex.exception.codes.ErrorCode.AUTH_ACCOUNT_LOCKED);
+        }
+
+        if (usr.getStatus() == com.burakkurucay.connex.entity.user.UserStatus.INACTIVE) {
+            throw new BusinessException(
+                    "Account inactive",
+                    com.burakkurucay.connex.exception.codes.ErrorCode.AUTH_ACCOUNT_DISABLED);
         }
 
         // generate a new token

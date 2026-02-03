@@ -6,9 +6,10 @@ import com.burakkurucay.connex.entity.user.User;
 public class UserMapper {
     public static UserResponse toResponse(User user) {
         return new UserResponse(user.getId(),
-            user.getEmail(),
-            user.getAccountType(),
-            user.getCreatedAt(),
-            user.getUpdatedAt());
+                user.getEmail(),
+                user.getAccountType(),
+                user.getStatus(),
+                user.getCreatedAt(),
+                user.getUpdatedAt());
     }
 }

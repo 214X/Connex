@@ -14,8 +14,38 @@ export default function HomeScreen() {
 
     return (
         <div style={{ padding: "2rem" }}>
+            
             <h2>Welcome{user?.email ? `, ${user.email}` : ""}!</h2>
             <p>This is your home screen.</p>
+
+            <h2>Welcome{user?.email ? `, ${user.email}` : ""}!</h2>
+            <p>This is your home screen.</p>
+
+            <h2>Welcome{user?.email ? `, ${user.email}` : ""}!</h2>
+            <p>This is your home screen.</p>
+
+            <h2>Welcome{user?.email ? `, ${user.email}` : ""}!</h2>
+            <p>This is your home screen.</p>
+
+            <h2>Welcome{user?.email ? `, ${user.email}` : ""}!</h2>
+            <p>This is your home screen.</p>
+
+            <h2>Welcome{user?.email ? `, ${user.email}` : ""}!</h2>
+            <p>This is your home screen.</p>
+
+            <h2>Welcome{user?.email ? `, ${user.email}` : ""}!</h2>
+            <p>This is your home screen.</p>
+
+            <h2>Welcome{user?.email ? `, ${user.email}` : ""}!</h2>
+            <p>This is your home screen.</p>
+
+            <h2>Welcome{user?.email ? `, ${user.email}` : ""}!</h2>
+            <p>This is your home screen.</p>
+
+            <h2>Welcome{user?.email ? `, ${user.email}` : ""}!</h2>
+            <p>This is your home screen.</p>
+
+            
 
             <button
                 onClick={handleLogout}
