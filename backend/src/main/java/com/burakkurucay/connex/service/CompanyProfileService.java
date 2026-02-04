@@ -89,6 +89,23 @@ public class CompanyProfileService {
         return profile; // dirty checking
     }
 
+
+    public CompanyProfile getPublicCompanyProfileByUserId(Long userId) {
+
+        CompanyProfile profile = profileRepository.findByUserId(userId)
+            .orElseThrow(() -> new BusinessException(
+                "Company profile not found",
+                ErrorCode.PROFILE_NOT_FOUND));
+
+        if (profile.getUser().getStatus() != com.burakkurucay.connex.entity.user.UserStatus.ACTIVE) {
+            throw new BusinessException(
+                "Company account is not active",
+                ErrorCode.PROFILE_NOT_FOUND);
+        }
+
+        return profile;
+    }
+
     @jakarta.transaction.Transactional
     public CompanyProfile completeOnboarding(String name, String industry, String description) {
         User currentUser = userService.getCurrentUser();

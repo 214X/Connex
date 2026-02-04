@@ -6,7 +6,6 @@ import RegisterForm from "./RegisterForm";
 import styles from "./AuthStyles.module.css";
 import FooterCredit from "@/components/FooterCredit";
 
-
 type AuthMode = "login" | "register";
 
 export default function AuthScreen() {
@@ -17,29 +16,39 @@ export default function AuthScreen() {
             <div className={styles.mainCard}>
                 <div className={styles.welcomerCard}>
                     <div className={styles.welcomerTitle}>Connex</div>
-                    <div className={styles.welcomerDescription}>Connect your skills to the right opportunities</div>
+                    <div className={styles.welcomerDescription}>
+                        Connect your skills to the right opportunities
+                    </div>
                 </div>
+
                 <div className={styles.formCard}>
                     {mode === "login" ? (
                         <>
                             <LoginForm />
-                            <button className={styles.registerButton}
-                                onClick={() => setMode("register")}>
+                            <button
+                                className={styles.registerButton}
+                                onClick={() => setMode("register")}
+                            >
                                 Create new account
                             </button>
                         </>
                     ) : (
                         <>
-                            <RegisterForm />
-                            <button className={styles.registerButton}
-                                onClick={() => setMode("login")}>
+                            <RegisterForm
+                                onSuccess={() => setMode("login")}
+                            />
+                            <button
+                                className={styles.registerButton}
+                                onClick={() => setMode("login")}
+                            >
                                 Do you already have an account?
                             </button>
                         </>
                     )}
                 </div>
             </div>
-            <FooterCredit></FooterCredit>
+
+            <FooterCredit />
         </div>
     );
 }

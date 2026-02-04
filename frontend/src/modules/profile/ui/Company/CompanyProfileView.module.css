@@ -1,0 +1,24 @@
+/* ===== PAGE ===== */
+.pageContainer {
+    min-height: 100vh;
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+
+    padding-top: 4rem;
+}
+
+/* ===== CONTENT WRAPPER ===== */
+.midContainer {
+    /* Exact match for Navbar geometry */
+    min-width: 60%;
+
+    /* Navbar has 1rem side margins which affects total width behavior on shrink */
+    margin-left: 1rem;
+    margin-right: 1rem;
+
+    display: grid;
+    gap: 1rem;
+}

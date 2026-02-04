@@ -91,6 +91,22 @@ public class PersonalProfileService {
                         ErrorCode.PROFILE_NOT_FOUND));
     }
 
+    public PersonalProfile getPublicProfileByUserId(Long userId) {
+
+        PersonalProfile profile = profileRepository.findByUserId(userId)
+            .orElseThrow(() -> new BusinessException(
+                "Personal profile not found",
+                ErrorCode.PROFILE_NOT_FOUND));
+
+        if (profile.getUser().getStatus() != com.burakkurucay.connex.entity.user.UserStatus.ACTIVE) {
+            throw new BusinessException(
+                "Profile owner is not active",
+                ErrorCode.PROFILE_NOT_FOUND);
+        }
+
+        return profile;
+    }
+
     @Transactional
     public PersonalProfile completeOnboarding(String firstName, String lastName, String description) {
         User currentUser = userService.getCurrentUser();

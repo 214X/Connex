@@ -4,6 +4,7 @@ import com.burakkurucay.connex.security.JwtAuthenticationFilter;
 import com.burakkurucay.connex.exception.handler.SecurityExceptionHandlers;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -43,6 +44,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/health/**").permitAll()
+
+                        // 🔒 Private profile (must be BEFORE the wildcard rule)
+                        .requestMatchers("/api/profiles/me").authenticated()
+
+                        // 🔓 Public profile by userId
+                        .requestMatchers(HttpMethod.GET, "/api/profiles/*").permitAll()
+
                         .anyRequest().authenticated())
 
                 // JWT filter: Authorization: Bearer token kontrolü

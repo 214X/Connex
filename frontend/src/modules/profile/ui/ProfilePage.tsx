@@ -1,20 +1,26 @@
-import { ProfileHeader } from "./ProfileHeader";
+"use client";
+
+import { ProfileResponse } from "@/lib/api/profile/profile.api";
+import PersonalProfileView from "./Personal/PersonalProfileView";
+import CompanyProfileView from "./Company/CompanyProfileView";
 
 interface ProfilePageProps {
-    profile: {
-        id: string;
-        userId: string;
-        accountType: "PERSONAL" | "COMPANY";
-        name: string;
-        about?: string;
-    };
-    mode: "VIEW" | "EDIT";
+    profile: ProfileResponse;
 }
 
-export default function ProfilePage({ profile, mode }: ProfilePageProps) {
+export default function ProfilePage({ profile }: ProfilePageProps) {
+    if (profile.accountType === "PERSONAL" && profile.personal) {
+        return <PersonalProfileView personal={profile.personal} />;
+    }
+
+    if (profile.accountType === "COMPANY" && profile.company) {
+        return <CompanyProfileView company={profile.company} />;
+    }
+
+    // Defensive fallback (should never happen)
     return (
-        <div>
-        <ProfileHeader profile={profile} mode={mode} />
+        <div style={{ padding: "2rem" }}>
+            <p>Profile data is not available.</p>
         </div>
     );
 }

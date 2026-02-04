@@ -26,8 +26,8 @@ public class OnboardingController {
     private final UserService userService;
 
     public OnboardingController(PersonalProfileService personalProfileService,
-                                CompanyProfileService companyProfileService,
-                                UserService userService) {
+            CompanyProfileService companyProfileService,
+            UserService userService) {
         this.personalProfileService = personalProfileService;
         this.companyProfileService = companyProfileService;
         this.userService = userService;
@@ -48,7 +48,7 @@ public class OnboardingController {
     @PostMapping("/complete/company")
     @Transactional
     public ApiResponse<CompanyProfile> completeCompanyOnboarding(@Valid @RequestBody CompanyOnboardingRequest req) {
-        userService.completeUserOnboarding(AccountType.PERSONAL);
+        userService.completeUserOnboarding(AccountType.COMPANY);
 
         CompanyProfile profile = companyProfileService.completeOnboarding(
                 req.getName(),

@@ -6,6 +6,10 @@ import PersonalAccountForm from "./PersonalAccountForm";
 import CompanyAccountForm from "./CompanyAccountForm";
 import { completeCompanyOnboarding, completePersonalOnboarding } from "@/lib/api/auth/auth.api";
 
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "@/store";
+import { initializeAuth } from "@/modules/auth/state/authThunks";
+
 /* ===== TYPES ===== */
 
 type AccountType = "PERSONAL" | "COMPANY";
@@ -64,6 +68,8 @@ export default function OnboardingScreen() {
     };
 
     /* ===== SUBMISSION ===== */
+    const dispatch = useDispatch<AppDispatch>();
+
     const handleSubmit = async () => {
         if (!data) return;
         setLoading(true);
@@ -72,10 +78,10 @@ export default function OnboardingScreen() {
             if (data.accountType === "PERSONAL") {
                 await completePersonalOnboarding({
                     firstName: data.personal.firstName,
-                    lastName: data.personal.secondName, // Map secondName to lastName
+                    lastName: data.personal.secondName,
                     description: data.personal.description,
                 });
-            } else if (data.accountType === "COMPANY") {
+            } else {
                 await completeCompanyOnboarding({
                     name: data.company.name,
                     industry: data.company.industry,
@@ -83,10 +89,8 @@ export default function OnboardingScreen() {
                 });
             }
 
-            // Redirect to dashboard or home on success
+            await dispatch(initializeAuth());
             router.replace("/");
-            // Force a hard refresh to update auth state if needed, or rely on context update
-            router.refresh();
 
         } catch (error) {
             console.error("Onboarding failed:", error);

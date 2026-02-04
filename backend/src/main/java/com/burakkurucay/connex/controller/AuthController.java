@@ -21,9 +21,8 @@ public class AuthController {
     private final AuthService authService;
 
     public AuthController(
-        UserService userService,
-        AuthService authService
-    ) {
+            UserService userService,
+            AuthService authService) {
         this.userService = userService;
         this.authService = authService;
     }
@@ -41,8 +40,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ApiResponse<LoginResponse> login(
-        @Valid @RequestBody LoginRequest req
-    ) {
+            @Valid @RequestBody LoginRequest req) {
         return ApiResponse.success(authService.login(req));
     }
 }

@@ -1,0 +1,158 @@
+/* Container */
+.headerContainer {
+    width: 100%;
+    background-color: var(--white-bg);
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Cover Image Area */
+.coverArea {
+    width: 100%;
+    height: 180px;
+    background: linear-gradient(135deg, var(--purple-primary) 0%, var(--purple-dark-1) 100%);
+    position: relative;
+}
+
+/* Main Content Area */
+.contentArea {
+    padding: 1.5rem 2rem 2rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Center horizontally */
+    justify-content: center;
+    text-align: center;
+    margin-top: -100px;
+    /* Pull content up to overlap cover with avatar (half of 200px) */
+}
+
+/* Profile Picture Wrapper */
+.avatarWrapper {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 6px solid var(--white-bg);
+    /* Slightly thicker border */
+    background-color: var(--white-bg);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    z-index: 10;
+    /* Ensure on top */
+    margin-bottom: 1.5rem;
+}
+
+.avatarImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatarPlaceholder {
+    width: 100%;
+    height: 100%;
+    background-color: var(--purple-soft);
+    color: var(--purple-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4.5rem;
+    /* Larger placeholder text */
+    font-weight: 700;
+}
+
+/* Profile Info (Name, etc) */
+.profileInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    max-width: 600px;
+}
+
+.name {
+    font-family: var(--font-sans);
+    font-size: 2rem;
+    /* Larger name */
+    font-weight: 700;
+    color: var(--black-primary-text);
+    line-height: 1.2;
+    margin: 0;
+}
+
+.headline {
+    font-size: 1.1rem;
+    color: var(--black-secondary-text);
+    font-weight: 400;
+    max-width: 80%;
+    margin: 0;
+}
+
+.contactInfo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 0.75rem;
+    color: var(--black-secondary-text);
+    font-size: 0.95rem;
+    flex-wrap: wrap;
+}
+
+.contactItem {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+/* =========================================
+   RESPONSIVE ADJUSTMENTS (Mobile Coherence)
+   ========================================= */
+
+@media (max-width: 768px) {
+
+    /* Reduce cover height slightly */
+    .coverArea {
+        height: 140px;
+    }
+
+    /* Reduce avatar size */
+    .avatarWrapper {
+        width: 150px;
+        height: 150px;
+        border-width: 5px;
+        margin-bottom: 1rem;
+    }
+
+    .avatarPlaceholder {
+        font-size: 3rem;
+    }
+
+    /* Adjust content overlap and padding */
+    .contentArea {
+        margin-top: -75px;
+        /* Half of new avatar size */
+        padding: 1rem 1.5rem 2rem;
+    }
+
+    /* Smaller typography */
+    .name {
+        font-size: 1.5rem;
+    }
+
+    .headline {
+        font-size: 1rem;
+        max-width: 100%;
+        /* Use full width on mobile */
+    }
+}

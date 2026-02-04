@@ -27,10 +27,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(
-        HttpServletRequest request,
-        HttpServletResponse response,
-        FilterChain filterChain
-    ) throws ServletException, IOException {
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain) throws ServletException, IOException {
 
         String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
@@ -44,17 +43,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // if it is already authenticated do not set again
         if (SecurityContextHolder.getContext().getAuthentication() == null
-            && jwtService.isTokenValid(token)) {
+                && jwtService.isTokenValid(token)) {
 
             Long userId = jwtService.extractUserId(token);
 
             // MVP: principal = userId
-            UsernamePasswordAuthenticationToken authentication =
-                new UsernamePasswordAuthenticationToken(
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                     userId,
                     null,
                     Collections.emptyList() // TODO: there is not role for now
-                );
+            );
 
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -65,6 +63,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 }
 
 /*
-* Her HTTP request’te, Authorization header’ındaki JWT’yi doğrular ve
-* geçerliyse Spring’e ‘bu request şu kullanıcıya aittir’ der.
-* */
+ * Her HTTP request’te, Authorization header’ındaki JWT’yi doğrular ve
+ * geçerliyse Spring’e ‘bu request şu kullanıcıya aittir’ der.
+ */

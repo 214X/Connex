@@ -28,7 +28,7 @@ export default function Navbar() {
 
     const handleMyProfile = () => {
         if (!user) return;
-        router.push(`/profile/${user.id}`);
+        router.push(`/profiles/me`);
         setOpen(false);
     };
 
