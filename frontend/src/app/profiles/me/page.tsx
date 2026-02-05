@@ -27,5 +27,5 @@ export default function MyProfilePage() {
 
     if (!profile) return null; // ya da loader
 
-    return <ProfilePage profile={profile} />;
+    return <ProfilePage profile={profile} isOwner={true} />;
 }

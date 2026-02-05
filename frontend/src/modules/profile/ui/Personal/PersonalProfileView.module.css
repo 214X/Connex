@@ -12,15 +12,12 @@
 
 /* ===== CONTENT WRAPPER ===== */
 .midContainer {
-    /* Exact match for Navbar geometry */
-    min-width: 60%;
-
-    /* Navbar has 1rem side margins which affects total width behavior on shrink */
-    margin-left: 1rem;
-    margin-right: 1rem;
-
-    display: grid;
-    gap: 1rem;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 }
 
 /* ===== NAME HEADER ===== */

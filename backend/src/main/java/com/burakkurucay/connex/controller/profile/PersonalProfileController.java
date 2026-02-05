@@ -1,9 +1,12 @@
 package com.burakkurucay.connex.controller.profile;
 
+import com.burakkurucay.connex.dto.common.ApiResponse;
+import com.burakkurucay.connex.dto.profile.personal.PersonalProfileEditRequest;
 import com.burakkurucay.connex.dto.profile.personal.PersonalProfileRequest;
 import com.burakkurucay.connex.dto.profile.personal.PersonalProfileResponse;
-import com.burakkurucay.connex.entity.profile.PersonalProfile;
-import com.burakkurucay.connex.service.PersonalProfileService;
+import com.burakkurucay.connex.entity.profile.personal.PersonalProfile;
+import com.burakkurucay.connex.service.profile.personal.PersonalProfileService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -11,9 +14,13 @@ import org.springframework.web.bind.annotation.*;
 public class PersonalProfileController {
 
     private final PersonalProfileService profileService;
+    private final com.burakkurucay.connex.service.profile.personal.PersonalProfileContactService contactService;
 
-    public PersonalProfileController(PersonalProfileService profileService) {
+    public PersonalProfileController(
+            PersonalProfileService profileService,
+            com.burakkurucay.connex.service.profile.personal.PersonalProfileContactService contactService) {
         this.profileService = profileService;
+        this.contactService = contactService;
     }
 
     /**
@@ -22,7 +29,7 @@ public class PersonalProfileController {
     @PostMapping("/me")
     public PersonalProfileResponse createMyProfile() {
         PersonalProfile profile = profileService.createMyProfile();
-        return PersonalProfileResponse.from(profile);
+        return PersonalProfileResponse.from(profile, java.util.Collections.emptyList());
     }
 
     /**
@@ -30,28 +37,35 @@ public class PersonalProfileController {
      */
     @GetMapping("/me")
     public PersonalProfileResponse getMyProfile() {
+        PersonalProfile profile = profileService.getMyProfile();
         return PersonalProfileResponse.from(
-            profileService.getMyProfile()
-        );
+                profile,
+                contactService.getMyContacts());
     }
-
 
     /**
      * Update current user's personal profile
      */
     @PutMapping("/me")
     public PersonalProfileResponse updateMyProfile(
-        @RequestBody PersonalProfileRequest request
-    ) {
+            @RequestBody PersonalProfileRequest request) {
         PersonalProfile updated = profileService.updateMyProfile(
-            request.getFirstName(),
-            request.getLastName(),
-            request.getProfileDescription(),
-            request.getPhoneNumber(),
-            request.getLocation()
-        );
+                request.getFirstName(),
+                request.getLastName(),
+                request.getProfileDescription(),
+                request.getPhoneNumber(),
+                request.getLocation());
 
-        return PersonalProfileResponse.from(updated);
+        return PersonalProfileResponse.from(
+                updated,
+                contactService.getMyContacts());
+    }
+
+    @PatchMapping("/me")
+    public ApiResponse<Void> updateMyProfile(
+            @Valid @RequestBody PersonalProfileEditRequest request) {
+        profileService.updateMyProfile(request);
+        return ApiResponse.success(null);
     }
 
     /**
@@ -59,10 +73,10 @@ public class PersonalProfileController {
      */
     @GetMapping("/{profileId}")
     public PersonalProfileResponse getPublicProfile(
-        @PathVariable Long profileId
-    ) {
+            @PathVariable Long profileId) {
+        PersonalProfile profile = profileService.getPublicProfile(profileId);
         return PersonalProfileResponse.from(
-            profileService.getPublicProfile(profileId)
-        );
+                profile,
+                contactService.getContactsByProfile(profile));
     }
 }

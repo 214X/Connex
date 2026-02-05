@@ -1,13 +1,12 @@
-package com.burakkurucay.connex.service;
+package com.burakkurucay.connex.service.profile.company;
 
-import com.burakkurucay.connex.entity.profile.CompanyProfile;
+import com.burakkurucay.connex.entity.profile.company.CompanyProfile;
 import com.burakkurucay.connex.entity.user.AccountType;
 import com.burakkurucay.connex.entity.user.User;
 import com.burakkurucay.connex.exception.codes.ErrorCode;
 import com.burakkurucay.connex.exception.common.BusinessException;
-import com.burakkurucay.connex.repository.CompanyProfileRepository;
-import com.burakkurucay.connex.service.CompanyProfileService;
-import com.burakkurucay.connex.service.CompanyProfileService;
+import com.burakkurucay.connex.repository.profile.company.CompanyProfileRepository;
+import com.burakkurucay.connex.service.UserService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 

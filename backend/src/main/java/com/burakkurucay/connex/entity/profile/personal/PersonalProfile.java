@@ -1,4 +1,4 @@
-package com.burakkurucay.connex.entity.profile;
+package com.burakkurucay.connex.entity.profile.personal;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;

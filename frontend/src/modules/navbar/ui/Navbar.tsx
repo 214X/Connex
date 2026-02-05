@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import styles from "./NavbarStyles.module.css";
+import { FiUser, FiLogOut, FiChevronDown } from "react-icons/fi";
 
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState, AppDispatch } from "@/store";
@@ -32,6 +33,8 @@ export default function Navbar() {
         setOpen(false);
     };
 
+
+
     return (
         <div className={styles.navbarContainer}>
             <div className={styles.navbarFrame}>
@@ -47,7 +50,9 @@ export default function Navbar() {
                             className={styles.meButton}
                             onClick={() => setOpen(prev => !prev)}
                         >
+                            <FiUser size={20} color="var(--color-primary)" />
                             <div className={styles.meButtonText}>Me</div>
+                            <FiChevronDown size={16} color="var(--color-text-secondary)" />
                         </button>
 
                         {open && (
@@ -56,6 +61,7 @@ export default function Navbar() {
                                     className={styles.dropdownItem}
                                     onClick={handleMyProfile}
                                 >
+                                    <FiUser size={16} style={{ marginRight: "8px" }} />
                                     My Profile
                                 </button>
 
@@ -63,6 +69,7 @@ export default function Navbar() {
                                     className={styles.dropdownItem}
                                     onClick={handleLogout}
                                 >
+                                    <FiLogOut size={16} style={{ marginRight: "8px" }} />
                                     Sign out
                                 </button>
                             </div>

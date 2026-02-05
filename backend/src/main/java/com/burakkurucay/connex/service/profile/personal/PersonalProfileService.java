@@ -1,11 +1,13 @@
-package com.burakkurucay.connex.service;
+package com.burakkurucay.connex.service.profile.personal;
 
-import com.burakkurucay.connex.entity.profile.PersonalProfile;
+import com.burakkurucay.connex.dto.profile.personal.PersonalProfileEditRequest;
+import com.burakkurucay.connex.entity.profile.personal.PersonalProfile;
 import com.burakkurucay.connex.entity.user.AccountType;
 import com.burakkurucay.connex.entity.user.User;
 import com.burakkurucay.connex.exception.codes.ErrorCode;
 import com.burakkurucay.connex.exception.common.BusinessException;
-import com.burakkurucay.connex.repository.PersonalProfileRepository;
+import com.burakkurucay.connex.repository.profile.personal.PersonalProfileRepository;
+import com.burakkurucay.connex.service.UserService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -58,6 +60,34 @@ public class PersonalProfileService {
         return profile;
     }
 
+    @Transactional
+    public PersonalProfile updateMyProfile(PersonalProfileEditRequest request) {
+
+        PersonalProfile profile = getMyProfile();
+
+        if (request.getFirstName() != null) {
+            profile.setFirstName(request.getFirstName());
+        }
+        if (request.getLastName() != null) {
+            profile.setLastName(request.getLastName());
+        }
+
+        if (request.getProfileDescription() != null) {
+            profile.setProfileDescription(request.getProfileDescription());
+        }
+
+        if (request.getPhoneNumber() != null) {
+            profile.setPhoneNumber(request.getPhoneNumber());
+        }
+
+        if (request.getLocation() != null) {
+            profile.setLocation(request.getLocation());
+        }
+
+        return profile;
+    }
+
+    @Transactional
     public PersonalProfile updateMyProfile(
             String firstName,
             String lastName,
@@ -65,12 +95,7 @@ public class PersonalProfileService {
             String phoneNumber,
             String location) {
 
-        User currentUser = userService.getCurrentUser();
-
-        PersonalProfile profile = profileRepository.findByUserId(currentUser.getId())
-                .orElseThrow(() -> new BusinessException(
-                        "Personal profile not found",
-                        ErrorCode.PROFILE_NOT_FOUND));
+        PersonalProfile profile = getMyProfile();
 
         profile.setFirstName(firstName);
         profile.setLastName(lastName);
@@ -78,7 +103,7 @@ public class PersonalProfileService {
         profile.setPhoneNumber(phoneNumber);
         profile.setLocation(location);
 
-        return profile; // dirty checking
+        return profile;
     }
 
     public PersonalProfile getMyProfile() {
@@ -94,14 +119,14 @@ public class PersonalProfileService {
     public PersonalProfile getPublicProfileByUserId(Long userId) {
 
         PersonalProfile profile = profileRepository.findByUserId(userId)
-            .orElseThrow(() -> new BusinessException(
-                "Personal profile not found",
-                ErrorCode.PROFILE_NOT_FOUND));
+                .orElseThrow(() -> new BusinessException(
+                        "Personal profile not found",
+                        ErrorCode.PROFILE_NOT_FOUND));
 
         if (profile.getUser().getStatus() != com.burakkurucay.connex.entity.user.UserStatus.ACTIVE) {
             throw new BusinessException(
-                "Profile owner is not active",
-                ErrorCode.PROFILE_NOT_FOUND);
+                    "Profile owner is not active",
+                    ErrorCode.PROFILE_NOT_FOUND);
         }
 
         return profile;

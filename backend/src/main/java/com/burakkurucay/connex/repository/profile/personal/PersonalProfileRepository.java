@@ -1,6 +1,6 @@
-package com.burakkurucay.connex.repository;
+package com.burakkurucay.connex.repository.profile.personal;
 
-import com.burakkurucay.connex.entity.profile.PersonalProfile;
+import com.burakkurucay.connex.entity.profile.personal.PersonalProfile;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 

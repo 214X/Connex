@@ -24,5 +24,8 @@ public enum ErrorCode {
 
     // profile
     PROFILE_ALREADY_EXISTS,
-    PROFILE_NOT_FOUND
+    PROFILE_NOT_FOUND,
+
+    // pp contact
+    PROFILE_CONTACT_NOT_FOUND,
 }

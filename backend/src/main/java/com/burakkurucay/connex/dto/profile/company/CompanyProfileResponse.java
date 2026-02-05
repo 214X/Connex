@@ -1,6 +1,6 @@
 package com.burakkurucay.connex.dto.profile.company;
 
-import com.burakkurucay.connex.entity.profile.CompanyProfile;
+import com.burakkurucay.connex.entity.profile.company.CompanyProfile;
 
 public class CompanyProfileResponse {
 

@@ -2,8 +2,8 @@ package com.burakkurucay.connex.controller.profile;
 
 import com.burakkurucay.connex.dto.profile.company.CompanyProfileRequest;
 import com.burakkurucay.connex.dto.profile.company.CompanyProfileResponse;
-import com.burakkurucay.connex.entity.profile.CompanyProfile;
-import com.burakkurucay.connex.service.CompanyProfileService;
+import com.burakkurucay.connex.entity.profile.company.CompanyProfile;
+import com.burakkurucay.connex.service.profile.company.CompanyProfileService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 

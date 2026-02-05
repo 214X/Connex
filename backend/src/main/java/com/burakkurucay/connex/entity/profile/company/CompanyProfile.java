@@ -1,4 +1,4 @@
-package com.burakkurucay.connex.entity.profile;
+package com.burakkurucay.connex.entity.profile.company;
 
 import com.burakkurucay.connex.entity.user.User;
 import jakarta.persistence.*;

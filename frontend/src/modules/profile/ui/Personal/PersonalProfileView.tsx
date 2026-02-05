@@ -1,34 +1,56 @@
 "use client";
 
+import { useState, useCallback } from "react";
 import styles from "./PersonalProfileView.module.css";
-import { PersonalProfileData } from "@/lib/api/profile/profile.api";
+import { PersonalProfileData, getMyProfile } from "@/lib/api/profile/profile.api";
 
 import PersonalProfileHeader from "./components/PersonalProfileHeader";
+import ContactList from "./components/ContactList";
 
 interface PersonalProfileViewProps {
     personal: PersonalProfileData;
+    isOwner?: boolean;
 }
 
 export default function PersonalProfileView({
-    personal,
+    personal: initialPersonal,
+    isOwner = false,
 }: PersonalProfileViewProps) {
-    const {
-        firstName,
-        lastName,
-        profileDescription,
-        phoneNumber,
-        location,
-    } = personal;
+    const [personal, setPersonal] = useState<PersonalProfileData>(initialPersonal);
+
+    // Function to refresh profile data after edits
+    const refreshProfile = useCallback(async () => {
+        try {
+            // Re-fetch profile data. 
+            // Note: If this is a public view, we'd need userId. 
+            // If it's the "me" view, getMyProfile works.
+            // Since we don't have userId easily here for public view, we assume getMyProfile for owner.
+            // For public view updates (if they ever happen?), we'd need a different strategy.
+            if (isOwner) {
+                const res = await getMyProfile();
+                // Check if success and data exists
+                if (res.success && res.data && res.data.personal) {
+                    setPersonal(res.data.personal);
+                }
+            }
+        } catch (err) {
+            console.error("Failed to refresh profile", err);
+        }
+    }, [isOwner]);
 
     return (
         <div className={styles.pageContainer}>
             <div className={styles.midContainer}>
                 <PersonalProfileHeader
-                    firstName={firstName}
-                    lastName={lastName}
-                    headline={profileDescription ?? undefined}
-                    location={location ?? undefined}
-                    phoneNumber={phoneNumber ?? undefined}
+                    profile={personal}
+                    isOwner={isOwner}
+                    onProfileUpdate={refreshProfile}
+                />
+
+                <ContactList
+                    contacts={personal.contacts || []}
+                    isOwner={isOwner}
+                    onContactsChange={refreshProfile}
                 />
             </div>
         </div>

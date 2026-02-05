@@ -6,11 +6,12 @@ import CompanyProfileView from "./Company/CompanyProfileView";
 
 interface ProfilePageProps {
     profile: ProfileResponse;
+    isOwner?: boolean;
 }
 
-export default function ProfilePage({ profile }: ProfilePageProps) {
+export default function ProfilePage({ profile, isOwner = false }: ProfilePageProps) {
     if (profile.accountType === "PERSONAL" && profile.personal) {
-        return <PersonalProfileView personal={profile.personal} />;
+        return <PersonalProfileView personal={profile.personal} isOwner={isOwner} />;
     }
 
     if (profile.accountType === "COMPANY" && profile.company) {
