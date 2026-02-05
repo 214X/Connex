@@ -31,4 +31,7 @@ public enum ErrorCode {
 
     // pp education
     PROFILE_EDUCATION_NOT_FOUND,
+
+    // pp experience
+    PROFILE_EXPERIENCE_NOT_FOUND,
 }

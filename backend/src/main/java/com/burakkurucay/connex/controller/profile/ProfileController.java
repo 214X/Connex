@@ -20,14 +20,17 @@ public class ProfileController {
     private final ProfileQueryService profileQueryService;
     private final PersonalProfileContactService contactService;
     private final com.burakkurucay.connex.service.profile.personal.PersonalProfileEducationService educationService;
+    private final com.burakkurucay.connex.service.profile.personal.PersonalProfileExperienceService experienceService;
 
     public ProfileController(
             ProfileQueryService profileQueryService,
             PersonalProfileContactService contactService,
-            com.burakkurucay.connex.service.profile.personal.PersonalProfileEducationService educationService) {
+            com.burakkurucay.connex.service.profile.personal.PersonalProfileEducationService educationService,
+            com.burakkurucay.connex.service.profile.personal.PersonalProfileExperienceService experienceService) {
         this.profileQueryService = profileQueryService;
         this.contactService = contactService;
         this.educationService = educationService;
+        this.experienceService = experienceService;
     }
 
     /*
@@ -156,6 +159,57 @@ public class ProfileController {
     public ApiResponse<Void> deleteEducation(
             @PathVariable Long educationId) {
         educationService.deleteEducation(educationId);
+        return ApiResponse.success(null);
+    }
+    /*
+     * =======================
+     * Experience (sub-resource)
+     * =======================
+     */
+
+    /**
+     * Get my experiences
+     */
+    @GetMapping("/me/experiences")
+    public ApiResponse<List<com.burakkurucay.connex.dto.profile.personal.experience.ExperienceResponse>> getMyExperiences() {
+        List<com.burakkurucay.connex.entity.profile.personal.experience.PersonalProfileExperience> experiences = experienceService
+                .getMyExperiences();
+
+        List<com.burakkurucay.connex.dto.profile.personal.experience.ExperienceResponse> response = experiences.stream()
+                .map(com.burakkurucay.connex.dto.profile.personal.experience.ExperienceResponse::from)
+                .toList();
+
+        return ApiResponse.success(response);
+    }
+
+    /**
+     * Add new experience
+     */
+    @PostMapping("/me/experiences")
+    public ApiResponse<Void> addExperience(
+            @Valid @RequestBody com.burakkurucay.connex.dto.profile.personal.experience.CreatePersonalExperienceRequest request) {
+        experienceService.addExperience(request);
+        return ApiResponse.success(null);
+    }
+
+    /**
+     * Edit existing experience
+     */
+    @PatchMapping("/me/experiences/{experienceId}")
+    public ApiResponse<Void> updateExperience(
+            @PathVariable Long experienceId,
+            @RequestBody com.burakkurucay.connex.dto.profile.personal.experience.EditPersonalExperienceRequest request) {
+        experienceService.updateExperience(experienceId, request);
+        return ApiResponse.success(null);
+    }
+
+    /**
+     * Delete experience
+     */
+    @DeleteMapping("/me/experiences/{experienceId}")
+    public ApiResponse<Void> deleteExperience(
+            @PathVariable Long experienceId) {
+        experienceService.deleteExperience(experienceId);
         return ApiResponse.success(null);
     }
 }

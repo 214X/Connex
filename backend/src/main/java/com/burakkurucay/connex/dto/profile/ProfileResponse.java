@@ -1,11 +1,13 @@
 package com.burakkurucay.connex.dto.profile;
 
 import com.burakkurucay.connex.dto.profile.personal.education.EducationResponse;
+import com.burakkurucay.connex.dto.profile.personal.experience.ExperienceResponse;
 import com.burakkurucay.connex.entity.profile.company.CompanyProfile;
 import com.burakkurucay.connex.entity.profile.personal.PersonalProfile;
 import com.burakkurucay.connex.entity.profile.personal.contact.PersonalProfileContact;
 import com.burakkurucay.connex.entity.profile.personal.contact.ContactType;
 import com.burakkurucay.connex.entity.profile.personal.education.PersonalProfileEducation;
+import com.burakkurucay.connex.entity.profile.personal.experience.PersonalProfileExperience;
 import com.burakkurucay.connex.entity.user.AccountType;
 
 import java.time.LocalDateTime;
@@ -29,12 +31,13 @@ public class ProfileResponse {
     public static ProfileResponse fromPersonal(
             PersonalProfile profile,
             List<PersonalProfileContact> contacts,
-            List<PersonalProfileEducation> educations) {
+            List<PersonalProfileEducation> educations,
+            List<PersonalProfileExperience> experiences) {
         ProfileResponse dto = new ProfileResponse();
         dto.id = profile.getId();
         dto.userId = profile.getUser().getId();
         dto.accountType = AccountType.PERSONAL;
-        dto.personal = Personal.from(profile, contacts, educations);
+        dto.personal = Personal.from(profile, contacts, educations, experiences);
         return dto;
     }
 
@@ -63,6 +66,7 @@ public class ProfileResponse {
 
         private List<Contact> contacts;
         private List<EducationResponse> educations;
+        private List<ExperienceResponse> experiences;
 
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
@@ -70,7 +74,8 @@ public class ProfileResponse {
         private static Personal from(
                 PersonalProfile profile,
                 List<PersonalProfileContact> contacts,
-                List<PersonalProfileEducation> educations) {
+                List<PersonalProfileEducation> educations,
+                List<PersonalProfileExperience> experiences) {
             Personal dto = new Personal();
             dto.firstName = profile.getFirstName();
             dto.lastName = profile.getLastName();
@@ -84,6 +89,9 @@ public class ProfileResponse {
                     .toList();
             dto.educations = educations.stream()
                     .map(EducationResponse::from)
+                    .toList();
+            dto.experiences = experiences.stream()
+                    .map(ExperienceResponse::from)
                     .toList();
             return dto;
         }
@@ -114,6 +122,10 @@ public class ProfileResponse {
 
         public List<EducationResponse> getEducations() {
             return educations;
+        }
+
+        public List<ExperienceResponse> getExperiences() {
+            return experiences;
         }
 
         public LocalDateTime getCreatedAt() {

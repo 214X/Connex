@@ -24,6 +24,7 @@ export interface PersonalProfileData {
     location?: string | null;
     contacts?: PersonalProfileContact[];
     educations?: PersonalProfileEducation[];
+    experiences?: PersonalProfileExperience[];
     createdAt: string;
     updatedAt: string;
 }
@@ -227,6 +228,78 @@ export const deleteEducation = async (
 ): Promise<void> => {
     try {
         await authClient.delete(`/api/profiles/me/educations/${educationId}`);
+    } catch (err) {
+        if (axios.isAxiosError(err)) {
+            throw err.response?.data ?? err;
+        }
+        throw err;
+    }
+};
+
+/* ---------- EXPERIENCE ---------- */
+
+export interface PersonalProfileExperience {
+    id: number;
+    title: string;
+    organization: string;
+    startDate?: string | null;
+    endDate?: string | null;
+    description?: string | null;
+}
+
+export interface CreatePersonalExperienceRequest {
+    title: string;
+    organization: string;
+    startDate?: string;
+    endDate?: string;
+    description?: string;
+}
+
+export interface EditPersonalExperienceRequest {
+    title?: string;
+    organization?: string;
+    startDate?: string;
+    endDate?: string;
+    description?: string;
+}
+
+export const addExperience = async (
+    data: CreatePersonalExperienceRequest
+): Promise<ApiResponse<void>> => {
+    try {
+        const res = await authClient.post<ApiResponse<void>>("/api/profiles/me/experiences", data);
+        return res.data;
+    } catch (err) {
+        if (axios.isAxiosError(err)) {
+            throw err.response?.data ?? err;
+        }
+        throw err;
+    }
+};
+
+export const updateExperience = async (
+    experienceId: number,
+    data: EditPersonalExperienceRequest
+): Promise<ApiResponse<void>> => {
+    try {
+        const res = await authClient.patch<ApiResponse<void>>(
+            `/api/profiles/me/experiences/${experienceId}`,
+            data
+        );
+        return res.data;
+    } catch (err) {
+        if (axios.isAxiosError(err)) {
+            throw err.response?.data ?? err;
+        }
+        throw err;
+    }
+};
+
+export const deleteExperience = async (
+    experienceId: number
+): Promise<void> => {
+    try {
+        await authClient.delete(`/api/profiles/me/experiences/${experienceId}`);
     } catch (err) {
         if (axios.isAxiosError(err)) {
             throw err.response?.data ?? err;

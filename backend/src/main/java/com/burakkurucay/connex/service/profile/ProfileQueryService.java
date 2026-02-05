@@ -5,6 +5,7 @@ import com.burakkurucay.connex.entity.profile.company.CompanyProfile;
 import com.burakkurucay.connex.entity.profile.personal.PersonalProfile;
 import com.burakkurucay.connex.entity.profile.personal.contact.PersonalProfileContact;
 import com.burakkurucay.connex.entity.profile.personal.education.PersonalProfileEducation;
+import com.burakkurucay.connex.entity.profile.personal.experience.PersonalProfileExperience;
 import com.burakkurucay.connex.entity.user.AccountType;
 import com.burakkurucay.connex.entity.user.User;
 import com.burakkurucay.connex.entity.user.UserStatus;
@@ -14,6 +15,7 @@ import com.burakkurucay.connex.service.UserService;
 import com.burakkurucay.connex.service.profile.company.CompanyProfileService;
 import com.burakkurucay.connex.service.profile.personal.PersonalProfileContactService;
 import com.burakkurucay.connex.service.profile.personal.PersonalProfileEducationService;
+import com.burakkurucay.connex.service.profile.personal.PersonalProfileExperienceService;
 import com.burakkurucay.connex.service.profile.personal.PersonalProfileService;
 import org.springframework.stereotype.Service;
 
@@ -27,18 +29,21 @@ public class ProfileQueryService {
     private final CompanyProfileService companyProfileService;
     private final PersonalProfileContactService contactService;
     private final PersonalProfileEducationService educationService;
+    private final PersonalProfileExperienceService experienceService;
 
     public ProfileQueryService(
             UserService userService,
             PersonalProfileService personalProfileService,
             CompanyProfileService companyProfileService,
             PersonalProfileContactService contactService,
-            PersonalProfileEducationService educationService) {
+            PersonalProfileEducationService educationService,
+            PersonalProfileExperienceService experienceService) {
         this.userService = userService;
         this.personalProfileService = personalProfileService;
         this.companyProfileService = companyProfileService;
         this.contactService = contactService;
         this.educationService = educationService;
+        this.experienceService = experienceService;
     }
 
     /*
@@ -55,8 +60,9 @@ public class ProfileQueryService {
             PersonalProfile profile = personalProfileService.getMyProfile();
             List<PersonalProfileContact> contacts = contactService.getContactsByProfile(profile);
             List<PersonalProfileEducation> educations = educationService.getEducationsByProfile(profile);
+            List<PersonalProfileExperience> experiences = experienceService.getExperiencesByProfile(profile);
 
-            return ProfileResponse.fromPersonal(profile, contacts, educations);
+            return ProfileResponse.fromPersonal(profile, contacts, educations, experiences);
         }
 
         if (currentUser.getAccountType() == AccountType.COMPANY) {
@@ -91,8 +97,9 @@ public class ProfileQueryService {
 
             List<PersonalProfileContact> contacts = contactService.getContactsByProfile(profile);
             List<PersonalProfileEducation> educations = educationService.getEducationsByProfile(profile);
+            List<PersonalProfileExperience> experiences = experienceService.getExperiencesByProfile(profile);
 
-            return ProfileResponse.fromPersonal(profile, contacts, educations);
+            return ProfileResponse.fromPersonal(profile, contacts, educations, experiences);
         }
 
         if (user.getAccountType() == AccountType.COMPANY) {
