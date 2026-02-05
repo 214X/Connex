@@ -9,6 +9,7 @@ import ContactList from "./components/ContactList";
 import EducationList from "./components/EducationList";
 import ExperienceList from "./components/ExperienceList";
 import SkillList from "./components/SkillList";
+import LanguageList from "./components/LanguageList";
 
 interface PersonalProfileViewProps {
     personal: PersonalProfileData;
@@ -72,6 +73,12 @@ export default function PersonalProfileView({
                     skills={personal.skills || []}
                     isOwner={isOwner}
                     onSkillsChange={refreshProfile}
+                />
+
+                <LanguageList
+                    languages={personal.languages || []}
+                    isOwner={isOwner}
+                    onLanguagesChange={refreshProfile}
                 />
             </div>
         </div>

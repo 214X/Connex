@@ -4,9 +4,14 @@ import com.burakkurucay.connex.dto.common.ApiResponse;
 import com.burakkurucay.connex.dto.profile.ProfileResponse;
 import com.burakkurucay.connex.dto.profile.personal.contact.CreatePersonalContactRequest;
 import com.burakkurucay.connex.dto.profile.personal.contact.EditPersonalContactRequest;
+import com.burakkurucay.connex.dto.profile.personal.language.CreatePersonalLanguageRequest;
+import com.burakkurucay.connex.dto.profile.personal.language.EditPersonalLanguageRequest;
+import com.burakkurucay.connex.dto.profile.personal.language.LanguageResponse;
 import com.burakkurucay.connex.entity.profile.personal.contact.PersonalProfileContact;
+import com.burakkurucay.connex.entity.profile.personal.language.PersonalProfileLanguage;
 import com.burakkurucay.connex.service.profile.ProfileQueryService;
 import com.burakkurucay.connex.service.profile.personal.PersonalProfileContactService;
+import com.burakkurucay.connex.service.profile.personal.PersonalProfileLanguageService;
 
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
@@ -22,18 +27,21 @@ public class ProfileController {
     private final com.burakkurucay.connex.service.profile.personal.PersonalProfileEducationService educationService;
     private final com.burakkurucay.connex.service.profile.personal.PersonalProfileExperienceService experienceService;
     private final com.burakkurucay.connex.service.profile.personal.PersonalProfileSkillService skillService;
+    private final PersonalProfileLanguageService languageService;
 
     public ProfileController(
             ProfileQueryService profileQueryService,
             PersonalProfileContactService contactService,
             com.burakkurucay.connex.service.profile.personal.PersonalProfileEducationService educationService,
             com.burakkurucay.connex.service.profile.personal.PersonalProfileExperienceService experienceService,
-            com.burakkurucay.connex.service.profile.personal.PersonalProfileSkillService skillService) {
+            com.burakkurucay.connex.service.profile.personal.PersonalProfileSkillService skillService,
+            PersonalProfileLanguageService languageService) {
         this.profileQueryService = profileQueryService;
         this.contactService = contactService;
         this.educationService = educationService;
         this.experienceService = experienceService;
         this.skillService = skillService;
+        this.languageService = languageService;
     }
 
     /*
@@ -262,9 +270,41 @@ public class ProfileController {
      * Delete skill
      */
     @DeleteMapping("/me/skills/{skillId}")
-    public ApiResponse<Void> deleteSkill(
-            @PathVariable Long skillId) {
+    public ApiResponse<Void> deleteSkill(@PathVariable Long skillId) {
         skillService.deleteSkill(skillId);
+        return ApiResponse.success(null);
+    }
+
+    /*
+     * =======================
+     * Languages
+     * =======================
+     */
+
+    @GetMapping("/me/languages")
+    public ApiResponse<List<LanguageResponse>> getMyLanguages() {
+        return ApiResponse.success(languageService.getMyLanguages().stream()
+                .map(LanguageResponse::from)
+                .toList());
+    }
+
+    @PostMapping("/me/languages")
+    public ApiResponse<LanguageResponse> addLanguage(@RequestBody @Valid CreatePersonalLanguageRequest request) {
+        PersonalProfileLanguage language = languageService.addLanguage(request);
+        return ApiResponse.success(LanguageResponse.from(language));
+    }
+
+    @PatchMapping("/me/languages/{languageId}")
+    public ApiResponse<LanguageResponse> updateLanguage(
+            @PathVariable Long languageId,
+            @RequestBody @Valid EditPersonalLanguageRequest request) {
+        PersonalProfileLanguage language = languageService.updateLanguage(languageId, request);
+        return ApiResponse.success(LanguageResponse.from(language));
+    }
+
+    @DeleteMapping("/me/languages/{languageId}")
+    public ApiResponse<Void> deleteLanguage(@PathVariable Long languageId) {
+        languageService.deleteLanguage(languageId);
         return ApiResponse.success(null);
     }
 }

@@ -7,7 +7,6 @@ import com.burakkurucay.connex.entity.profile.personal.skill.PersonalProfileSkil
 import com.burakkurucay.connex.exception.common.BusinessException;
 import com.burakkurucay.connex.exception.codes.ErrorCode;
 import com.burakkurucay.connex.repository.profile.personal.PersonalProfileSkillRepository;
-import com.burakkurucay.connex.service.profile.personal.PersonalProfileService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

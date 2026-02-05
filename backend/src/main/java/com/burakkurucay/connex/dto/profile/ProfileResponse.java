@@ -11,7 +11,9 @@ import com.burakkurucay.connex.entity.profile.personal.contact.ContactType;
 import com.burakkurucay.connex.entity.profile.personal.education.PersonalProfileEducation;
 import com.burakkurucay.connex.entity.profile.personal.experience.PersonalProfileExperience;
 import com.burakkurucay.connex.entity.profile.personal.skill.PersonalProfileSkill;
+import com.burakkurucay.connex.entity.profile.personal.language.PersonalProfileLanguage;
 import com.burakkurucay.connex.entity.user.AccountType;
+import com.burakkurucay.connex.dto.profile.personal.language.LanguageResponse;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -36,12 +38,13 @@ public class ProfileResponse {
             List<PersonalProfileContact> contacts,
             List<PersonalProfileEducation> educations,
             List<PersonalProfileExperience> experiences,
-            List<PersonalProfileSkill> skills) {
+            List<PersonalProfileSkill> skills,
+            List<PersonalProfileLanguage> languages) {
         ProfileResponse dto = new ProfileResponse();
         dto.id = profile.getId();
         dto.userId = profile.getUser().getId();
         dto.accountType = AccountType.PERSONAL;
-        dto.personal = Personal.from(profile, contacts, educations, experiences, skills);
+        dto.personal = Personal.from(profile, contacts, educations, experiences, skills, languages);
         return dto;
     }
 
@@ -72,6 +75,7 @@ public class ProfileResponse {
         private List<EducationResponse> educations;
         private List<ExperienceResponse> experiences;
         private List<SkillResponse> skills;
+        private List<LanguageResponse> languages;
 
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
@@ -81,7 +85,8 @@ public class ProfileResponse {
                 List<PersonalProfileContact> contacts,
                 List<PersonalProfileEducation> educations,
                 List<PersonalProfileExperience> experiences,
-                List<PersonalProfileSkill> skills) {
+                List<PersonalProfileSkill> skills,
+                List<PersonalProfileLanguage> languages) {
             Personal dto = new Personal();
             dto.firstName = profile.getFirstName();
             dto.lastName = profile.getLastName();
@@ -101,6 +106,9 @@ public class ProfileResponse {
                     .toList();
             dto.skills = skills.stream()
                     .map(SkillResponse::from)
+                    .toList();
+            dto.languages = languages.stream()
+                    .map(LanguageResponse::from)
                     .toList();
             return dto;
         }
@@ -139,6 +147,10 @@ public class ProfileResponse {
 
         public List<SkillResponse> getSkills() {
             return skills;
+        }
+
+        public List<LanguageResponse> getLanguages() {
+            return languages;
         }
 
         public LocalDateTime getCreatedAt() {

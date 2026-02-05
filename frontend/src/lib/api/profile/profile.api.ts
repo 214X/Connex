@@ -26,6 +26,7 @@ export interface PersonalProfileData {
     educations?: PersonalProfileEducation[];
     experiences?: PersonalProfileExperience[];
     skills?: PersonalProfileSkill[];
+    languages?: PersonalProfileLanguage[];
     createdAt: string;
     updatedAt: string;
 }
@@ -309,6 +310,7 @@ export const deleteExperience = async (
     }
 };
 
+
 /* ---------- SKILLS ---------- */
 
 export interface PersonalProfileSkill {
@@ -367,6 +369,69 @@ export const deleteSkill = async (
 ): Promise<void> => {
     try {
         await authClient.delete(`/api/profiles/me/skills/${skillId}`);
+    } catch (err) {
+        if (axios.isAxiosError(err)) {
+            throw err.response?.data ?? err;
+        }
+        throw err;
+    }
+};
+
+/* ---------- LANGUAGES ---------- */
+
+export interface PersonalProfileLanguage {
+    id: number;
+    language: string;
+    level: string; // A1, A2, B1, B2, C1, C2, Native
+}
+
+export interface CreatePersonalLanguageRequest {
+    language: string;
+    level: string;
+}
+
+export interface EditPersonalLanguageRequest {
+    language?: string;
+    level?: string;
+}
+
+export const addLanguage = async (
+    data: CreatePersonalLanguageRequest
+): Promise<ApiResponse<void>> => {
+    try {
+        const res = await authClient.post<ApiResponse<void>>("/api/profiles/me/languages", data);
+        return res.data;
+    } catch (err) {
+        if (axios.isAxiosError(err)) {
+            throw err.response?.data ?? err;
+        }
+        throw err;
+    }
+};
+
+export const updateLanguage = async (
+    languageId: number,
+    data: EditPersonalLanguageRequest
+): Promise<ApiResponse<void>> => {
+    try {
+        const res = await authClient.patch<ApiResponse<void>>(
+            `/api/profiles/me/languages/${languageId}`,
+            data
+        );
+        return res.data;
+    } catch (err) {
+        if (axios.isAxiosError(err)) {
+            throw err.response?.data ?? err;
+        }
+        throw err;
+    }
+};
+
+export const deleteLanguage = async (
+    languageId: number
+): Promise<void> => {
+    try {
+        await authClient.delete(`/api/profiles/me/languages/${languageId}`);
     } catch (err) {
         if (axios.isAxiosError(err)) {
             throw err.response?.data ?? err;

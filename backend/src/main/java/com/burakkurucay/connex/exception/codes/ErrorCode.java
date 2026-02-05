@@ -38,7 +38,10 @@ public enum ErrorCode {
     PROFILE_EXPERIENCE_NOT_FOUND(8000, "Experience entry not found", HttpStatus.NOT_FOUND),
 
     // pp skill
-    PROFILE_SKILL_NOT_FOUND(9000, "Skill entry not found", HttpStatus.NOT_FOUND);
+    PROFILE_SKILL_NOT_FOUND(9000, "Skill entry not found", HttpStatus.NOT_FOUND),
+
+    // pp language
+    PROFILE_LANGUAGE_NOT_FOUND(10000, "Language entry not found", HttpStatus.NOT_FOUND);
 
     private final int code;
     private final String message;
