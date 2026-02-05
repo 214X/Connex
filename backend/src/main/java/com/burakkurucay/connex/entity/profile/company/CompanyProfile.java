@@ -1,8 +1,12 @@
 package com.burakkurucay.connex.entity.profile.company;
 
-import com.burakkurucay.connex.entity.user.User;
+import com.burakkurucay.connex.entity.profile.Profile;
 import jakarta.persistence.*;
 
+/**
+ * Company profile entity for business/organization users.
+ * References Profile (aggregate root) via FK.
+ */
 @Entity
 @Table(name = "company_profiles")
 public class CompanyProfile {
@@ -12,11 +16,11 @@ public class CompanyProfile {
     private Long id;
 
     /**
-     * Thw owner of the profile (user)
+     * Reference to the aggregate root Profile.
      */
     @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false, unique = true)
-    private User user;
+    @JoinColumn(name = "profile_id", nullable = false, unique = true)
+    private Profile profile;
 
     @Column(name = "company_name", nullable = false, length = 255)
     private String companyName;
@@ -37,33 +41,59 @@ public class CompanyProfile {
         // JPA
     }
 
-    public CompanyProfile(User user) {
-        this.user = user;
+    public CompanyProfile(Profile profile) {
+        this.profile = profile;
     }
 
-    /* getters & setters */
+    // Getters
 
-    public Long getId() { return id; }
+    public Long getId() {
+        return id;
+    }
 
-    public User getUser() { return user; }
+    public Profile getProfile() {
+        return profile;
+    }
 
-    public String getCompanyName() { return companyName; }
+    public String getCompanyName() {
+        return companyName;
+    }
 
-    public void setCompanyName(String companyName) { this.companyName = companyName; }
+    public String getDescription() {
+        return description;
+    }
 
-    public String getDescription() { return description; }
+    public String getIndustry() {
+        return industry;
+    }
 
-    public void setDescription(String description) { this.description = description; }
+    public String getLocation() {
+        return location;
+    }
 
-    public String getIndustry() { return industry; }
+    public String getWebsite() {
+        return website;
+    }
 
-    public void setIndustry(String industry) { this.industry = industry; }
+    // Setters
 
-    public String getLocation() { return location; }
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
 
-    public void setLocation(String location) { this.location = location; }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-    public String getWebsite() { return website; }
+    public void setIndustry(String industry) {
+        this.industry = industry;
+    }
 
-    public void setWebsite(String website) { this.website = website; }
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
 }

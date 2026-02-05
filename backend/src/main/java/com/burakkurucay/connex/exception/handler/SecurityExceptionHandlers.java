@@ -3,6 +3,7 @@ package com.burakkurucay.connex.exception.handler;
 import com.burakkurucay.connex.dto.common.ApiResponse;
 import com.burakkurucay.connex.exception.codes.ErrorCode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -20,7 +21,12 @@ import java.util.List;
 public class SecurityExceptionHandlers
                 implements AuthenticationEntryPoint, AccessDeniedHandler {
 
-        private final ObjectMapper objectMapper = new ObjectMapper();
+        private final ObjectMapper objectMapper;
+
+        public SecurityExceptionHandlers() {
+                this.objectMapper = new ObjectMapper();
+                this.objectMapper.registerModule(new JavaTimeModule());
+        }
 
         /**
          * 401 - No token or invalid token

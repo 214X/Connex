@@ -14,11 +14,13 @@ import ProjectList from "./components/ProjectList";
 
 interface PersonalProfileViewProps {
     personal: PersonalProfileData;
+    profileId: number;
     isOwner?: boolean;
 }
 
 export default function PersonalProfileView({
     personal: initialPersonal,
+    profileId,
     isOwner = false,
 }: PersonalProfileViewProps) {
     const [personal, setPersonal] = useState<PersonalProfileData>(initialPersonal);
@@ -48,6 +50,7 @@ export default function PersonalProfileView({
             <div className={styles.midContainer}>
                 <PersonalProfileHeader
                     profile={personal}
+                    profileId={profileId}
                     isOwner={isOwner}
                     onProfileUpdate={refreshProfile}
                 />

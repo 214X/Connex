@@ -7,6 +7,7 @@ import com.burakkurucay.connex.entity.profile.personal.project.PersonalProfilePr
 import com.burakkurucay.connex.exception.common.BusinessException;
 import com.burakkurucay.connex.exception.codes.ErrorCode;
 import com.burakkurucay.connex.repository.profile.personal.PersonalProfileProjectRepository;
+import com.burakkurucay.connex.service.profile.ProfileService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,17 +18,17 @@ import java.util.List;
 public class PersonalProfileProjectService {
 
     private final PersonalProfileProjectRepository projectRepository;
-    private final PersonalProfileService personalProfileService;
+    private final ProfileService profileService;
 
     public PersonalProfileProjectService(
             PersonalProfileProjectRepository projectRepository,
-            PersonalProfileService personalProfileService) {
+            ProfileService profileService) {
         this.projectRepository = projectRepository;
-        this.personalProfileService = personalProfileService;
+        this.profileService = profileService;
     }
 
     public List<PersonalProfileProject> getMyProjects() {
-        PersonalProfile profile = personalProfileService.getMyProfile();
+        PersonalProfile profile = profileService.getMyPersonalProfile();
         return projectRepository.findAllByProfile(profile);
     }
 
@@ -36,7 +37,7 @@ public class PersonalProfileProjectService {
     }
 
     public PersonalProfileProject addProject(CreatePersonalProjectRequest request) {
-        PersonalProfile profile = personalProfileService.getMyProfile();
+        PersonalProfile profile = profileService.getMyPersonalProfile();
 
         PersonalProfileProject project = PersonalProfileProject.builder()
                 .profile(profile)
@@ -52,7 +53,7 @@ public class PersonalProfileProjectService {
     }
 
     public PersonalProfileProject updateProject(Long projectId, EditPersonalProjectRequest request) {
-        PersonalProfile profile = personalProfileService.getMyProfile();
+        PersonalProfile profile = profileService.getMyPersonalProfile();
 
         PersonalProfileProject project = projectRepository.findByIdAndProfile(projectId, profile)
                 .orElseThrow(() -> new BusinessException("Project not found", ErrorCode.PROFILE_PROJECT_NOT_FOUND));
@@ -80,7 +81,7 @@ public class PersonalProfileProjectService {
     }
 
     public void deleteProject(Long projectId) {
-        PersonalProfile profile = personalProfileService.getMyProfile();
+        PersonalProfile profile = profileService.getMyPersonalProfile();
 
         PersonalProfileProject project = projectRepository.findByIdAndProfile(projectId, profile)
                 .orElseThrow(() -> new BusinessException("Project not found", ErrorCode.PROFILE_PROJECT_NOT_FOUND));

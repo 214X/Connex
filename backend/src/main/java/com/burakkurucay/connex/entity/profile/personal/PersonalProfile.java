@@ -1,9 +1,12 @@
 package com.burakkurucay.connex.entity.profile.personal;
 
+import com.burakkurucay.connex.entity.profile.Profile;
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
-import com.burakkurucay.connex.entity.user.User;
 
+/**
+ * Personal profile entity for individual users.
+ * References Profile (aggregate root) via FK.
+ */
 @Entity
 @Table(name = "personal_profiles")
 public class PersonalProfile {
@@ -12,10 +15,12 @@ public class PersonalProfile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // profile owner (user)
+    /**
+     * Reference to the aggregate root Profile.
+     */
     @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false, unique = true)
-    private User user;
+    @JoinColumn(name = "profile_id", nullable = false, unique = true)
+    private Profile profile;
 
     @Column(name = "first_name", nullable = false, length = 100)
     private String firstName;
@@ -32,61 +37,63 @@ public class PersonalProfile {
     @Column(length = 255)
     private String location;
 
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
-
-
     public PersonalProfile() {
-
+        // JPA
     }
 
-    public PersonalProfile(User user) {
-        this.user = user;
-    }
-
-    @PrePersist
-    void onCreate() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = this.createdAt;
-    }
-
-    @PreUpdate
-    void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
+    public PersonalProfile(Profile profile) {
+        this.profile = profile;
     }
 
     // Getters
-    public Long getId() { return id; }
 
-    public User getUser() { return user; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getFirstName() { return firstName; }
+    public Profile getProfile() {
+        return profile;
+    }
 
-    public String getLastName() { return lastName; }
+    public String getFirstName() {
+        return firstName;
+    }
 
-    public String getProfileDescription() { return profileDescription; }
+    public String getLastName() {
+        return lastName;
+    }
 
-    public String getPhoneNumber() { return phoneNumber; }
+    public String getProfileDescription() {
+        return profileDescription;
+    }
 
-    public String getLocation() { return location; }
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
 
-    public LocalDateTime getCreatedAt() { return createdAt; }
-
-    public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public String getLocation() {
+        return location;
+    }
 
     // Setters
 
-    public void setFirstName(String firstName) { this.firstName = firstName; }
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-    public void setLastName(String lastName) { this.lastName = lastName; }
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-    public void setProfileDescription(String description) { this.profileDescription = description; }
+    public void setProfileDescription(String description) {
+        this.profileDescription = description;
+    }
 
-    public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 
-    public void setLocation(String location) { this.location = location; }
+    public void setLocation(String location) {
+        this.location = location;
+    }
 }
-

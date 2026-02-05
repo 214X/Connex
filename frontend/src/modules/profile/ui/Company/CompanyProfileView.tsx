@@ -6,10 +6,14 @@ import CompanyProfileHeader from "./components/CompanyProfileHeader";
 
 interface CompanyProfileViewProps {
     company: CompanyProfileData;
+    profileId: number;
+    isOwner?: boolean;
 }
 
 export default function CompanyProfileView({
     company,
+    profileId,
+    isOwner = false,
 }: CompanyProfileViewProps) {
     const {
         companyName,
@@ -28,6 +32,8 @@ export default function CompanyProfileView({
                     industry={industry}
                     location={location}
                     website={website}
+                    profileId={profileId}
+                    isOwner={isOwner}
                 />
             </div>
         </div>

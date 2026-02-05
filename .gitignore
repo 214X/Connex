@@ -42,3 +42,7 @@ build/
 # Docker
 *.log
 docker-compose.override.yml
+
+# Uploads (avatar images, etc.)
+uploads/
+backend/uploads/

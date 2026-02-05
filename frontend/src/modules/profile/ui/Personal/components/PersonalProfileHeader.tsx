@@ -1,17 +1,22 @@
+"use client";
+
 import { useState } from "react";
 import styles from "./PersonalProfileHeader.module.css";
 import { FiMapPin, FiPhone, FiEdit2 } from "react-icons/fi";
 import Modal from "@/components/ui/Modal";
+import ProfileAvatar from "@/components/ui/ProfileAvatar";
 import { PersonalProfileData, updateMyProfile } from "@/lib/api/profile/profile.api";
 
 interface PersonalProfileHeaderProps {
     profile: PersonalProfileData;
+    profileId: number;
     isOwner: boolean;
     onProfileUpdate: () => void;
 }
 
 export default function PersonalProfileHeader({
     profile,
+    profileId,
     isOwner,
     onProfileUpdate
 }: PersonalProfileHeaderProps) {
@@ -85,9 +90,12 @@ export default function PersonalProfileHeader({
 
                 {/* Profile Avatar (Centered) */}
                 <div className={styles.avatarWrapper}>
-                    <div className={styles.avatarPlaceholder}>
-                        {initials}
-                    </div>
+                    <ProfileAvatar
+                        profileId={profileId}
+                        initials={initials}
+                        isEditable={isOwner}
+                        onAvatarChange={onProfileUpdate}
+                    />
                 </div>
 
                 {/* Info Section (Centered) */}

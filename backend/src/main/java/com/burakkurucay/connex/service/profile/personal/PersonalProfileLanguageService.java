@@ -7,6 +7,7 @@ import com.burakkurucay.connex.entity.profile.personal.language.PersonalProfileL
 import com.burakkurucay.connex.exception.common.BusinessException;
 import com.burakkurucay.connex.exception.codes.ErrorCode;
 import com.burakkurucay.connex.repository.profile.personal.PersonalProfileLanguageRepository;
+import com.burakkurucay.connex.service.profile.ProfileService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,17 +18,18 @@ import java.util.Set;
 public class PersonalProfileLanguageService {
 
     private final PersonalProfileLanguageRepository languageRepository;
-    private final PersonalProfileService personalProfileService;
+    private final ProfileService profileService;
     private static final Set<String> ALLOWED_LEVELS = Set.of("A1", "A2", "B1", "B2", "C1", "C2", "Native");
 
-    public PersonalProfileLanguageService(PersonalProfileLanguageRepository languageRepository,
-            PersonalProfileService personalProfileService) {
+    public PersonalProfileLanguageService(
+            PersonalProfileLanguageRepository languageRepository,
+            ProfileService profileService) {
         this.languageRepository = languageRepository;
-        this.personalProfileService = personalProfileService;
+        this.profileService = profileService;
     }
 
     public List<PersonalProfileLanguage> getMyLanguages() {
-        PersonalProfile profile = personalProfileService.getMyProfile();
+        PersonalProfile profile = profileService.getMyPersonalProfile();
         return languageRepository.findAllByProfile(profile);
     }
 
@@ -39,7 +41,7 @@ public class PersonalProfileLanguageService {
     public PersonalProfileLanguage addLanguage(CreatePersonalLanguageRequest request) {
         validateLevel(request.getLevel());
 
-        PersonalProfile profile = personalProfileService.getMyProfile();
+        PersonalProfile profile = profileService.getMyPersonalProfile();
 
         PersonalProfileLanguage language = PersonalProfileLanguage.builder()
                 .profile(profile)
@@ -52,7 +54,7 @@ public class PersonalProfileLanguageService {
 
     @Transactional
     public PersonalProfileLanguage updateLanguage(Long languageId, EditPersonalLanguageRequest request) {
-        PersonalProfile profile = personalProfileService.getMyProfile();
+        PersonalProfile profile = profileService.getMyPersonalProfile();
 
         PersonalProfileLanguage language = languageRepository.findByIdAndProfile(languageId, profile)
                 .orElseThrow(() -> new BusinessException("Language not found", ErrorCode.PROFILE_LANGUAGE_NOT_FOUND));
@@ -70,7 +72,7 @@ public class PersonalProfileLanguageService {
 
     @Transactional
     public void deleteLanguage(Long languageId) {
-        PersonalProfile profile = personalProfileService.getMyProfile();
+        PersonalProfile profile = profileService.getMyPersonalProfile();
 
         PersonalProfileLanguage language = languageRepository.findByIdAndProfile(languageId, profile)
                 .orElseThrow(() -> new BusinessException("Language not found", ErrorCode.PROFILE_LANGUAGE_NOT_FOUND));

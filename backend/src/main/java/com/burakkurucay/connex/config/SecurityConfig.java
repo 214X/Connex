@@ -45,8 +45,12 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/health/**").permitAll()
 
+                        // 🔓 Public avatar access (anyone can view avatars)
+                        .requestMatchers(HttpMethod.GET, "/api/profiles/*/avatar").permitAll()
+
                         // 🔒 Private profile (must be BEFORE the wildcard rule)
                         .requestMatchers("/api/profiles/me").authenticated()
+                        .requestMatchers("/api/profiles/me/**").authenticated()
 
                         // 🔓 Public profile by userId
                         .requestMatchers(HttpMethod.GET, "/api/profiles/*").permitAll()

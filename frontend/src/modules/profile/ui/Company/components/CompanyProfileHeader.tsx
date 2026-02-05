@@ -1,5 +1,8 @@
+"use client";
+
 import styles from "./CompanyProfileHeader.module.css";
 import { FiMapPin, FiGlobe, FiBriefcase } from "react-icons/fi";
+import ProfileAvatar from "@/components/ui/ProfileAvatar";
 
 interface CompanyProfileHeaderProps {
     companyName: string;
@@ -7,7 +10,8 @@ interface CompanyProfileHeaderProps {
     industry?: string | null;
     location?: string | null;
     website?: string | null;
-    logoUrl?: string | null;
+    profileId: number;
+    isOwner?: boolean;
 }
 
 export default function CompanyProfileHeader({
@@ -16,7 +20,8 @@ export default function CompanyProfileHeader({
     industry,
     location,
     website,
-    logoUrl
+    profileId,
+    isOwner = false,
 }: CompanyProfileHeaderProps) {
 
     // Initial for avatar placeholder (first letter of company name)
@@ -32,17 +37,11 @@ export default function CompanyProfileHeader({
 
                 {/* Company Logo (Centered) */}
                 <div className={styles.avatarWrapper}>
-                    {logoUrl ? (
-                        <img
-                            src={logoUrl}
-                            alt={companyName}
-                            className={styles.avatarImage}
-                        />
-                    ) : (
-                        <div className={styles.avatarPlaceholder}>
-                            {initial}
-                        </div>
-                    )}
+                    <ProfileAvatar
+                        profileId={profileId}
+                        initials={initial}
+                        isEditable={isOwner}
+                    />
                 </div>
 
                 {/* Info Section (Centered) */}

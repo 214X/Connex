@@ -11,11 +11,11 @@ interface ProfilePageProps {
 
 export default function ProfilePage({ profile, isOwner = false }: ProfilePageProps) {
     if (profile.accountType === "PERSONAL" && profile.personal) {
-        return <PersonalProfileView personal={profile.personal} isOwner={isOwner} />;
+        return <PersonalProfileView personal={profile.personal} profileId={profile.id} isOwner={isOwner} />;
     }
 
     if (profile.accountType === "COMPANY" && profile.company) {
-        return <CompanyProfileView company={profile.company} />;
+        return <CompanyProfileView company={profile.company} profileId={profile.id} isOwner={isOwner} />;
     }
 
     // Defensive fallback (should never happen)

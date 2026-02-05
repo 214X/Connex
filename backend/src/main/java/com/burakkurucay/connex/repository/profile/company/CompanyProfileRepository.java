@@ -5,10 +5,19 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface CompanyProfileRepository
-    extends JpaRepository<CompanyProfile, Long> {
+/**
+ * Repository for CompanyProfile.
+ * Queries via Profile FK.
+ */
+public interface CompanyProfileRepository extends JpaRepository<CompanyProfile, Long> {
 
-    Optional<CompanyProfile> findByUserId(Long userId);
+    /**
+     * Find company profile by profile ID.
+     */
+    Optional<CompanyProfile> findByProfileId(Long profileId);
 
-    boolean existsByUserId(Long userId);
+    /**
+     * Check if a company profile exists for the given profile ID.
+     */
+    boolean existsByProfileId(Long profileId);
 }

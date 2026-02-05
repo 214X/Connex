@@ -44,8 +44,8 @@ public class ProfileResponse {
             List<PersonalProfileLanguage> languages,
             List<PersonalProfileProject> projects) {
         ProfileResponse dto = new ProfileResponse();
-        dto.id = profile.getId();
-        dto.userId = profile.getUser().getId();
+        dto.id = profile.getProfile().getId();
+        dto.userId = profile.getProfile().getUser().getId();
         dto.accountType = AccountType.PERSONAL;
         dto.personal = Personal.from(profile, contacts, educations, experiences, skills, languages, projects);
         return dto;
@@ -53,8 +53,8 @@ public class ProfileResponse {
 
     public static ProfileResponse fromCompany(CompanyProfile profile) {
         ProfileResponse dto = new ProfileResponse();
-        dto.id = profile.getId();
-        dto.userId = profile.getUser().getId();
+        dto.id = profile.getProfile().getId();
+        dto.userId = profile.getProfile().getUser().getId();
         dto.accountType = AccountType.COMPANY;
         dto.company = Company.from(profile);
         return dto;
@@ -98,8 +98,8 @@ public class ProfileResponse {
             dto.profileDescription = profile.getProfileDescription();
             dto.phoneNumber = profile.getPhoneNumber();
             dto.location = profile.getLocation();
-            dto.createdAt = profile.getCreatedAt();
-            dto.updatedAt = profile.getUpdatedAt();
+            dto.createdAt = profile.getProfile().getCreatedAt();
+            dto.updatedAt = profile.getProfile().getUpdatedAt();
             dto.contacts = contacts.stream()
                     .map(Contact::from)
                     .toList();

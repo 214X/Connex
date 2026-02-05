@@ -7,6 +7,7 @@ import com.burakkurucay.connex.entity.profile.personal.skill.PersonalProfileSkil
 import com.burakkurucay.connex.exception.common.BusinessException;
 import com.burakkurucay.connex.exception.codes.ErrorCode;
 import com.burakkurucay.connex.repository.profile.personal.PersonalProfileSkillRepository;
+import com.burakkurucay.connex.service.profile.ProfileService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,16 +17,17 @@ import java.util.List;
 public class PersonalProfileSkillService {
 
     private final PersonalProfileSkillRepository skillRepository;
-    private final PersonalProfileService personalProfileService;
+    private final ProfileService profileService;
 
-    public PersonalProfileSkillService(PersonalProfileSkillRepository skillRepository,
-            PersonalProfileService personalProfileService) {
+    public PersonalProfileSkillService(
+            PersonalProfileSkillRepository skillRepository,
+            ProfileService profileService) {
         this.skillRepository = skillRepository;
-        this.personalProfileService = personalProfileService;
+        this.profileService = profileService;
     }
 
     public List<PersonalProfileSkill> getMySkills() {
-        PersonalProfile profile = personalProfileService.getMyProfile();
+        PersonalProfile profile = profileService.getMyPersonalProfile();
         return skillRepository.findAllByProfile(profile);
     }
 
@@ -35,7 +37,7 @@ public class PersonalProfileSkillService {
 
     @Transactional
     public PersonalProfileSkill addSkill(CreatePersonalSkillRequest request) {
-        PersonalProfile profile = personalProfileService.getMyProfile();
+        PersonalProfile profile = profileService.getMyPersonalProfile();
 
         PersonalProfileSkill skill = PersonalProfileSkill.builder()
                 .profile(profile)
@@ -49,7 +51,7 @@ public class PersonalProfileSkillService {
 
     @Transactional
     public PersonalProfileSkill updateSkill(Long skillId, EditPersonalSkillRequest request) {
-        PersonalProfile profile = personalProfileService.getMyProfile();
+        PersonalProfile profile = profileService.getMyPersonalProfile();
 
         PersonalProfileSkill skill = skillRepository.findByIdAndProfile(skillId, profile)
                 .orElseThrow(() -> new BusinessException("Skill not found", ErrorCode.PROFILE_SKILL_NOT_FOUND));
@@ -69,7 +71,7 @@ public class PersonalProfileSkillService {
 
     @Transactional
     public void deleteSkill(Long skillId) {
-        PersonalProfile profile = personalProfileService.getMyProfile();
+        PersonalProfile profile = profileService.getMyPersonalProfile();
 
         PersonalProfileSkill skill = skillRepository.findByIdAndProfile(skillId, profile)
                 .orElseThrow(() -> new BusinessException("Skill not found", ErrorCode.PROFILE_SKILL_NOT_FOUND));

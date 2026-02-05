@@ -6,8 +6,7 @@ import com.burakkurucay.connex.dto.onboarding.PersonalOnboardingRequest;
 import com.burakkurucay.connex.entity.profile.company.CompanyProfile;
 import com.burakkurucay.connex.entity.profile.personal.PersonalProfile;
 import com.burakkurucay.connex.entity.user.AccountType;
-import com.burakkurucay.connex.service.profile.company.CompanyProfileService;
-import com.burakkurucay.connex.service.profile.personal.PersonalProfileService;
+import com.burakkurucay.connex.service.profile.ProfileService;
 import com.burakkurucay.connex.service.UserService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -20,15 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/onboarding")
 public class OnboardingController {
 
-    private final PersonalProfileService personalProfileService;
-    private final CompanyProfileService companyProfileService;
+    private final ProfileService profileService;
     private final UserService userService;
 
-    public OnboardingController(PersonalProfileService personalProfileService,
-            CompanyProfileService companyProfileService,
-            UserService userService) {
-        this.personalProfileService = personalProfileService;
-        this.companyProfileService = companyProfileService;
+    public OnboardingController(ProfileService profileService, UserService userService) {
+        this.profileService = profileService;
         this.userService = userService;
     }
 
@@ -37,7 +32,7 @@ public class OnboardingController {
     public ApiResponse<PersonalProfile> completePersonalOnboarding(@Valid @RequestBody PersonalOnboardingRequest req) {
         userService.completeUserOnboarding(AccountType.PERSONAL);
 
-        PersonalProfile profile = personalProfileService.completeOnboarding(
+        PersonalProfile profile = profileService.completePersonalOnboarding(
                 req.getFirstName(),
                 req.getLastName(),
                 req.getDescription());
@@ -49,7 +44,7 @@ public class OnboardingController {
     public ApiResponse<CompanyProfile> completeCompanyOnboarding(@Valid @RequestBody CompanyOnboardingRequest req) {
         userService.completeUserOnboarding(AccountType.COMPANY);
 
-        CompanyProfile profile = companyProfileService.completeOnboarding(
+        CompanyProfile profile = profileService.completeCompanyOnboarding(
                 req.getName(),
                 req.getIndustry(),
                 req.getDescription());

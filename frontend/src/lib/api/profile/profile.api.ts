@@ -123,9 +123,9 @@ export const addPersonalContact = async (
     value: string
 ): Promise<ApiResponse<PersonalProfileContact>> => {
     try {
-        // Mapped in ProfileController: @PostMapping("/me/contacts") -> /api/profiles/me/contacts
+        // Mapped in PersonalProfileController: @PostMapping("/me/contacts")
         const res = await authClient.post<ApiResponse<PersonalProfileContact>>(
-            "/api/profiles/me/contacts",
+            "/api/profiles/personal/me/contacts",
             { type, value }
         );
         return res.data;
@@ -142,9 +142,9 @@ export const updatePersonalContact = async (
     data: { type?: ContactType; value?: string }
 ): Promise<ApiResponse<PersonalProfileContact>> => {
     try {
-        // Mapped in ProfileController: @PatchMapping("/me/contacts/{contactId}")
+        // Mapped in PersonalProfileController: @PatchMapping("/me/contacts/{contactId}")
         const res = await authClient.patch<ApiResponse<PersonalProfileContact>>(
-            `/api/profiles/me/contacts/${contactId}`,
+            `/api/profiles/personal/me/contacts/${contactId}`,
             data
         );
         return res.data;
@@ -160,8 +160,8 @@ export const deletePersonalContact = async (
     contactId: number
 ): Promise<void> => {
     try {
-        // Mapped in ProfileController: @DeleteMapping("/me/contacts/{contactId}")
-        await authClient.delete(`/api/profiles/me/contacts/${contactId}`);
+        // Mapped in PersonalProfileController: @DeleteMapping("/me/contacts/{contactId}")
+        await authClient.delete(`/api/profiles/personal/me/contacts/${contactId}`);
     } catch (err) {
         if (axios.isAxiosError(err)) {
             throw err.response?.data ?? err;
@@ -198,7 +198,7 @@ export const addEducation = async (
     data: CreatePersonalEducationRequest
 ): Promise<ApiResponse<void>> => {
     try {
-        const res = await authClient.post<ApiResponse<void>>("/api/profiles/me/educations", data);
+        const res = await authClient.post<ApiResponse<void>>("/api/profiles/personal/me/educations", data);
         return res.data;
     } catch (err) {
         if (axios.isAxiosError(err)) {
@@ -214,7 +214,7 @@ export const updateEducation = async (
 ): Promise<ApiResponse<void>> => {
     try {
         const res = await authClient.patch<ApiResponse<void>>(
-            `/api/profiles/me/educations/${educationId}`,
+            `/api/profiles/personal/me/educations/${educationId}`,
             data
         );
         return res.data;
@@ -230,7 +230,7 @@ export const deleteEducation = async (
     educationId: number
 ): Promise<void> => {
     try {
-        await authClient.delete(`/api/profiles/me/educations/${educationId}`);
+        await authClient.delete(`/api/profiles/personal/me/educations/${educationId}`);
     } catch (err) {
         if (axios.isAxiosError(err)) {
             throw err.response?.data ?? err;
@@ -270,7 +270,7 @@ export const addExperience = async (
     data: CreatePersonalExperienceRequest
 ): Promise<ApiResponse<void>> => {
     try {
-        const res = await authClient.post<ApiResponse<void>>("/api/profiles/me/experiences", data);
+        const res = await authClient.post<ApiResponse<void>>("/api/profiles/personal/me/experiences", data);
         return res.data;
     } catch (err) {
         if (axios.isAxiosError(err)) {
@@ -286,7 +286,7 @@ export const updateExperience = async (
 ): Promise<ApiResponse<void>> => {
     try {
         const res = await authClient.patch<ApiResponse<void>>(
-            `/api/profiles/me/experiences/${experienceId}`,
+            `/api/profiles/personal/me/experiences/${experienceId}`,
             data
         );
         return res.data;
@@ -302,7 +302,7 @@ export const deleteExperience = async (
     experienceId: number
 ): Promise<void> => {
     try {
-        await authClient.delete(`/api/profiles/me/experiences/${experienceId}`);
+        await authClient.delete(`/api/profiles/personal/me/experiences/${experienceId}`);
     } catch (err) {
         if (axios.isAxiosError(err)) {
             throw err.response?.data ?? err;
@@ -337,7 +337,7 @@ export const addSkill = async (
     data: CreatePersonalSkillRequest
 ): Promise<ApiResponse<void>> => {
     try {
-        const res = await authClient.post<ApiResponse<void>>("/api/profiles/me/skills", data);
+        const res = await authClient.post<ApiResponse<void>>("/api/profiles/personal/me/skills", data);
         return res.data;
     } catch (err) {
         if (axios.isAxiosError(err)) {
@@ -353,7 +353,7 @@ export const updateSkill = async (
 ): Promise<ApiResponse<void>> => {
     try {
         const res = await authClient.patch<ApiResponse<void>>(
-            `/api/profiles/me/skills/${skillId}`,
+            `/api/profiles/personal/me/skills/${skillId}`,
             data
         );
         return res.data;
@@ -369,7 +369,7 @@ export const deleteSkill = async (
     skillId: number
 ): Promise<void> => {
     try {
-        await authClient.delete(`/api/profiles/me/skills/${skillId}`);
+        await authClient.delete(`/api/profiles/personal/me/skills/${skillId}`);
     } catch (err) {
         if (axios.isAxiosError(err)) {
             throw err.response?.data ?? err;
@@ -400,7 +400,7 @@ export const addLanguage = async (
     data: CreatePersonalLanguageRequest
 ): Promise<ApiResponse<void>> => {
     try {
-        const res = await authClient.post<ApiResponse<void>>("/api/profiles/me/languages", data);
+        const res = await authClient.post<ApiResponse<void>>("/api/profiles/personal/me/languages", data);
         return res.data;
     } catch (err) {
         if (axios.isAxiosError(err)) {
@@ -416,7 +416,7 @@ export const updateLanguage = async (
 ): Promise<ApiResponse<void>> => {
     try {
         const res = await authClient.patch<ApiResponse<void>>(
-            `/api/profiles/me/languages/${languageId}`,
+            `/api/profiles/personal/me/languages/${languageId}`,
             data
         );
         return res.data;
@@ -432,7 +432,7 @@ export const deleteLanguage = async (
     languageId: number
 ): Promise<void> => {
     try {
-        await authClient.delete(`/api/profiles/me/languages/${languageId}`);
+        await authClient.delete(`/api/profiles/personal/me/languages/${languageId}`);
     } catch (err) {
         if (axios.isAxiosError(err)) {
             throw err.response?.data ?? err;
@@ -475,7 +475,7 @@ export const addProject = async (
     data: CreatePersonalProjectRequest
 ): Promise<ApiResponse<void>> => {
     try {
-        const res = await authClient.post<ApiResponse<void>>("/api/profiles/me/projects", data);
+        const res = await authClient.post<ApiResponse<void>>("/api/profiles/personal/me/projects", data);
         return res.data;
     } catch (err) {
         if (axios.isAxiosError(err)) {
@@ -491,7 +491,7 @@ export const updateProject = async (
 ): Promise<ApiResponse<void>> => {
     try {
         const res = await authClient.patch<ApiResponse<void>>(
-            `/api/profiles/me/projects/${projectId}`,
+            `/api/profiles/personal/me/projects/${projectId}`,
             data
         );
         return res.data;
@@ -507,7 +507,7 @@ export const deleteProject = async (
     projectId: number
 ): Promise<void> => {
     try {
-        await authClient.delete(`/api/profiles/me/projects/${projectId}`);
+        await authClient.delete(`/api/profiles/personal/me/projects/${projectId}`);
     } catch (err) {
         if (axios.isAxiosError(err)) {
             throw err.response?.data ?? err;
