@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import styles from "./Modal.module.css";
-import { CreatePersonalContactRequest, PersonalProfileContact } from "@/lib/api/profile/profile.api";
 
 interface ModalProps {
     isOpen: boolean;

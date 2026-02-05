@@ -13,6 +13,12 @@ import com.burakkurucay.connex.service.profile.ProfileQueryService;
 import com.burakkurucay.connex.service.profile.personal.PersonalProfileContactService;
 import com.burakkurucay.connex.service.profile.personal.PersonalProfileLanguageService;
 
+import com.burakkurucay.connex.dto.profile.personal.project.CreatePersonalProjectRequest;
+import com.burakkurucay.connex.dto.profile.personal.project.EditPersonalProjectRequest;
+import com.burakkurucay.connex.dto.profile.personal.project.ProjectResponse;
+import com.burakkurucay.connex.entity.profile.personal.project.PersonalProfileProject;
+import com.burakkurucay.connex.service.profile.personal.PersonalProfileProjectService;
+
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +34,7 @@ public class ProfileController {
     private final com.burakkurucay.connex.service.profile.personal.PersonalProfileExperienceService experienceService;
     private final com.burakkurucay.connex.service.profile.personal.PersonalProfileSkillService skillService;
     private final PersonalProfileLanguageService languageService;
+    private final PersonalProfileProjectService projectService;
 
     public ProfileController(
             ProfileQueryService profileQueryService,
@@ -35,13 +42,15 @@ public class ProfileController {
             com.burakkurucay.connex.service.profile.personal.PersonalProfileEducationService educationService,
             com.burakkurucay.connex.service.profile.personal.PersonalProfileExperienceService experienceService,
             com.burakkurucay.connex.service.profile.personal.PersonalProfileSkillService skillService,
-            PersonalProfileLanguageService languageService) {
+            PersonalProfileLanguageService languageService,
+            PersonalProfileProjectService projectService) {
         this.profileQueryService = profileQueryService;
         this.contactService = contactService;
         this.educationService = educationService;
         this.experienceService = experienceService;
         this.skillService = skillService;
         this.languageService = languageService;
+        this.projectService = projectService;
     }
 
     /*
@@ -305,6 +314,39 @@ public class ProfileController {
     @DeleteMapping("/me/languages/{languageId}")
     public ApiResponse<Void> deleteLanguage(@PathVariable Long languageId) {
         languageService.deleteLanguage(languageId);
+        return ApiResponse.success(null);
+    }
+
+    /*
+     * =======================
+     * Projects
+     * =======================
+     */
+
+    @GetMapping("/me/projects")
+    public ApiResponse<List<ProjectResponse>> getMyProjects() {
+        return ApiResponse.success(projectService.getMyProjects().stream()
+                .map(ProjectResponse::from)
+                .toList());
+    }
+
+    @PostMapping("/me/projects")
+    public ApiResponse<ProjectResponse> addProject(@RequestBody @Valid CreatePersonalProjectRequest request) {
+        PersonalProfileProject project = projectService.addProject(request);
+        return ApiResponse.success(ProjectResponse.from(project));
+    }
+
+    @PatchMapping("/me/projects/{projectId}")
+    public ApiResponse<ProjectResponse> updateProject(
+            @PathVariable Long projectId,
+            @RequestBody @Valid EditPersonalProjectRequest request) {
+        PersonalProfileProject project = projectService.updateProject(projectId, request);
+        return ApiResponse.success(ProjectResponse.from(project));
+    }
+
+    @DeleteMapping("/me/projects/{projectId}")
+    public ApiResponse<Void> deleteProject(@PathVariable Long projectId) {
+        projectService.deleteProject(projectId);
         return ApiResponse.success(null);
     }
 }

@@ -27,6 +27,7 @@ export interface PersonalProfileData {
     experiences?: PersonalProfileExperience[];
     skills?: PersonalProfileSkill[];
     languages?: PersonalProfileLanguage[];
+    projects?: PersonalProfileProject[];
     createdAt: string;
     updatedAt: string;
 }
@@ -432,6 +433,81 @@ export const deleteLanguage = async (
 ): Promise<void> => {
     try {
         await authClient.delete(`/api/profiles/me/languages/${languageId}`);
+    } catch (err) {
+        if (axios.isAxiosError(err)) {
+            throw err.response?.data ?? err;
+        }
+        throw err;
+    }
+};
+
+/* ---------- PROJECTS ---------- */
+
+export interface PersonalProfileProject {
+    id: number;
+    name: string;
+    shortDescription?: string | null;
+    description?: string | null;
+    link?: string | null;
+    startDate?: string | null;
+    endDate?: string | null;
+}
+
+export interface CreatePersonalProjectRequest {
+    name: string;
+    shortDescription?: string;
+    description?: string;
+    link?: string;
+    startDate?: string;
+    endDate?: string;
+}
+
+export interface EditPersonalProjectRequest {
+    name?: string;
+    shortDescription?: string;
+    description?: string;
+    link?: string;
+    startDate?: string;
+    endDate?: string;
+}
+
+export const addProject = async (
+    data: CreatePersonalProjectRequest
+): Promise<ApiResponse<void>> => {
+    try {
+        const res = await authClient.post<ApiResponse<void>>("/api/profiles/me/projects", data);
+        return res.data;
+    } catch (err) {
+        if (axios.isAxiosError(err)) {
+            throw err.response?.data ?? err;
+        }
+        throw err;
+    }
+};
+
+export const updateProject = async (
+    projectId: number,
+    data: EditPersonalProjectRequest
+): Promise<ApiResponse<void>> => {
+    try {
+        const res = await authClient.patch<ApiResponse<void>>(
+            `/api/profiles/me/projects/${projectId}`,
+            data
+        );
+        return res.data;
+    } catch (err) {
+        if (axios.isAxiosError(err)) {
+            throw err.response?.data ?? err;
+        }
+        throw err;
+    }
+};
+
+export const deleteProject = async (
+    projectId: number
+): Promise<void> => {
+    try {
+        await authClient.delete(`/api/profiles/me/projects/${projectId}`);
     } catch (err) {
         if (axios.isAxiosError(err)) {
             throw err.response?.data ?? err;

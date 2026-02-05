@@ -41,7 +41,10 @@ public enum ErrorCode {
     PROFILE_SKILL_NOT_FOUND(9000, "Skill entry not found", HttpStatus.NOT_FOUND),
 
     // pp language
-    PROFILE_LANGUAGE_NOT_FOUND(10000, "Language entry not found", HttpStatus.NOT_FOUND);
+    PROFILE_LANGUAGE_NOT_FOUND(10000, "Language entry not found", HttpStatus.NOT_FOUND),
+
+    // pp project
+    PROFILE_PROJECT_NOT_FOUND(11000, "Project entry not found", HttpStatus.NOT_FOUND);
 
     private final int code;
     private final String message;

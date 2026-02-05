@@ -32,6 +32,7 @@ public class ProfileQueryService {
     private final PersonalProfileExperienceService experienceService;
     private final com.burakkurucay.connex.service.profile.personal.PersonalProfileSkillService skillService;
     private final com.burakkurucay.connex.service.profile.personal.PersonalProfileLanguageService languageService;
+    private final com.burakkurucay.connex.service.profile.personal.PersonalProfileProjectService projectService;
 
     public ProfileQueryService(
             UserService userService,
@@ -41,7 +42,8 @@ public class ProfileQueryService {
             PersonalProfileEducationService educationService,
             PersonalProfileExperienceService experienceService,
             com.burakkurucay.connex.service.profile.personal.PersonalProfileSkillService skillService,
-            com.burakkurucay.connex.service.profile.personal.PersonalProfileLanguageService languageService) {
+            com.burakkurucay.connex.service.profile.personal.PersonalProfileLanguageService languageService,
+            com.burakkurucay.connex.service.profile.personal.PersonalProfileProjectService projectService) {
         this.userService = userService;
         this.personalProfileService = personalProfileService;
         this.companyProfileService = companyProfileService;
@@ -50,6 +52,7 @@ public class ProfileQueryService {
         this.experienceService = experienceService;
         this.skillService = skillService;
         this.languageService = languageService;
+        this.projectService = projectService;
     }
 
     /*
@@ -71,8 +74,11 @@ public class ProfileQueryService {
                     .getSkillsByProfile(profile);
             List<com.burakkurucay.connex.entity.profile.personal.language.PersonalProfileLanguage> languages = languageService
                     .getLanguagesByProfile(profile);
+            List<com.burakkurucay.connex.entity.profile.personal.project.PersonalProfileProject> projects = projectService
+                    .getProjectsByProfile(profile);
 
-            return ProfileResponse.fromPersonal(profile, contacts, educations, experiences, skills, languages);
+            return ProfileResponse.fromPersonal(profile, contacts, educations, experiences, skills, languages,
+                    projects);
         }
 
         if (currentUser.getAccountType() == AccountType.COMPANY) {
@@ -112,8 +118,11 @@ public class ProfileQueryService {
                     .getSkillsByProfile(profile);
             List<com.burakkurucay.connex.entity.profile.personal.language.PersonalProfileLanguage> languages = languageService
                     .getLanguagesByProfile(profile);
+            List<com.burakkurucay.connex.entity.profile.personal.project.PersonalProfileProject> projects = projectService
+                    .getProjectsByProfile(profile);
 
-            return ProfileResponse.fromPersonal(profile, contacts, educations, experiences, skills, languages);
+            return ProfileResponse.fromPersonal(profile, contacts, educations, experiences, skills, languages,
+                    projects);
         }
 
         if (user.getAccountType() == AccountType.COMPANY) {
