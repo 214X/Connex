@@ -6,6 +6,7 @@ import { PersonalProfileData, getMyProfile } from "@/lib/api/profile/profile.api
 
 import PersonalProfileHeader from "./components/PersonalProfileHeader";
 import ContactList from "./components/ContactList";
+import EducationList from "./components/EducationList";
 
 interface PersonalProfileViewProps {
     personal: PersonalProfileData;
@@ -51,6 +52,12 @@ export default function PersonalProfileView({
                     contacts={personal.contacts || []}
                     isOwner={isOwner}
                     onContactsChange={refreshProfile}
+                />
+
+                <EducationList
+                    educations={personal.educations || []}
+                    isOwner={isOwner}
+                    onEducationsChange={refreshProfile}
                 />
             </div>
         </div>

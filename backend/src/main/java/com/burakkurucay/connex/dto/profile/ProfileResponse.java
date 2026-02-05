@@ -1,9 +1,11 @@
 package com.burakkurucay.connex.dto.profile;
 
+import com.burakkurucay.connex.dto.profile.personal.education.EducationResponse;
 import com.burakkurucay.connex.entity.profile.company.CompanyProfile;
 import com.burakkurucay.connex.entity.profile.personal.PersonalProfile;
 import com.burakkurucay.connex.entity.profile.personal.contact.PersonalProfileContact;
 import com.burakkurucay.connex.entity.profile.personal.contact.ContactType;
+import com.burakkurucay.connex.entity.profile.personal.education.PersonalProfileEducation;
 import com.burakkurucay.connex.entity.user.AccountType;
 
 import java.time.LocalDateTime;
@@ -26,12 +28,13 @@ public class ProfileResponse {
 
     public static ProfileResponse fromPersonal(
             PersonalProfile profile,
-            List<PersonalProfileContact> contacts) {
+            List<PersonalProfileContact> contacts,
+            List<PersonalProfileEducation> educations) {
         ProfileResponse dto = new ProfileResponse();
         dto.id = profile.getId();
         dto.userId = profile.getUser().getId();
         dto.accountType = AccountType.PERSONAL;
-        dto.personal = Personal.from(profile, contacts);
+        dto.personal = Personal.from(profile, contacts, educations);
         return dto;
     }
 
@@ -59,13 +62,15 @@ public class ProfileResponse {
         private String location;
 
         private List<Contact> contacts;
+        private List<EducationResponse> educations;
 
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
 
         private static Personal from(
                 PersonalProfile profile,
-                List<PersonalProfileContact> contacts) {
+                List<PersonalProfileContact> contacts,
+                List<PersonalProfileEducation> educations) {
             Personal dto = new Personal();
             dto.firstName = profile.getFirstName();
             dto.lastName = profile.getLastName();
@@ -76,6 +81,9 @@ public class ProfileResponse {
             dto.updatedAt = profile.getUpdatedAt();
             dto.contacts = contacts.stream()
                     .map(Contact::from)
+                    .toList();
+            dto.educations = educations.stream()
+                    .map(EducationResponse::from)
                     .toList();
             return dto;
         }
@@ -102,6 +110,10 @@ public class ProfileResponse {
 
         public List<Contact> getContacts() {
             return contacts;
+        }
+
+        public List<EducationResponse> getEducations() {
+            return educations;
         }
 
         public LocalDateTime getCreatedAt() {

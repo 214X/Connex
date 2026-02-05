@@ -28,4 +28,7 @@ public enum ErrorCode {
 
     // pp contact
     PROFILE_CONTACT_NOT_FOUND,
+
+    // pp education
+    PROFILE_EDUCATION_NOT_FOUND,
 }

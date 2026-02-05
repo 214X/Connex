@@ -4,6 +4,7 @@ import com.burakkurucay.connex.dto.profile.ProfileResponse;
 import com.burakkurucay.connex.entity.profile.company.CompanyProfile;
 import com.burakkurucay.connex.entity.profile.personal.PersonalProfile;
 import com.burakkurucay.connex.entity.profile.personal.contact.PersonalProfileContact;
+import com.burakkurucay.connex.entity.profile.personal.education.PersonalProfileEducation;
 import com.burakkurucay.connex.entity.user.AccountType;
 import com.burakkurucay.connex.entity.user.User;
 import com.burakkurucay.connex.entity.user.UserStatus;
@@ -12,6 +13,7 @@ import com.burakkurucay.connex.exception.common.BusinessException;
 import com.burakkurucay.connex.service.UserService;
 import com.burakkurucay.connex.service.profile.company.CompanyProfileService;
 import com.burakkurucay.connex.service.profile.personal.PersonalProfileContactService;
+import com.burakkurucay.connex.service.profile.personal.PersonalProfileEducationService;
 import com.burakkurucay.connex.service.profile.personal.PersonalProfileService;
 import org.springframework.stereotype.Service;
 
@@ -24,16 +26,19 @@ public class ProfileQueryService {
     private final PersonalProfileService personalProfileService;
     private final CompanyProfileService companyProfileService;
     private final PersonalProfileContactService contactService;
+    private final PersonalProfileEducationService educationService;
 
     public ProfileQueryService(
             UserService userService,
             PersonalProfileService personalProfileService,
             CompanyProfileService companyProfileService,
-            PersonalProfileContactService contactService) {
+            PersonalProfileContactService contactService,
+            PersonalProfileEducationService educationService) {
         this.userService = userService;
         this.personalProfileService = personalProfileService;
         this.companyProfileService = companyProfileService;
         this.contactService = contactService;
+        this.educationService = educationService;
     }
 
     /*
@@ -49,8 +54,9 @@ public class ProfileQueryService {
         if (currentUser.getAccountType() == AccountType.PERSONAL) {
             PersonalProfile profile = personalProfileService.getMyProfile();
             List<PersonalProfileContact> contacts = contactService.getContactsByProfile(profile);
+            List<PersonalProfileEducation> educations = educationService.getEducationsByProfile(profile);
 
-            return ProfileResponse.fromPersonal(profile, contacts);
+            return ProfileResponse.fromPersonal(profile, contacts, educations);
         }
 
         if (currentUser.getAccountType() == AccountType.COMPANY) {
@@ -84,8 +90,9 @@ public class ProfileQueryService {
             PersonalProfile profile = personalProfileService.getPublicProfileByUserId(userId);
 
             List<PersonalProfileContact> contacts = contactService.getContactsByProfile(profile);
+            List<PersonalProfileEducation> educations = educationService.getEducationsByProfile(profile);
 
-            return ProfileResponse.fromPersonal(profile, contacts);
+            return ProfileResponse.fromPersonal(profile, contacts, educations);
         }
 
         if (user.getAccountType() == AccountType.COMPANY) {
