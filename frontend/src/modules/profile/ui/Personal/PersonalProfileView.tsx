@@ -8,6 +8,7 @@ import PersonalProfileHeader from "./components/PersonalProfileHeader";
 import ContactList from "./components/ContactList";
 import EducationList from "./components/EducationList";
 import ExperienceList from "./components/ExperienceList";
+import SkillList from "./components/SkillList";
 
 interface PersonalProfileViewProps {
     personal: PersonalProfileData;
@@ -65,6 +66,12 @@ export default function PersonalProfileView({
                     experiences={personal.experiences || []}
                     isOwner={isOwner}
                     onExperiencesChange={refreshProfile}
+                />
+
+                <SkillList
+                    skills={personal.skills || []}
+                    isOwner={isOwner}
+                    onSkillsChange={refreshProfile}
                 />
             </div>
         </div>

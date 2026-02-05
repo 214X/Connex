@@ -25,6 +25,7 @@ export interface PersonalProfileData {
     contacts?: PersonalProfileContact[];
     educations?: PersonalProfileEducation[];
     experiences?: PersonalProfileExperience[];
+    skills?: PersonalProfileSkill[];
     createdAt: string;
     updatedAt: string;
 }
@@ -300,6 +301,72 @@ export const deleteExperience = async (
 ): Promise<void> => {
     try {
         await authClient.delete(`/api/profiles/me/experiences/${experienceId}`);
+    } catch (err) {
+        if (axios.isAxiosError(err)) {
+            throw err.response?.data ?? err;
+        }
+        throw err;
+    }
+};
+
+/* ---------- SKILLS ---------- */
+
+export interface PersonalProfileSkill {
+    id: number;
+    name: string;
+    description?: string | null;
+    level?: number | null; // 0-10
+}
+
+export interface CreatePersonalSkillRequest {
+    name: string;
+    description?: string;
+    level?: number;
+}
+
+export interface EditPersonalSkillRequest {
+    name?: string;
+    description?: string;
+    level?: number;
+}
+
+export const addSkill = async (
+    data: CreatePersonalSkillRequest
+): Promise<ApiResponse<void>> => {
+    try {
+        const res = await authClient.post<ApiResponse<void>>("/api/profiles/me/skills", data);
+        return res.data;
+    } catch (err) {
+        if (axios.isAxiosError(err)) {
+            throw err.response?.data ?? err;
+        }
+        throw err;
+    }
+};
+
+export const updateSkill = async (
+    skillId: number,
+    data: EditPersonalSkillRequest
+): Promise<ApiResponse<void>> => {
+    try {
+        const res = await authClient.patch<ApiResponse<void>>(
+            `/api/profiles/me/skills/${skillId}`,
+            data
+        );
+        return res.data;
+    } catch (err) {
+        if (axios.isAxiosError(err)) {
+            throw err.response?.data ?? err;
+        }
+        throw err;
+    }
+};
+
+export const deleteSkill = async (
+    skillId: number
+): Promise<void> => {
+    try {
+        await authClient.delete(`/api/profiles/me/skills/${skillId}`);
     } catch (err) {
         if (axios.isAxiosError(err)) {
             throw err.response?.data ?? err;

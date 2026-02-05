@@ -21,16 +21,19 @@ public class ProfileController {
     private final PersonalProfileContactService contactService;
     private final com.burakkurucay.connex.service.profile.personal.PersonalProfileEducationService educationService;
     private final com.burakkurucay.connex.service.profile.personal.PersonalProfileExperienceService experienceService;
+    private final com.burakkurucay.connex.service.profile.personal.PersonalProfileSkillService skillService;
 
     public ProfileController(
             ProfileQueryService profileQueryService,
             PersonalProfileContactService contactService,
             com.burakkurucay.connex.service.profile.personal.PersonalProfileEducationService educationService,
-            com.burakkurucay.connex.service.profile.personal.PersonalProfileExperienceService experienceService) {
+            com.burakkurucay.connex.service.profile.personal.PersonalProfileExperienceService experienceService,
+            com.burakkurucay.connex.service.profile.personal.PersonalProfileSkillService skillService) {
         this.profileQueryService = profileQueryService;
         this.contactService = contactService;
         this.educationService = educationService;
         this.experienceService = experienceService;
+        this.skillService = skillService;
     }
 
     /*
@@ -210,6 +213,58 @@ public class ProfileController {
     public ApiResponse<Void> deleteExperience(
             @PathVariable Long experienceId) {
         experienceService.deleteExperience(experienceId);
+        return ApiResponse.success(null);
+    }
+
+    /*
+     * =======================
+     * Skill (sub-resource)
+     * =======================
+     */
+
+    /**
+     * Get my skills
+     */
+    @GetMapping("/me/skills")
+    public ApiResponse<List<com.burakkurucay.connex.dto.profile.personal.skill.SkillResponse>> getMySkills() {
+        List<com.burakkurucay.connex.entity.profile.personal.skill.PersonalProfileSkill> skills = skillService
+                .getMySkills();
+
+        List<com.burakkurucay.connex.dto.profile.personal.skill.SkillResponse> response = skills.stream()
+                .map(com.burakkurucay.connex.dto.profile.personal.skill.SkillResponse::from)
+                .toList();
+
+        return ApiResponse.success(response);
+    }
+
+    /**
+     * Add new skill
+     */
+    @PostMapping("/me/skills")
+    public ApiResponse<Void> addSkill(
+            @Valid @RequestBody com.burakkurucay.connex.dto.profile.personal.skill.CreatePersonalSkillRequest request) {
+        skillService.addSkill(request);
+        return ApiResponse.success(null);
+    }
+
+    /**
+     * Edit existing skill
+     */
+    @PatchMapping("/me/skills/{skillId}")
+    public ApiResponse<Void> updateSkill(
+            @PathVariable Long skillId,
+            @RequestBody com.burakkurucay.connex.dto.profile.personal.skill.EditPersonalSkillRequest request) {
+        skillService.updateSkill(skillId, request);
+        return ApiResponse.success(null);
+    }
+
+    /**
+     * Delete skill
+     */
+    @DeleteMapping("/me/skills/{skillId}")
+    public ApiResponse<Void> deleteSkill(
+            @PathVariable Long skillId) {
+        skillService.deleteSkill(skillId);
         return ApiResponse.success(null);
     }
 }
