@@ -60,3 +60,65 @@ export const deleteMyAvatar = async (): Promise<void> => {
         throw err;
     }
 };
+
+// =========================================================
+// Header / Cover Image APIs
+// =========================================================
+
+/**
+ * Upload header/cover image for the current user.
+ * POST /api/profiles/me/header (multipart/form-data)
+ */
+export const uploadMyHeader = async (file: File): Promise<ApiResponse<void>> => {
+    try {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const res = await authClient.post<ApiResponse<void>>(
+            "/api/profiles/me/header",
+            formData,
+            {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            }
+        );
+        return res.data;
+    } catch (err) {
+        if (axios.isAxiosError(err)) {
+            throw err.response?.data ?? err;
+        }
+        throw err;
+    }
+};
+
+/**
+ * Get header/cover image URL for a profile.
+ * GET /api/profiles/{profileId}/header
+ * 
+ * Returns the full URL to fetch the header image.
+ * Append a cache-busting timestamp when needed.
+ */
+export const getHeaderUrl = (profileId: number, cacheBust?: number): string => {
+    const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "";
+    const url = `${baseUrl}/api/profiles/${profileId}/header`;
+    if (cacheBust) {
+        return `${url}?t=${cacheBust}`;
+    }
+    return url;
+};
+
+/**
+ * Delete header/cover image for the current user.
+ * DELETE /api/profiles/me/header
+ */
+export const deleteMyHeader = async (): Promise<void> => {
+    try {
+        await authClient.delete("/api/profiles/me/header");
+    } catch (err) {
+        if (axios.isAxiosError(err)) {
+            throw err.response?.data ?? err;
+        }
+        throw err;
+    }
+};

@@ -79,6 +79,55 @@ public class ProfileImageService {
     }
 
     // =========================================================
+    // Upload / Replace Header (Cover Image)
+    // =========================================================
+
+    @Transactional
+    public void uploadHeader(MultipartFile file) {
+        Profile profile = profileService.getMyProfile();
+        uploadImage(profile, ImageType.HEADER, file);
+    }
+
+    // =========================================================
+    // Get Header (Cover Image)
+    // =========================================================
+
+    @Transactional(readOnly = true)
+    public Resource getHeader(Long profileId) {
+        ProfileImage image = imageRepository.findByProfileAndImageType(
+                profileService.getProfileById(profileId),
+                ImageType.HEADER).orElseThrow(() -> new IllegalStateException("Header not found"));
+
+        try {
+            Path path = Paths.get(image.getFilePath());
+            Resource resource = new UrlResource(path.toUri());
+
+            if (!resource.exists()) {
+                throw new IllegalStateException("Header file not found on disk");
+            }
+
+            return resource;
+        } catch (MalformedURLException e) {
+            throw new IllegalStateException("Invalid header path", e);
+        }
+    }
+
+    // =========================================================
+    // Delete Header (Cover Image)
+    // =========================================================
+
+    @Transactional
+    public void deleteMyHeader() {
+        Profile profile = profileService.getMyProfile();
+
+        imageRepository.findByProfileAndImageType(profile, ImageType.HEADER)
+                .ifPresent(image -> {
+                    deleteFileIfExists(image.getFilePath());
+                    imageRepository.delete(image);
+                });
+    }
+
+    // =========================================================
     // Internal shared logic
     // =========================================================
 

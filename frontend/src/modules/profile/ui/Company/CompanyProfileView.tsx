@@ -8,12 +8,14 @@ interface CompanyProfileViewProps {
     company: CompanyProfileData;
     profileId: number;
     isOwner?: boolean;
+    onProfileRefresh?: () => void;
 }
 
 export default function CompanyProfileView({
     company,
     profileId,
     isOwner = false,
+    onProfileRefresh,
 }: CompanyProfileViewProps) {
     const {
         companyName,
@@ -34,6 +36,7 @@ export default function CompanyProfileView({
                     website={website}
                     profileId={profileId}
                     isOwner={isOwner}
+                    onProfileUpdate={onProfileRefresh}
                 />
             </div>
         </div>

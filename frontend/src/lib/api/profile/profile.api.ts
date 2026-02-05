@@ -40,6 +40,28 @@ export interface CompanyProfileData {
     website?: string | null;
 }
 
+export interface CompanyProfileEditRequest {
+    companyName: string;
+    description?: string;
+    industry?: string;
+    location?: string;
+    website?: string;
+}
+
+export const updateMyCompanyProfile = async (
+    data: CompanyProfileEditRequest
+): Promise<ApiResponse<void>> => {
+    try {
+        const res = await authClient.put<ApiResponse<void>>("/api/profiles/company/me", data);
+        return res.data;
+    } catch (err) {
+        if (axios.isAxiosError(err)) {
+            throw err.response?.data ?? err;
+        }
+        throw err;
+    }
+};
+
 /* ---------- PUBLIC ---------- */
 /**
  * Public profile (any user can see)

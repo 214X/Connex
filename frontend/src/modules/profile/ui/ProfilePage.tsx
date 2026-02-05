@@ -7,15 +7,16 @@ import CompanyProfileView from "./Company/CompanyProfileView";
 interface ProfilePageProps {
     profile: ProfileResponse;
     isOwner?: boolean;
+    onProfileRefresh?: () => void;
 }
 
-export default function ProfilePage({ profile, isOwner = false }: ProfilePageProps) {
+export default function ProfilePage({ profile, isOwner = false, onProfileRefresh }: ProfilePageProps) {
     if (profile.accountType === "PERSONAL" && profile.personal) {
-        return <PersonalProfileView personal={profile.personal} profileId={profile.id} isOwner={isOwner} />;
+        return <PersonalProfileView personal={profile.personal} profileId={profile.id} isOwner={isOwner} onProfileRefresh={onProfileRefresh} />;
     }
 
     if (profile.accountType === "COMPANY" && profile.company) {
-        return <CompanyProfileView company={profile.company} profileId={profile.id} isOwner={isOwner} />;
+        return <CompanyProfileView company={profile.company} profileId={profile.id} isOwner={isOwner} onProfileRefresh={onProfileRefresh} />;
     }
 
     // Defensive fallback (should never happen)

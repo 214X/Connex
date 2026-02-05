@@ -5,6 +5,7 @@ import styles from "./PersonalProfileHeader.module.css";
 import { FiMapPin, FiPhone, FiEdit2 } from "react-icons/fi";
 import Modal from "@/components/ui/Modal";
 import ProfileAvatar from "@/components/ui/ProfileAvatar";
+import ProfileCover from "@/components/ui/ProfileCover";
 import { PersonalProfileData, updateMyProfile } from "@/lib/api/profile/profile.api";
 
 interface PersonalProfileHeaderProps {
@@ -77,13 +78,18 @@ export default function PersonalProfileHeader({
     return (
         <div className={styles.headerContainer}>
             {/* Cover Image Area */}
-            <div className={styles.coverArea}>
-                {isOwner && (
-                    <button className={styles.editButton} onClick={handleEditClick}>
-                        <FiEdit2 /> Edit Profile
-                    </button>
-                )}
-            </div>
+            <ProfileCover
+                profileId={profileId}
+                isEditable={isOwner}
+                onCoverChange={onProfileUpdate}
+            />
+
+            {/* Edit Profile Button */}
+            {isOwner && (
+                <button className={styles.editButton} onClick={handleEditClick}>
+                    <FiEdit2 /> Edit Profile
+                </button>
+            )}
 
             {/* Content Area */}
             <div className={styles.contentArea}>

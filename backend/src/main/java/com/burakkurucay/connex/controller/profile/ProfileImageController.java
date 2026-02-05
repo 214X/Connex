@@ -38,9 +38,9 @@ public class ProfileImageController {
         Resource avatar = profileImageService.getAvatar(profileId);
 
         return ResponseEntity.ok()
-            .header(HttpHeaders.CACHE_CONTROL, "public, max-age=3600")
-            .contentType(MediaType.IMAGE_PNG)
-            .body(avatar);
+                .header(HttpHeaders.CACHE_CONTROL, "public, max-age=3600")
+                .contentType(MediaType.IMAGE_PNG)
+                .body(avatar);
     }
 
     // =========================================================
@@ -50,6 +50,40 @@ public class ProfileImageController {
     @DeleteMapping("/me/avatar")
     public ApiResponse<Void> deleteMyAvatar() {
         profileImageService.deleteMyAvatar();
+        return ApiResponse.success(null);
+    }
+
+    // =========================================================
+    // Upload / Replace Header (current user)
+    // =========================================================
+
+    @PostMapping("/me/header")
+    public ApiResponse<Void> uploadMyHeader(@RequestParam("file") MultipartFile file) {
+        profileImageService.uploadHeader(file);
+        return ApiResponse.success(null);
+    }
+
+    // =========================================================
+    // Get Header (public)
+    // =========================================================
+
+    @GetMapping("/{profileId}/header")
+    public ResponseEntity<Resource> getHeader(@PathVariable Long profileId) {
+        Resource header = profileImageService.getHeader(profileId);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CACHE_CONTROL, "public, max-age=3600")
+                .contentType(MediaType.IMAGE_PNG)
+                .body(header);
+    }
+
+    // =========================================================
+    // Delete Header (current user)
+    // =========================================================
+
+    @DeleteMapping("/me/header")
+    public ApiResponse<Void> deleteMyHeader() {
+        profileImageService.deleteMyHeader();
         return ApiResponse.success(null);
     }
 }

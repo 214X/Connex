@@ -16,12 +16,14 @@ interface PersonalProfileViewProps {
     personal: PersonalProfileData;
     profileId: number;
     isOwner?: boolean;
+    onProfileRefresh?: () => void;
 }
 
 export default function PersonalProfileView({
     personal: initialPersonal,
     profileId,
     isOwner = false,
+    onProfileRefresh,
 }: PersonalProfileViewProps) {
     const [personal, setPersonal] = useState<PersonalProfileData>(initialPersonal);
 
@@ -40,10 +42,12 @@ export default function PersonalProfileView({
                     setPersonal(res.data.personal);
                 }
             }
+            // Call parent's refresh if provided
+            onProfileRefresh?.();
         } catch (err) {
             console.error("Failed to refresh profile", err);
         }
-    }, [isOwner]);
+    }, [isOwner, onProfileRefresh]);
 
     return (
         <div className={styles.pageContainer}>
