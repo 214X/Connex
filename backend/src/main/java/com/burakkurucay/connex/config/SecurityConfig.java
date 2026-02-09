@@ -58,6 +58,9 @@ public class SecurityConfig {
                         .requestMatchers("/api/profiles/me").authenticated()
                         .requestMatchers("/api/profiles/me/**").authenticated()
 
+                        // 🔓 Public Search Domain
+                        .requestMatchers("/api/search/**").permitAll()
+
                         // 🔓 Public profile by userId
                         .requestMatchers(HttpMethod.GET, "/api/profiles/*").permitAll()
 

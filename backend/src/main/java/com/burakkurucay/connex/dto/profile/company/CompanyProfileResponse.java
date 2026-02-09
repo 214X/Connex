@@ -5,6 +5,7 @@ import com.burakkurucay.connex.entity.profile.company.CompanyProfile;
 public class CompanyProfileResponse {
 
     private Long id;
+    private Long userId;
     private String companyName;
     private String description;
     private String industry;
@@ -14,6 +15,10 @@ public class CompanyProfileResponse {
     public static CompanyProfileResponse from(CompanyProfile profile) {
         CompanyProfileResponse dto = new CompanyProfileResponse();
         dto.id = profile.getId();
+        // Assuming CompanyProfile -> Profile -> User relationship
+        if (profile.getProfile() != null && profile.getProfile().getUser() != null) {
+            dto.userId = profile.getProfile().getUser().getId();
+        }
         dto.companyName = profile.getCompanyName();
         dto.description = profile.getDescription();
         dto.industry = profile.getIndustry();
@@ -22,10 +27,31 @@ public class CompanyProfileResponse {
         return dto;
     }
 
-    public Long getId() { return id; }
-    public String getCompanyName() { return companyName; }
-    public String getDescription() { return description; }
-    public String getIndustry() { return industry; }
-    public String getLocation() { return location; }
-    public String getWebsite() { return website; }
+    public Long getId() {
+        return id;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getIndustry() {
+        return industry;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
 }

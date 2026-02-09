@@ -99,9 +99,9 @@ public class ProfileService {
      */
     public Profile getProfileById(Long profileId) {
         return profileRepository.findById(profileId)
-            .orElseThrow(() -> new BusinessException(
-                "Profile not found",
-                ErrorCode.PROFILE_NOT_FOUND));
+                .orElseThrow(() -> new BusinessException(
+                        "Profile not found",
+                        ErrorCode.PROFILE_NOT_FOUND));
     }
 
     /**

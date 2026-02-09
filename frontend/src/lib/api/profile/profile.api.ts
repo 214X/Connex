@@ -33,6 +33,8 @@ export interface PersonalProfileData {
 }
 
 export interface CompanyProfileData {
+    id: number;
+    userId: number;
     companyName: string;
     description?: string | null;
     industry?: string | null;

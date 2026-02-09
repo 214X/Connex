@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import styles from "./NavbarStyles.module.css";
-import { FiUser, FiLogOut, FiChevronDown, FiMenu, FiX, FiHome } from "react-icons/fi";
+import { FiUser, FiLogOut, FiChevronDown, FiMenu, FiX, FiHome, FiGlobe } from "react-icons/fi";
 
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState, AppDispatch } from "@/store";
@@ -70,6 +70,15 @@ export default function Navbar() {
                     >
                         <FiHome className={styles.navButtonIcon} />
                         <span>Home</span>
+                    </button>
+
+                    {/* Companies Link */}
+                    <button
+                        className={styles.navButton}
+                        onClick={() => router.push("/companies")}
+                    >
+                        <FiGlobe className={styles.navButtonIcon} />
+                        <span>Companies</span>
                     </button>
                     {/* Add more desktop links here if needed */}
                 </div>
@@ -149,6 +158,17 @@ export default function Navbar() {
                     >
                         <FiHome size={20} />
                         Home
+                    </button>
+
+                    <button
+                        className={styles.drawerLink}
+                        onClick={() => {
+                            router.push("/companies");
+                            setDrawerOpen(false);
+                        }}
+                    >
+                        <FiGlobe size={20} />
+                        Companies
                     </button>
 
                     <button
