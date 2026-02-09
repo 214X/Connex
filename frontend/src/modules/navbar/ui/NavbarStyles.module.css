@@ -1,8 +1,8 @@
 /* ===== NAVBAR CONTAINER ===== */
 .navbarContainer {
     width: 100%;
-    height: 6rem;
-    /* Slightly taller to accommodate floating effect */
+    height: 4rem;
+    /* Adjusted to match frame height for better spacing */
 
     display: flex;
     align-items: center;
@@ -11,96 +11,81 @@
     position: sticky;
     top: 0;
     z-index: 100;
-    pointer-events: none;
-    /* Let clicks pass through empty areas */
+
+    /* Full width background */
+    background-color: var(--color-primary);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .navbarFrame {
-    pointer-events: auto;
-    /* Re-enable clicks on the bar itself */
-    /* Width Control */
     width: 100%;
-    max-width: 800px;
-    /* STRICTLY match profile width */
+    max-width: 1200px;
+    /* Wider max-width for desktop */
+    height: 100%;
 
-    /* Box Model */
-    box-sizing: border-box;
-    /* Ensure padding doesn't add to width */
-    height: 4rem;
-
-    margin: 0 1rem;
+    margin: 0 auto;
+    padding: 0 1.5rem;
 
     display: grid;
     grid-template-columns: auto 1fr auto;
+    /* Logo - Links - Profile/Menu */
     align-items: center;
-    padding: 0 1.5rem;
-    /* Horizontal padding for inner spacing */
-
-    /* Glassmorphism */
-    background: rgba(255, 255, 255, 0.85);
-    /* High opacity white */
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-
-    border: 1px solid rgba(255, 255, 255, 0.6);
-    box-shadow:
-        0 4px 6px -1px rgba(0, 0, 0, 0.05),
-        0 10px 30px -5px rgba(0, 0, 0, 0.05);
-
-    border-radius: 10px;
-    /* Pill shape */
-
-    transition: all 0.3s ease;
 }
 
+/* ===== PRODUCT TITLE / LOGO ===== */
+.productTitle {
+    font-size: 2rem;
+    font-weight: 800;
+    color: white;
+    /* White text on purple background */
+    letter-spacing: -0.02em;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+/* ===== DESKTOP NAVIGATION (Middle) ===== */
 .gridMiddle {
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
+    display: none;
+    /* Hidden on mobile by default */
+}
+
+@media (min-width: 768px) {
+    .gridMiddle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2rem;
+        height: 100%;
+    }
 }
 
 .navButton {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    gap: 0.15rem;
-    padding: 0 1rem;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
     height: 100%;
     border: none;
     background: transparent;
     cursor: pointer;
-    color: var(--color-text-secondary);
-    /* Default gray */
+    color: rgba(255, 255, 255, 0.8);
+    /* Semi-transparent white */
     transition: all 0.2s ease;
-    border-bottom: 2px solid transparent;
-    text-decoration: none;
-    /* For Link component */
+    font-size: 0.95rem;
+    font-weight: 500;
 }
 
 .navButton:hover {
-    color: var(--color-primary);
-    background-color: rgba(0, 0, 0, 0.02);
-}
-
-.navButtonActive {
-    color: var(--color-text-primary);
-    /* Active state color */
-    border-bottom-color: var(--color-text-primary);
+    color: white;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
 }
 
 .navButtonIcon {
-    font-size: 1.5rem;
-    margin-bottom: -2px;
+    font-size: 1.25rem;
 }
 
-.navButtonText {
-    font-size: 0.75rem;
-    font-weight: 600;
-}
-
+/* ===== RIGHT SIDE (Desktop Profile / Mobile Menu Toggle) ===== */
 .gridRight {
     display: flex;
     align-items: center;
@@ -108,22 +93,17 @@
     gap: 1rem;
 }
 
-/* ===== PRODUCT TITLE ===== */
-.productTitle {
-    font-size: 1.75rem;
-    font-weight: 800;
-    color: var(--color-primary);
-    /* Brand purple */
-    letter-spacing: -0.03em;
-    cursor: default;
-
-    background: linear-gradient(135deg, var(--color-primary) 0%, var(--purple-hover) 100%);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+/* Desktop Profile Button */
+.desktopProfile {
+    display: none;
 }
 
-/* ===== ME BUTTON ===== */
+@media (min-width: 768px) {
+    .desktopProfile {
+        display: block;
+    }
+}
+
 .meWrapper {
     position: relative;
 }
@@ -131,60 +111,39 @@
 .meButton {
     display: flex;
     align-items: center;
-    justify-content: center;
     gap: 0.5rem;
-
-    padding: 0.5rem 1.25rem;
-    height: 3rem;
-
-    border: 1px solid transparent;
-    background: transparent;
+    padding: 0.4rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.1);
     border-radius: 9999px;
-
     cursor: pointer;
     transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+    color: white;
 }
 
 .meButton:hover {
-    background-color: var(--color-primary-light);
-    color: var(--color-primary);
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 .meButtonText {
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 600;
-    color: var(--color-text-primary);
-    transition: color 0.2s ease;
 }
 
-.meButton:hover .meButtonText {
-    color: var(--color-primary);
-}
-
-/* ===== DROPDOWN ===== */
+/* Dropdown (Desktop) */
 .meDropdown {
     position: absolute;
-    top: calc(100% + 1rem);
+    top: calc(100% + 0.5rem);
     right: 0;
-    width: 180px;
-
+    width: 200px;
+    background: white;
+    border-radius: 12px;
+    padding: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    z-index: 50;
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
-    padding: 0.5rem;
-
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(12px);
-
-    border: 1px solid rgba(0, 0, 0, 0.06);
-    box-shadow:
-        0 10px 15px -3px rgba(0, 0, 0, 0.1),
-        0 4px 6px -2px rgba(0, 0, 0, 0.05);
-
-    border-radius: 16px;
-    z-index: 50;
-
-    transform-origin: top right;
     animation: scaleIn 0.2s ease forwards;
 }
 
@@ -204,18 +163,14 @@
     display: flex;
     align-items: center;
     width: 100%;
-    height: 2.75rem;
-    padding: 0 1rem;
-
+    padding: 0.75rem 1rem;
     background: transparent;
     border: none;
     border-radius: 8px;
-
     color: var(--color-text-primary);
     font-size: 0.95rem;
     font-weight: 500;
     text-align: left;
-
     cursor: pointer;
     transition: all 0.2s ease;
 }
@@ -223,4 +178,152 @@
 .dropdownItem:hover {
     background-color: var(--color-background);
     color: var(--color-primary);
+}
+
+/* ===== MOBILE HAMBURGER ===== */
+.mobileMenuBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    /* Icon size */
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+@media (min-width: 768px) {
+    .mobileMenuBtn {
+        display: none;
+    }
+}
+
+/* ===== DRAWER (Mobile) ===== */
+.drawerOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
+    z-index: 200;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.drawerOverlay.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 280px;
+    /* Drawer width */
+    height: 100vh;
+    background: white;
+    z-index: 201;
+    transform: translateX(100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    box-shadow: -4px 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.drawer.open {
+    transform: translateX(0);
+}
+
+.drawerHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.drawerTitle {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin: 0;
+}
+
+.closeBtn {
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.drawerContent {
+    flex: 1;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    overflow-y: auto;
+}
+
+.drawerLink {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    background: transparent;
+    border: none;
+    color: var(--color-text-primary);
+    font-size: 1rem;
+    font-weight: 500;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    text-decoration: none;
+}
+
+.drawerLink:hover {
+    background-color: var(--color-background);
+    color: var(--color-primary);
+}
+
+.drawerLink.active {
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+}
+
+.drawerFooter {
+    padding: 1rem;
+    border-top: 1px solid var(--color-border);
+}
+
+.drawerLogout {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    background: rgba(255, 0, 0, 0.05);
+    border: none;
+    color: #ef4444;
+    /* Red color for logout */
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.drawerLogout:hover {
+    background: rgba(255, 0, 0, 0.1);
 }
