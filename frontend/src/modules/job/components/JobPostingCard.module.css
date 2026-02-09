@@ -1,0 +1,133 @@
+.card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transition: all 0.2s;
+}
+
+.card:hover {
+    box-shadow: var(--shadow-sm);
+    border-color: var(--color-primary-light);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.mainInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin: 0;
+}
+
+.position {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    margin: 0;
+}
+
+.badge {
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.25rem 0.5rem;
+    border-radius: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.draft {
+    background-color: #f3f4f6;
+    color: #6b7280;
+}
+
+.published {
+    background-color: #d1fae5;
+    color: #059669;
+}
+
+.closed {
+    background-color: #fee2e2;
+    color: #ef4444;
+}
+
+.meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+}
+
+.metaItem {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+}
+
+.description {
+    font-size: 0.875rem;
+    color: var(--color-text-primary);
+    line-height: 1.5;
+    margin: 0;
+}
+
+.skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.skillTag {
+    font-size: 0.75rem;
+    background-color: var(--color-background);
+    color: var(--color-text-secondary);
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    border: 1px solid var(--color-border);
+}
+
+.actions {
+    display: flex;
+    gap: 0.5rem;
+    border-top: 1px solid var(--color-border);
+    padding-top: 1rem;
+    margin-top: auto;
+}
+
+.actionButton {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.5rem 0.75rem;
+    background: transparent;
+    border: 1px solid var(--color-border);
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.actionButton:hover {
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
+}
+
+.deleteButton:hover {
+    background-color: #fee2e2;
+    color: #ef4444;
+    border-color: #fca5a5;
+}

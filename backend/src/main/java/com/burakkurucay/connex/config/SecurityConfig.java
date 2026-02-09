@@ -45,6 +45,11 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/health/**").permitAll()
 
+                        // 🔓 Public Job Endpoints
+                        .requestMatchers(HttpMethod.GET, "/jobs").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/jobs/*").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/jobs/company/**").permitAll()
+
                         // 🔓 Public avatar and header access (anyone can view profile images)
                         .requestMatchers(HttpMethod.GET, "/api/profiles/*/avatar").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/profiles/*/header").permitAll()

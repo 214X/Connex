@@ -47,14 +47,18 @@ public class ProfileImageService {
     public Resource getAvatar(Long profileId) {
         ProfileImage image = imageRepository.findByProfileAndImageType(
                 profileService.getProfileById(profileId),
-                ImageType.AVATAR).orElseThrow(() -> new IllegalStateException("Avatar not found"));
+                ImageType.AVATAR).orElse(null);
+
+        if (image == null) {
+            return null;
+        }
 
         try {
             Path path = Paths.get(image.getFilePath());
             Resource resource = new UrlResource(path.toUri());
 
             if (!resource.exists()) {
-                throw new IllegalStateException("Avatar file not found on disk");
+                return null;
             }
 
             return resource;
@@ -96,14 +100,18 @@ public class ProfileImageService {
     public Resource getHeader(Long profileId) {
         ProfileImage image = imageRepository.findByProfileAndImageType(
                 profileService.getProfileById(profileId),
-                ImageType.HEADER).orElseThrow(() -> new IllegalStateException("Header not found"));
+                ImageType.HEADER).orElse(null);
+
+        if (image == null) {
+            return null;
+        }
 
         try {
             Path path = Paths.get(image.getFilePath());
             Resource resource = new UrlResource(path.toUri());
 
             if (!resource.exists()) {
-                throw new IllegalStateException("Header file not found on disk");
+                return null;
             }
 
             return resource;

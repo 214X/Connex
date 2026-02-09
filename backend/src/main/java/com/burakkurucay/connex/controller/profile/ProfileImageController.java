@@ -37,6 +37,10 @@ public class ProfileImageController {
     public ResponseEntity<Resource> getAvatar(@PathVariable Long profileId) {
         Resource avatar = profileImageService.getAvatar(profileId);
 
+        if (avatar == null) {
+            return ResponseEntity.notFound().build();
+        }
+
         return ResponseEntity.ok()
                 .header(HttpHeaders.CACHE_CONTROL, "public, max-age=3600")
                 .contentType(MediaType.IMAGE_PNG)
@@ -70,6 +74,10 @@ public class ProfileImageController {
     @GetMapping("/{profileId}/header")
     public ResponseEntity<Resource> getHeader(@PathVariable Long profileId) {
         Resource header = profileImageService.getHeader(profileId);
+
+        if (header == null) {
+            return ResponseEntity.notFound().build();
+        }
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CACHE_CONTROL, "public, max-age=3600")

@@ -1,0 +1,112 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.formRow {
+    display: flex;
+    gap: 1rem;
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+}
+
+.formGroup label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+}
+
+.input,
+.textarea,
+.select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
+    transition: all 0.2s;
+}
+
+.textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.input:focus,
+.textarea:focus,
+.select:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px var(--color-primary-light);
+}
+
+.selectWrapper {
+    position: relative;
+    width: 100%;
+}
+
+.error {
+    background-color: #fee2e2;
+    color: #ef4444;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+}
+
+.formActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.cancelButton {
+    padding: 0.75rem 1.5rem;
+    background: transparent;
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    color: var(--color-text-secondary);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.cancelButton:hover {
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
+}
+
+.submitButton {
+    padding: 0.75rem 1.5rem;
+    background-color: var(--color-primary);
+    border: none;
+    border-radius: 0.5rem;
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.submitButton:hover {
+    background-color: var(--color-primary-hover);
+}
+
+.submitButton:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+@media (max-width: 640px) {
+    .formRow {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+}

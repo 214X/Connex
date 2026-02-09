@@ -25,6 +25,10 @@ public class ApiResponse<T> {
         return new ApiResponse<>(true, data, null);
     }
 
+    public static <T> ApiResponse<T> success() {
+        return new ApiResponse<>(true, null, null);
+    }
+
     // Factory method for error responses
     public static <T> ApiResponse<T> error(String code, String message, List<String> details) {
         ErrorInfo errorInfo = new ErrorInfo(code, message, details);

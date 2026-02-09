@@ -16,7 +16,7 @@ export default function ProfilePage({ profile, isOwner = false, onProfileRefresh
     }
 
     if (profile.accountType === "COMPANY" && profile.company) {
-        return <CompanyProfileView company={profile.company} profileId={profile.id} isOwner={isOwner} onProfileRefresh={onProfileRefresh} />;
+        return <CompanyProfileView company={profile.company} profileId={profile.id} userId={profile.userId} isOwner={isOwner} onProfileRefresh={onProfileRefresh} />;
     }
 
     // Defensive fallback (should never happen)
