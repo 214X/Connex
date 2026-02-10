@@ -1,4 +1,4 @@
-import { FiMapPin, FiBriefcase, FiClock, FiEdit2, FiTrash2, FiEye, FiEyeOff } from "react-icons/fi";
+import { FiMapPin, FiBriefcase, FiClock, FiEdit2, FiTrash2, FiEye, FiEyeOff, FiUsers, FiSend } from "react-icons/fi";
 import { JobPosting, JobStatus } from "@/lib/api/job/job.api";
 import styles from "./JobPostingCard.module.css";
 
@@ -8,6 +8,8 @@ interface JobPostingCardProps {
     onEdit: (job: JobPosting) => void;
     onDelete: (id: number) => void;
     onToggleStatus: (job: JobPosting) => void;
+    onApply?: (job: JobPosting) => void;
+    onViewApplicants?: (job: JobPosting) => void;
 }
 
 export default function JobPostingCard({
@@ -15,7 +17,9 @@ export default function JobPostingCard({
     isOwner,
     onEdit,
     onDelete,
-    onToggleStatus
+    onToggleStatus,
+    onApply,
+    onViewApplicants
 }: JobPostingCardProps) {
 
     const formatDate = (dateStr?: string | null) => {
@@ -82,41 +86,61 @@ export default function JobPostingCard({
                 )}
             </div>
 
-            {isOwner && (
-                <div className={styles.actions}>
-                    <button
-                        onClick={() => onToggleStatus(job)}
-                        className={styles.actionButton}
-                        title={job.status === JobStatus.PUBLISHED ? "Close Job" : "Publish Job"}
-                    >
-                        {job.status === JobStatus.PUBLISHED ? (
-                            <>
-                                <FiEyeOff size={16} /> <span>Close</span>
-                            </>
-                        ) : (
-                            <>
-                                <FiEye size={16} /> <span>Publish</span>
-                            </>
-                        )}
-                    </button>
+            <div className={styles.actions}>
+                {isOwner ? (
+                    <>
+                        <button
+                            onClick={() => onViewApplicants?.(job)}
+                            className={styles.actionButton}
+                            title="View Applicants"
+                        >
+                            <FiUsers size={16} /> <span>Applicants {job.applicationCount > 0 && `(${job.applicationCount})`}</span>
+                        </button>
 
-                    <button
-                        onClick={() => onEdit(job)}
-                        className={styles.actionButton}
-                        title="Edit Job"
-                    >
-                        <FiEdit2 size={16} /> <span>Edit</span>
-                    </button>
+                        <button
+                            onClick={() => onToggleStatus(job)}
+                            className={styles.actionButton}
+                            title={job.status === JobStatus.PUBLISHED ? "Close Job" : "Publish Job"}
+                        >
+                            {job.status === JobStatus.PUBLISHED ? (
+                                <>
+                                    <FiEyeOff size={16} /> <span>Close</span>
+                                </>
+                            ) : (
+                                <>
+                                    <FiEye size={16} /> <span>Publish</span>
+                                </>
+                            )}
+                        </button>
 
-                    <button
-                        onClick={() => onDelete(job.id)}
-                        className={`${styles.actionButton} ${styles.deleteButton}`}
-                        title="Delete Job"
-                    >
-                        <FiTrash2 size={16} /> <span>Delete</span>
-                    </button>
-                </div>
-            )}
+                        <button
+                            onClick={() => onEdit(job)}
+                            className={styles.actionButton}
+                            title="Edit Job"
+                        >
+                            <FiEdit2 size={16} /> <span>Edit</span>
+                        </button>
+
+                        <button
+                            onClick={() => onDelete(job.id)}
+                            className={`${styles.actionButton} ${styles.deleteButton}`}
+                            title="Delete Job"
+                        >
+                            <FiTrash2 size={16} /> <span>Delete</span>
+                        </button>
+                    </>
+                ) : (
+                    onApply && (
+                        <button
+                            onClick={() => onApply(job)}
+                            className={`${styles.actionButton} ${styles.applyButton}`}
+                            title="Apply to Job"
+                        >
+                            <FiSend size={16} /> <span>Apply Now</span>
+                        </button>
+                    )
+                )}
+            </div>
         </div>
     );
 }

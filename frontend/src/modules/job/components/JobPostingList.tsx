@@ -1,5 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { FiPlus } from "react-icons/fi";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
 import {
     getMyCompanyJobs,
     getCompanyPublicJobs,
@@ -11,6 +13,8 @@ import {
 } from "@/lib/api/job/job.api";
 import JobPostingCard from "./JobPostingCard";
 import JobPostingModal from "./JobPostingModal";
+import JobApplicationModal from "./JobApplicationModal";
+import CompanyJobApplicationsModal from "./CompanyJobApplicationsModal";
 import styles from "./JobPostingList.module.css";
 
 interface JobPostingListProps {
@@ -19,13 +23,19 @@ interface JobPostingListProps {
 }
 
 export default function JobPostingList({ profileId, isOwner }: JobPostingListProps) {
+    const { user } = useSelector((state: RootState) => state.auth);
+    const isPersonal = user?.accountType === "PERSONAL";
+
     const [jobs, setJobs] = useState<JobPosting[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     // Modal State
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [iscreateEditModalOpen, setIsCreateEditModalOpen] = useState(false);
     const [editingJob, setEditingJob] = useState<JobPosting | null>(null);
+
+    const [applyingJob, setApplyingJob] = useState<JobPosting | null>(null);
+    const [viewingApplicantsJob, setViewingApplicantsJob] = useState<JobPosting | null>(null);
 
     const fetchJobs = useCallback(async () => {
         setIsLoading(true);
@@ -49,12 +59,12 @@ export default function JobPostingList({ profileId, isOwner }: JobPostingListPro
 
     const handleCreateClick = () => {
         setEditingJob(null);
-        setIsModalOpen(true);
+        setIsCreateEditModalOpen(true);
     };
 
     const handleEditClick = (job: JobPosting) => {
         setEditingJob(job);
-        setIsModalOpen(true);
+        setIsCreateEditModalOpen(true);
     };
 
     const handleDeleteClick = async (id: number) => {
@@ -85,6 +95,14 @@ export default function JobPostingList({ profileId, isOwner }: JobPostingListPro
             console.error("Failed to update status", err);
             alert("Failed to update job status.");
         }
+    };
+
+    const handleApplyClick = (job: JobPosting) => {
+        setApplyingJob(job);
+    };
+
+    const handleViewApplicantsClick = (job: JobPosting) => {
+        setViewingApplicantsJob(job);
     };
 
     const handleModalSuccess = () => {
@@ -124,6 +142,8 @@ export default function JobPostingList({ profileId, isOwner }: JobPostingListPro
                             onEdit={handleEditClick}
                             onDelete={handleDeleteClick}
                             onToggleStatus={handleToggleStatus}
+                            onApply={isPersonal ? handleApplyClick : undefined}
+                            onViewApplicants={isOwner ? handleViewApplicantsClick : undefined}
                         />
                     ))}
                 </div>
@@ -131,10 +151,32 @@ export default function JobPostingList({ profileId, isOwner }: JobPostingListPro
 
             {isOwner && (
                 <JobPostingModal
-                    isOpen={isModalOpen}
-                    onClose={() => setIsModalOpen(false)}
+                    isOpen={iscreateEditModalOpen}
+                    onClose={() => setIsCreateEditModalOpen(false)}
                     onSuccess={handleModalSuccess}
                     initialData={editingJob}
+                />
+            )}
+
+            {applyingJob && (
+                <JobApplicationModal
+                    isOpen={!!applyingJob}
+                    onClose={() => setApplyingJob(null)}
+                    jobId={applyingJob.id}
+                    jobTitle={applyingJob.title}
+                    onSuccess={() => {
+                        // Optionally refresh jobs to update application count if we display it
+                        fetchJobs();
+                    }}
+                />
+            )}
+
+            {viewingApplicantsJob && (
+                <CompanyJobApplicationsModal
+                    isOpen={!!viewingApplicantsJob}
+                    onClose={() => setViewingApplicantsJob(null)}
+                    jobId={viewingApplicantsJob.id}
+                    jobTitle={viewingApplicantsJob.title}
                 />
             )}
         </div>

@@ -19,4 +19,6 @@ public interface PersonalProfileRepository extends JpaRepository<PersonalProfile
      * Check if a personal profile exists for the given profile ID.
      */
     boolean existsByProfileId(Long profileId);
+
+    Optional<PersonalProfile> findByProfileUserId(Long userId);
 }

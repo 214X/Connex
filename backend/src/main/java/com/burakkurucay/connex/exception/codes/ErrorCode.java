@@ -44,7 +44,15 @@ public enum ErrorCode {
     PROFILE_LANGUAGE_NOT_FOUND(10000, "Language entry not found", HttpStatus.NOT_FOUND),
 
     // pp project
-    PROFILE_PROJECT_NOT_FOUND(11000, "Project entry not found", HttpStatus.NOT_FOUND);
+    PROFILE_PROJECT_NOT_FOUND(11000, "Project entry not found", HttpStatus.NOT_FOUND),
+
+    // job
+    JOB_POSTING_NOT_FOUND(12000, "Job posting not found", HttpStatus.NOT_FOUND),
+
+    // Job Application
+    ALREADY_APPLIED(13000, "You have already applied for this job", HttpStatus.CONFLICT),
+    INVALID_MESSAGE_LENGTH(13001, "Message is too long", HttpStatus.BAD_REQUEST),
+    JOB_APPLICATION_NOT_FOUND(13002, "Job application not found", HttpStatus.NOT_FOUND);
 
     private final int code;
     private final String message;
