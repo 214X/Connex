@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FiEdit2, FiPlus, FiTrash2, FiCpu } from "react-icons/fi";
+import { FiEdit2, FiPlus, FiTrash2, FiStar } from "react-icons/fi";
 import { PersonalProfileSkill, addSkill, updateSkill, deleteSkill } from "@/lib/api/profile/profile.api";
 import Modal from "@/components/ui/Modal";
 import styles from "./ContactList.module.css"; // Reuse ContactList styles as requested for "same view"
@@ -7,10 +7,11 @@ import styles from "./ContactList.module.css"; // Reuse ContactList styles as re
 interface SkillListProps {
     skills: PersonalProfileSkill[];
     isOwner: boolean;
+    isEditMode: boolean;
     onSkillsChange: () => void;
 }
 
-export default function SkillList({ skills, isOwner, onSkillsChange }: SkillListProps) {
+export default function SkillList({ skills, isOwner, isEditMode, onSkillsChange }: SkillListProps) {
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [editingSkill, setEditingSkill] = useState<PersonalProfileSkill | null>(null);
@@ -81,7 +82,8 @@ export default function SkillList({ skills, isOwner, onSkillsChange }: SkillList
         }
     };
 
-    if (!isOwner && skills.length === 0) {
+    // If not in edit mode and no skills, don't show the section
+    if (!isEditMode && skills.length === 0) {
         return null;
     }
 
@@ -89,7 +91,7 @@ export default function SkillList({ skills, isOwner, onSkillsChange }: SkillList
         <div className={styles.container}>
             <div className={styles.header}>
                 <h3 className={styles.title}>Skills</h3>
-                {isOwner && (
+                {isOwner && isEditMode && (
                     <button className={styles.addButton} onClick={handleAddClick}>
                         <FiPlus size={16} /> <span>Add</span>
                     </button>
@@ -103,18 +105,26 @@ export default function SkillList({ skills, isOwner, onSkillsChange }: SkillList
                     skills.map(skill => (
                         <div key={skill.id} className={styles.item}>
                             <div className={styles.itemLeft}>
-                                <div className={styles.iconWrapper}><FiCpu /></div>
+                                <div className={styles.iconWrapper}><FiStar /></div>
                                 <div className={styles.itemContent}>
                                     <span className={styles.itemValue}>{skill.name}</span>
                                     {skill.description && (
                                         <span className={styles.itemType}>{skill.description}</span>
                                     )}
                                     {skill.level !== undefined && skill.level !== null && (
-                                        <span className={styles.itemType}>Level: {skill.level}/10</span>
+                                        <div className={styles.levelBar}>
+                                            <div className={styles.levelTrack}>
+                                                <div
+                                                    className={styles.levelFill}
+                                                    style={{ width: `${(skill.level / 10) * 100}%` }}
+                                                />
+                                            </div>
+                                            <span className={styles.levelLabel}>{skill.level}/10</span>
+                                        </div>
                                     )}
                                 </div>
                             </div>
-                            {isOwner && (
+                            {isOwner && isEditMode && (
                                 <div className={styles.actions}>
                                     <button
                                         className={styles.actionButton}

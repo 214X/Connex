@@ -70,7 +70,9 @@ public class SecurityConfig {
                         .anyRequest().authenticated())
 
                 // JWT filter: Authorization: Bearer token kontrolü
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+
+                .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()));
 
         return http.build();
     }

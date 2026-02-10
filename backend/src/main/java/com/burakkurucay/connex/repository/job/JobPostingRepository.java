@@ -35,4 +35,10 @@ public interface JobPostingRepository extends JpaRepository<JobPosting, Long> {
     List<JobPosting> findAllByStatusAndLocation(
             JobStatus status,
             String location);
+
+    @org.springframework.data.jpa.repository.Query("SELECT j FROM JobPosting j WHERE j.status = 'PUBLISHED' AND (" +
+            "LOWER(j.title) LIKE LOWER(CONCAT('%', :query, '%')) OR " +
+            "LOWER(j.description) LIKE LOWER(CONCAT('%', :query, '%')) OR " +
+            "LOWER(j.position) LIKE LOWER(CONCAT('%', :query, '%')))")
+    List<JobPosting> searchPublishedJobs(@org.springframework.data.repository.query.Param("query") String query);
 }

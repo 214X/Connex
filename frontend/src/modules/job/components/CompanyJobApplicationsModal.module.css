@@ -9,10 +9,233 @@
 
 .applicationItem {
     padding: 1rem;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--color-border);
     border-radius: 0.5rem;
-    background-color: var(--bg-card);
+    background-color: var(--color-surface);
     transition: all 0.2s;
+}
+
+.applicationItem:hover {
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-sm);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.5rem;
+}
+
+.applicantInfo h4 {
+    margin: 0;
+    font-size: 1rem;
+    color: var(--color-text-primary);
+}
+
+.applicantLocation {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-top: 0.25rem;
+}
+
+.meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.25rem;
+}
+
+.date {
+    font-size: 0.8rem;
+    color: var(--color-text-secondary);
+}
+
+.message {
+    margin-top: 0.75rem;
+    padding: 0.75rem;
+    background-color: var(--color-background);
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    font-style: italic;
+    white-space: pre-wrap;
+    border: 1px solid var(--color-border);
+}
+
+.badge {
+    padding: 0.25rem 0.5rem;
+    border-radius: 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.badge.APPLIED {
+    background-color: #f3f4f6;
+    color: #4b5563;
+}
+
+.badge.REVIEWING {
+    background-color: #dbeafe;
+    color: #2563eb;
+}
+
+.badge.ACCEPTED {
+    background-color: #dcfce7;
+    color: #16a34a;
+}
+
+.badge.REJECTED {
+    background-color: #fee2e2;
+    color: #dc2626;
+}
+
+.empty {
+    text-align: center;
+    padding: 2rem;
+    color: var(--color-text-secondary);
+    font-style: italic;
+}
+
+.loading {
+    text-align: center;
+    padding: 2rem;
+    color: var(--color-text-secondary);
+}
+
+.actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-border);
+}
+
+.actionButton {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    flex: 1;
+    justify-content: center;
+    border: none;
+}
+
+.acceptButton {
+    background-color: #dcfce7;
+    color: #16a34a;
+    border: 1px solid transparent;
+}
+
+.acceptButton:hover {
+    background-color: #bbf7d0;
+    border-color: #16a34a;
+}
+
+.rejectButton {
+    background-color: #fee2e2;
+    color: #dc2626;
+    border: 1px solid transparent;
+}
+
+.rejectButton:hover {
+    background-color: #fecaca;
+    border-color: #dc2626;
+}
+
+.error {
+    text-align: center;
+    padding: 1rem;
+    color: #dc2626;
+    background-color: #fee2e2;
+    border-radius: 0.5rem;
+}
+
+.actionForm {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.applicantNameLink {
+    text-decoration: none;
+    color: inherit;
+    width: fit-content;
+}
+
+.applicantNameLink:hover .applicantName {
+    text-decoration: underline;
+    color: var(--color-primary);
+}
+
+.applicantName {
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--color-text-primary);
+    margin: 0;
+}
+
+.noteInput {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    min-height: 60px;
+    font-size: 0.9rem;
+    font-family: inherit;
+    resize: vertical;
+    background-color: var(--color-surface);
+    color: var(--color-text-primary);
+}
+
+.noteInput:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px var(--color-primary-light);
+}
+
+.formButtons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.confirmButton,
+.cancelButton {
+    padding: 0.4rem 1rem;
+    border-radius: 0.4rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    flex: 1;
+}
+
+.confirmButton {
+    background-color: var(--color-primary);
+    color: white;
+}
+
+.confirmButton:hover {
+    background-color: var(--color-primary-dark);
+}
+
+.cancelButton {
+    background-color: #f3f4f6;
+    color: #4b5563;
+}
+
+.cancelButton:hover {
+    background-color: #e5e7eb;
 }
 
 .applicationItem:hover {
@@ -63,6 +286,16 @@
     color: var(--text-secondary);
     font-style: italic;
     white-space: pre-wrap;
+}
+
+.responseNote {
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    background-color: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 0.5rem;
+    font-size: 0.85rem;
+    color: #15803d;
 }
 
 .badge {
@@ -157,4 +390,48 @@
     color: var(--error-text);
     background-color: var(--error-bg);
     border-radius: 0.5rem;
+}
+
+.actionForm {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.noteInput {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    min-height: 60px;
+    font-size: 0.9rem;
+    font-family: inherit;
+    resize: vertical;
+}
+
+.formButtons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.confirmButton,
+.cancelButton {
+    padding: 0.4rem 1rem;
+    border-radius: 0.4rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    flex: 1;
+}
+
+.confirmButton {
+    background-color: var(--color-primary);
+    color: white;
+}
+
+.cancelButton {
+    background-color: #f3f4f6;
+    color: #4b5563;
 }

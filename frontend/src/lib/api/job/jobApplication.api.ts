@@ -32,15 +32,46 @@ export interface CompanyJobApplicationItem {
     status: ApplicationStatus;
     message?: string | null;
     applicantProfileId: number;
+    applicantUserId: number;
     firstName: string;
     lastName: string;
     location: string | null;
+    responseNote?: string;
 }
 
 export interface CompanyJobApplicationsResponse {
     jobPostingId: number;
     applications: CompanyJobApplicationItem[];
 }
+
+export interface MyJobApplicationResponse {
+    id: number;
+    jobPostingId: number;
+    jobTitle: string;
+    companyName: string;
+    companyUserId?: number; // Added for profile navigation
+    companyLogoUrl?: string;
+    status: ApplicationStatus;
+    responseNote?: string;
+    appliedAt: string;
+}
+
+/* ---------- API METHODS ---------- */
+
+/**
+ * Get current user's job applications
+ */
+export const getMyApplications = async (): Promise<MyJobApplicationResponse[]> => {
+    try {
+        const res = await authClient.get<ApiResponse<MyJobApplicationResponse[]>>("/my-applications");
+        return res.data.data!;
+    } catch (err) {
+        if (axios.isAxiosError(err)) {
+            throw err.response?.data ?? err;
+        }
+        throw err;
+    }
+};
 
 /* ---------- API METHODS ---------- */
 
@@ -82,9 +113,9 @@ export const getJobApplications = async (jobPostingId: number): Promise<CompanyJ
 /**
  * Update application status (Company Owner)
  */
-export const updateApplicationStatus = async (applicationId: number, status: ApplicationStatus): Promise<void> => {
+export const updateApplicationStatus = async (applicationId: number, status: ApplicationStatus, note?: string): Promise<void> => {
     try {
-        await authClient.put(`/company/applications/${applicationId}/status`, { status });
+        await authClient.put(`/company/applications/${applicationId}/status`, { status, note });
     } catch (err) {
         if (axios.isAxiosError(err)) {
             throw err.response?.data ?? err;

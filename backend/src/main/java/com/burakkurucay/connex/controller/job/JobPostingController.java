@@ -130,6 +130,17 @@ public class JobPostingController {
         return ApiResponse.success(response);
     }
 
+    @GetMapping("/search")
+    public ApiResponse<List<JobPostingResponse>> searchJobs(@RequestParam String q) {
+        List<JobPostingResponse> response = jobPostingService
+                .searchJobs(q)
+                .stream()
+                .map(JobPostingMapper::toResponse)
+                .toList();
+
+        return ApiResponse.success(response);
+    }
+
     /*
      * =========================
      * PUBLIC – JOB DETAIL

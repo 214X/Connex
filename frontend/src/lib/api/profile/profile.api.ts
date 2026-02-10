@@ -587,3 +587,20 @@ export const getCvUrl = (profileId: number): string => {
     // Given authClient setup usually has baseURL, we might need to access it or just hardcode relative.
     return `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080"}/api/profiles/personal/${profileId}/cv`;
 };
+
+export const fetchCvBlob = async (profileId: number): Promise<Blob> => {
+    try {
+        const url = getCvUrl(profileId);
+        // Use axios directly to avoid default headers (like Content-Type: application/json)
+        // which might trigger unnecessary preflight or be rejected by server for GET requests.
+        const res = await axios.get(url, {
+            responseType: "blob",
+        });
+        return res.data;
+    } catch (err) {
+        if (axios.isAxiosError(err)) {
+            throw err.response?.data ?? err;
+        }
+        throw err;
+    }
+};

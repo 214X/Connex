@@ -7,10 +7,11 @@ import styles from "./ContactList.module.css";
 interface ContactListProps {
     contacts: PersonalProfileContact[];
     isOwner: boolean;
+    isEditMode: boolean;
     onContactsChange: () => void;
 }
 
-export default function ContactList({ contacts, isOwner, onContactsChange }: ContactListProps) {
+export default function ContactList({ contacts, isOwner, isEditMode, onContactsChange }: ContactListProps) {
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [editingContact, setEditingContact] = useState<PersonalProfileContact | null>(null);
@@ -86,7 +87,7 @@ export default function ContactList({ contacts, isOwner, onContactsChange }: Con
         }
     };
 
-    if (!isOwner && contacts.length === 0) {
+    if (!isEditMode && contacts.length === 0) {
         return null;
     }
 
@@ -94,7 +95,7 @@ export default function ContactList({ contacts, isOwner, onContactsChange }: Con
         <div className={styles.container}>
             <div className={styles.header}>
                 <h3 className={styles.title}>Contact Information</h3>
-                {isOwner && (
+                {isOwner && isEditMode && (
                     <button className={styles.addButton} onClick={handleAddClick}>
                         <FiPlus size={16} /> <span>Add</span>
                     </button>
@@ -114,7 +115,7 @@ export default function ContactList({ contacts, isOwner, onContactsChange }: Con
                                     <span className={styles.itemType}>{contact.type}</span>
                                 </div>
                             </div>
-                            {isOwner && (
+                            {isOwner && isEditMode && (
                                 <div className={styles.actions}>
                                     <button
                                         className={styles.actionButton}

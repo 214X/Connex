@@ -1,0 +1,132 @@
+/* ===================================================
+   JobApplicationsPage — Premium Design
+   =================================================== */
+
+.pageContainer {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 2rem;
+    padding-bottom: 4rem;
+    background-color: var(--color-background);
+}
+
+.contentWrapper {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.header {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.title {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--color-primary);
+    margin: 0;
+    letter-spacing: -0.02em;
+}
+
+.subtitle {
+    font-size: 1rem;
+    color: var(--color-text-secondary);
+    margin: 0.25rem 0 0;
+}
+
+/* List Grid */
+.list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+/* Empty State */
+.emptyState {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    background-color: var(--color-surface);
+    border-radius: 1.25rem;
+    border: 1px dashed var(--color-border);
+    text-align: center;
+    color: var(--color-text-secondary);
+}
+
+.emptyIcon {
+    font-size: 3rem;
+    color: var(--color-primary-light);
+    margin-bottom: 1rem;
+}
+
+.emptyText {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+}
+
+.browseButton {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-hover));
+    color: white;
+    padding: 0.75rem 2rem;
+    border-radius: 9999px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px -3px rgba(78, 72, 217, 0.4);
+}
+
+.browseButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px -4px rgba(78, 72, 217, 0.5);
+}
+
+.loading {
+    text-align: center;
+    padding: 4rem;
+    color: var(--color-text-secondary);
+}
+
+/* Loading Overlay */
+.loadingOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 50;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(78, 72, 217, 0.1);
+    border-radius: 50%;
+    border-top-color: var(--color-primary);
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (min-width: 768px) {
+    .list {
+        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    }
+}

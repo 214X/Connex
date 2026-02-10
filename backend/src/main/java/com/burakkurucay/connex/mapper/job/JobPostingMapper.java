@@ -11,9 +11,11 @@ public final class JobPostingMapper {
         // utility class
     }
 
-    /* =========================
-       CREATE
-       ========================= */
+    /*
+     * =========================
+     * CREATE
+     * =========================
+     */
 
     public static JobPosting toEntity(CreateJobPostingRequest request) {
         JobPosting jobPosting = new JobPosting();
@@ -29,14 +31,15 @@ public final class JobPostingMapper {
         return jobPosting;
     }
 
-    /* =========================
-       UPDATE
-       ========================= */
+    /*
+     * =========================
+     * UPDATE
+     * =========================
+     */
 
     public static void updateEntity(
-        JobPosting jobPosting,
-        UpdateJobPostingRequest request
-    ) {
+            JobPosting jobPosting,
+            UpdateJobPostingRequest request) {
         jobPosting.setTitle(request.getTitle());
         jobPosting.setPosition(request.getPosition());
         jobPosting.setDescription(request.getDescription());
@@ -44,9 +47,11 @@ public final class JobPostingMapper {
         jobPosting.setSkills(request.getSkills());
     }
 
-    /* =========================
-       RESPONSE
-       ========================= */
+    /*
+     * =========================
+     * RESPONSE
+     * =========================
+     */
 
     public static JobPostingResponse toResponse(JobPosting jobPosting) {
         JobPostingResponse response = new JobPostingResponse();

@@ -30,6 +30,11 @@ public class JobApplicationController {
         return ApiResponse.success(response);
     }
 
+    @GetMapping("/my-applications")
+    public ApiResponse<java.util.List<com.burakkurucay.connex.dto.job.jobApplication.MyJobApplicationResponse>> getMyApplications() {
+        return ApiResponse.success(jobApplicationService.getMyApplications());
+    }
+
     /*
      * =========================
      * COMPANY ENDPOINTS

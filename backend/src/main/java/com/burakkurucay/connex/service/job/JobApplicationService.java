@@ -86,6 +86,26 @@ public class JobApplicationService {
     }
 
     /**
+     * Personal user views their own applications.
+     */
+    public java.util.List<com.burakkurucay.connex.dto.job.jobApplication.MyJobApplicationResponse> getMyApplications() {
+        User currentUser = userService.getCurrentUser();
+
+        // 1. Load Personal Profile
+        PersonalProfile applicant = personalProfileRepository.findByProfileUserId(currentUser.getId())
+                .orElseThrow(() -> new BusinessException("Personal profile not found", ErrorCode.PROFILE_NOT_FOUND));
+
+        // 2. Fetch Applications
+        List<JobApplication> applications = jobApplicationRepository
+                .findAllByApplicantIdOrderByCreatedAtDesc(applicant.getId());
+
+        // 3. Map Response
+        return applications.stream()
+                .map(com.burakkurucay.connex.dto.job.jobApplication.MyJobApplicationResponse::from)
+                .toList();
+    }
+
+    /**
      * Company views applications for their job posting.
      */
     public CompanyJobApplicationsResponse listApplicationsForCompany(Long jobPostingId) {
@@ -131,8 +151,11 @@ public class JobApplicationService {
             throw new BusinessException("Forbidden access to this application", ErrorCode.AUTH_FORBIDDEN);
         }
 
-        // 4. Update Status
+        // 4. Update Status and Note
         application.setStatus(request.getStatus());
+        if (request.getNote() != null) {
+            application.setResponseNote(request.getNote().trim());
+        }
         jobApplicationRepository.save(application);
     }
 }

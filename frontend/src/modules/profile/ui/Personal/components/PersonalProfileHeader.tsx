@@ -1,17 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./PersonalProfileHeader.module.css";
 import { FiMapPin, FiPhone, FiEdit2 } from "react-icons/fi";
 import Modal from "@/components/ui/Modal";
 import ProfileAvatar from "@/components/ui/ProfileAvatar";
 import ProfileCover from "@/components/ui/ProfileCover";
+import PdfViewerModal from "@/components/ui/PdfViewerModal";
 import { PersonalProfileData, updateMyProfile } from "@/lib/api/profile/profile.api";
 
 interface PersonalProfileHeaderProps {
     profile: PersonalProfileData;
     profileId: number;
     isOwner: boolean;
+    isEditMode: boolean;
     onProfileUpdate: () => void;
 }
 
@@ -19,14 +21,13 @@ export default function PersonalProfileHeader({
     profile,
     profileId,
     isOwner,
+    isEditMode,
     onProfileUpdate
 }: PersonalProfileHeaderProps) {
     const { firstName, lastName, profileDescription, location, phoneNumber } = profile;
-
-    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
-    // Form State
+    // Form State (Local draft)
     const [formData, setFormData] = useState({
         firstName: firstName || "",
         lastName: lastName || "",
@@ -35,7 +36,10 @@ export default function PersonalProfileHeader({
         phoneNumber: phoneNumber || ""
     });
 
-    const handleEditClick = () => {
+    // Update local state when profile changes (only if not editing, or to sync)
+    // Actually, we should sync when entering edit mode, but here we can just sync on prop change if not dirty?
+    // For simplicity, let's sync local state when profile prop updates.
+    useEffect(() => {
         setFormData({
             firstName: firstName || "",
             lastName: lastName || "",
@@ -43,11 +47,33 @@ export default function PersonalProfileHeader({
             location: location || "",
             phoneNumber: phoneNumber || ""
         });
-        setIsEditModalOpen(true);
+    }, [firstName, lastName, profileDescription, location, phoneNumber]);
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+    // Auto-save or Manual save? 
+    // The parent has a "Done" button which toggles mode. 
+    // ideally, "Done" should trigger a save. 
+    // BUT the "Done" button is in the parent.
+    // Option A: Parent calls a ref method on child? (Complex)
+    // Option B: Child saves automatically on blur? (Good for inline)
+    // Option C: We just provide a "Save Changes" button in the header when in edit mode? 
+    // The user requirement says "when user click to this button [Edit Mode] the view should be editable. when user complete it the view must be able to onlty viewing".
+    // This implies the "Done" button might save.
+    // Or we can have a "Save" button appear next to fields.
+    // Let's go with a explicit "Save" button that appears in the header or use auto-save on blur.
+
+    // Let's modify the design: 
+    // When isEditMode is true, we show inputs.
+    // We add a "Save Header Details" button if changes are detected?
+    // OR we can make the parent's "Done" button trigger a context action?
+
+    // Simplest approach: Add a "Save Changes" button right here in the header forms if isEditMode is true.
+
+    const handleSave = async () => {
         setIsLoading(true);
         try {
             await updateMyProfile({
@@ -57,7 +83,6 @@ export default function PersonalProfileHeader({
                 location: formData.location,
                 phoneNumber: formData.phoneNumber
             });
-            setIsEditModalOpen(false);
             onProfileUpdate();
         } catch (err) {
             console.error("Failed to update profile", err);
@@ -67,30 +92,87 @@ export default function PersonalProfileHeader({
         }
     };
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
-    };
-
-
     // Create initials for avatar placeholder
     const initials = `${firstName?.charAt(0) || ""}${lastName?.charAt(0) || ""}`;
+
+    // --- CV Logic ---
+    const [cvBlobUrl, setCvBlobUrl] = useState<string | null>(null);
+    const [isViewerOpen, setIsViewerOpen] = useState(false);
+    const [isCvLoading, setIsCvLoading] = useState(false);
+
+    // Import these dynamically or moved to top
+    // requiring import update at top of file
+
+    const handleViewCv = async () => {
+        setIsCvLoading(true);
+        try {
+            // Need to import fetchCvBlob
+            const { fetchCvBlob } = await import("@/lib/api/profile/profile.api");
+            const blob = await fetchCvBlob(profileId);
+            const url = URL.createObjectURL(blob);
+            setCvBlobUrl(url);
+            setIsViewerOpen(true);
+        } catch (err) {
+            console.error("Failed to load CV", err);
+            alert("Failed to load CV for viewing");
+        } finally {
+            setIsCvLoading(false);
+        }
+    };
+
+    const handleCvUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        if (file.type !== "application/pdf") {
+            alert("Only PDF files are allowed.");
+            return;
+        }
+
+        try {
+            setIsCvLoading(true);
+            const { uploadCv } = await import("@/lib/api/profile/profile.api");
+            await uploadCv(file);
+            onProfileUpdate(); // Refresh to get new CV status
+        } catch (err) {
+            console.error("Failed to upload CV", err);
+            alert("Failed to upload CV");
+        } finally {
+            setIsCvLoading(false);
+            e.target.value = "";
+        }
+    };
+
+    const handleCvDelete = async () => {
+        if (!confirm("Are you sure you want to delete your CV?")) return;
+        try {
+            setIsCvLoading(true);
+            const { deleteCv } = await import("@/lib/api/profile/profile.api");
+            await deleteCv();
+            onProfileUpdate();
+        } catch (err) {
+            console.error("Failed to delete CV", err);
+            alert("Failed to delete CV");
+        } finally {
+            setIsCvLoading(false);
+        }
+    };
+
+    // Check if CV exists. The profile object needs to have cvFileName
+    // We might need to update the PersonalProfileData interface or check how it's passed.
+    // Assuming profile has cvFileName based on CvCard usage.
+    const hasCv = !!profile.cvFileName;
+
 
     return (
         <div className={styles.headerContainer}>
             {/* Cover Image Area */}
             <ProfileCover
                 profileId={profileId}
-                isEditable={isOwner}
+                isEditable={isEditable(isOwner, isEditMode)}
                 onCoverChange={onProfileUpdate}
+                height={220}
             />
-
-            {/* Edit Profile Button */}
-            {isOwner && (
-                <button className={styles.editButton} onClick={handleEditClick}>
-                    <FiEdit2 /> Edit Profile
-                </button>
-            )}
 
             {/* Content Area */}
             <div className={styles.contentArea}>
@@ -100,105 +182,153 @@ export default function PersonalProfileHeader({
                     <ProfileAvatar
                         profileId={profileId}
                         initials={initials}
-                        isEditable={isOwner}
+                        isEditable={isEditable(isOwner, isEditMode)}
                         onAvatarChange={onProfileUpdate}
+                        size={180}
                     />
                 </div>
 
-                {/* Info Section (Centered) */}
+                {/* Info Section */}
                 <div className={styles.profileInfo}>
-                    <h1 className={styles.name}>{firstName} {lastName}</h1>
-                    <p className={styles.headline}>{profileDescription}</p>
+                    {isEditMode ? (
+                        <div className={styles.editForm}>
+                            <div className={styles.nameInputs}>
+                                <input
+                                    name="firstName"
+                                    value={formData.firstName}
+                                    onChange={handleChange}
+                                    className={styles.inputName}
+                                    placeholder="First Name"
+                                />
+                                <input
+                                    name="lastName"
+                                    value={formData.lastName}
+                                    onChange={handleChange}
+                                    className={styles.inputName}
+                                    placeholder="Last Name"
+                                />
+                            </div>
+                            <textarea
+                                name="profileDescription"
+                                value={formData.profileDescription}
+                                onChange={handleChange}
+                                className={styles.inputHeadline}
+                                placeholder="Headline / Short Bio (e.g. Software Engineer at Tech Corp)"
+                                rows={2}
+                            />
+                            <div className={styles.contactInputs}>
+                                <div className={styles.inputIconWrapper}>
+                                    <FiMapPin />
+                                    <input
+                                        name="location"
+                                        value={formData.location}
+                                        onChange={handleChange}
+                                        className={styles.inputMeta}
+                                        placeholder="Location"
+                                    />
+                                </div>
+                                <div className={styles.inputIconWrapper}>
+                                    <FiPhone />
+                                    <input
+                                        name="phoneNumber"
+                                        value={formData.phoneNumber}
+                                        onChange={handleChange}
+                                        className={styles.inputMeta}
+                                        placeholder="Phone Number"
+                                    />
+                                </div>
+                            </div>
 
-                    {/* Contact Info (Only location and phone from basic profile here) */}
-                    {(location || phoneNumber) && (
-                        <div className={styles.contactInfo}>
-                            {location && (
-                                <div className={styles.contactItem}>
-                                    <FiMapPin size={16} />
-                                    <span>{location}</span>
+                            {/* CV Management in Edit Mode */}
+                            {isOwner && (
+                                <div className={styles.cvSection}>
+                                    <label className={`${styles.cvButton} ${styles.cvButtonPrimary}`}>
+                                        <FiEdit2 size={16} />
+                                        <span>{hasCv ? "Replace CV" : "Upload CV"}</span>
+                                        <input
+                                            type="file"
+                                            accept="application/pdf"
+                                            onChange={handleCvUpload}
+                                            className={styles.hiddenInput}
+                                            disabled={isCvLoading}
+                                        />
+                                    </label>
+
+                                    {hasCv && (
+                                        <button
+                                            className={`${styles.cvButton} ${styles.cvDeleteButton}`}
+                                            onClick={handleCvDelete}
+                                            disabled={isCvLoading}
+                                        >
+                                            Delete CV
+                                        </button>
+                                    )}
                                 </div>
                             )}
-                            {phoneNumber && (
-                                <div className={styles.contactItem}>
-                                    <FiPhone size={16} />
-                                    <span>{phoneNumber}</span>
-                                </div>
-                            )}
+
+                            <button
+                                onClick={handleSave}
+                                className={styles.saveButton}
+                                disabled={isLoading}
+                            >
+                                {isLoading ? "Saving..." : "Save Header Info"}
+                            </button>
                         </div>
+                    ) : (
+                        <>
+                            <h1 className={styles.name}>{firstName} {lastName}</h1>
+                            <p className={styles.headline}>{profileDescription}</p>
+
+                            {(location || phoneNumber) && (
+                                <div className={styles.contactInfo}>
+                                    {location && (
+                                        <div className={styles.contactItem}>
+                                            <FiMapPin size={16} />
+                                            <span>{location}</span>
+                                        </div>
+                                    )}
+                                    {phoneNumber && (
+                                        <div className={styles.contactItem}>
+                                            <FiPhone size={16} />
+                                            <span>{phoneNumber}</span>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+
+                            {/* View CV Button */}
+                            {hasCv && (
+                                <div className={styles.cvSection}>
+                                    <button
+                                        className={styles.cvButton}
+                                        onClick={handleViewCv}
+                                        disabled={isCvLoading}
+                                    >
+                                        <span style={{ fontSize: '1.1rem' }}>📄</span>
+                                        <span>Click to view CV</span>
+                                    </button>
+                                </div>
+                            )}
+                        </>
                     )}
-
-
                 </div>
             </div>
 
-            {/* Edit Modal */}
-            <Modal isOpen={isEditModalOpen} onClose={() => setIsEditModalOpen(false)} title="Edit Profile">
-                <form onSubmit={handleSubmit} className={styles.form}>
-                    <div className={styles.formRow}>
-                        <div className={styles.formGroup}>
-                            <label>First Name</label>
-                            <input
-                                name="firstName"
-                                value={formData.firstName}
-                                onChange={handleChange}
-                                className={styles.input}
-                                required
-                            />
-                        </div>
-                        <div className={styles.formGroup}>
-                            <label>Last Name</label>
-                            <input
-                                name="lastName"
-                                value={formData.lastName}
-                                onChange={handleChange}
-                                className={styles.input}
-                                required
-                            />
-                        </div>
-                    </div>
-
-                    <div className={styles.formGroup}>
-                        <label>Headline</label>
-                        <input
-                            name="profileDescription"
-                            value={formData.profileDescription}
-                            onChange={handleChange}
-                            className={styles.input}
-                            placeholder="Role at Company"
-                        />
-                    </div>
-
-                    <div className={styles.formGroup}>
-                        <label>Location</label>
-                        <input
-                            name="location"
-                            value={formData.location}
-                            onChange={handleChange}
-                            className={styles.input}
-                            placeholder="City, Country"
-                        />
-                    </div>
-
-                    <div className={styles.formGroup}>
-                        <label>Phone Number</label>
-                        <input
-                            name="phoneNumber"
-                            value={formData.phoneNumber}
-                            onChange={handleChange}
-                            className={styles.input}
-                            placeholder="+1 234 567 8900"
-                        />
-                    </div>
-
-                    <div className={styles.formActions}>
-                        <button type="button" onClick={() => setIsEditModalOpen(false)} className={styles.cancelButton}>Cancel</button>
-                        <button type="submit" disabled={isLoading} className={styles.submitButton}>
-                            {isLoading ? "Saving..." : "Save Changes"}
-                        </button>
-                    </div>
-                </form>
-            </Modal>
+            {/* PDF Viewer Modal */}
+            {isViewerOpen && (
+                // We need to dynamic import or regular import the modal
+                // For now, let's assume we add the import at the top
+                <PdfViewerModal
+                    isOpen={isViewerOpen}
+                    onClose={() => setIsViewerOpen(false)}
+                    pdfUrl={cvBlobUrl || ""}
+                    title=""
+                />
+            )}
         </div>
     );
+}
+
+function isEditable(isOwner: boolean, isEditMode: boolean) {
+    return isOwner && isEditMode;
 }

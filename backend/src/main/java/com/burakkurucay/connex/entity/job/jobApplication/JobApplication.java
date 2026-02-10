@@ -32,6 +32,9 @@ public class JobApplication {
     @Column(columnDefinition = "TEXT")
     private String message;
 
+    @Column(columnDefinition = "TEXT")
+    private String responseNote; // Note from company when changing status
+
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private Instant createdAt;
@@ -68,6 +71,14 @@ public class JobApplication {
 
     public String getMessage() {
         return message;
+    }
+
+    public String getResponseNote() {
+        return responseNote;
+    }
+
+    public void setResponseNote(String responseNote) {
+        this.responseNote = responseNote;
     }
 
     public Instant getCreatedAt() {

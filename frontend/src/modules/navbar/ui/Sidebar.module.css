@@ -1,0 +1,291 @@
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    background-color: var(--color-surface);
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
+    z-index: 900;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem 1rem;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-right: 1px solid var(--color-border);
+    overflow-x: hidden;
+    /* Hide overflow content during transition */
+
+    /* Desktop Default: Collapsed */
+    width: 80px;
+}
+
+/* Expand on Hover (Desktop only) */
+@media (min-width: 769px) {
+    .sidebar:hover {
+        width: 280px;
+        box-shadow: 4px 0 16px rgba(0, 0, 0, 0.1);
+    }
+}
+
+.header {
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Center "C" initially */
+    height: 3rem;
+    width: 100%;
+    overflow: hidden;
+}
+
+.brandLink {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    color: var(--color-primary);
+    cursor: pointer;
+}
+
+/* Logo Logic */
+.logoCollapsed {
+    font-size: 2rem;
+    font-weight: 800;
+    min-width: 48px;
+    /* Fixed width for icon centering */
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.2s ease, transform 0.2s ease, width 0s 0.2s;
+    /* delay width change until fade out */
+}
+
+.logoExpanded {
+    font-size: 2rem;
+    font-weight: 800;
+    white-space: nowrap;
+    opacity: 0;
+    position: absolute;
+    /* Take out of flow to overlay/replace */
+    left: 1.5rem;
+    /* Align with padding */
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+
+@media (min-width: 769px) {
+
+    /* When Sidebar Hovered: Hide 'Cx', Show 'Connex' */
+    .sidebar:hover .logoCollapsed {
+        opacity: 0;
+        transform: translateX(-10px);
+        width: 0;
+        /* Shrink to 0 to remove spacing if necessary, though position absolute on expanded might be better strategy. */
+        display: none;
+        /* Simplest swap */
+    }
+
+    .sidebar:hover .logoExpanded {
+        opacity: 1;
+        position: static;
+        /* Put back in flow */
+        pointer-events: auto;
+    }
+
+    .sidebar:hover .header {
+        justify-content: flex-start;
+    }
+}
+
+
+.nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+}
+
+.navItem {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 0;
+    /* Vertical padding only, horizontal handled by content centering */
+    border: none;
+    background: transparent;
+    border-radius: var(--radius-md);
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100%;
+}
+
+.navItem:hover {
+    background-color: var(--color-surface-hover);
+    color: var(--color-primary);
+}
+
+.navItem.active {
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
+.iconWrapper {
+    min-width: 48px;
+    /* Match global collapsed width centering */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.navText {
+    opacity: 0;
+    margin-left: 0.5rem;
+    transition: opacity 0.2s ease;
+}
+
+@media (min-width: 769px) {
+    .sidebar:hover .navText {
+        opacity: 1;
+    }
+}
+
+
+.footer {
+    border-top: 1px solid var(--color-border);
+    padding-top: 0.5rem;
+    /* Reduced padding since we have multiple items now */
+    margin-top: auto;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.logoutBtn {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 0;
+    width: 100%;
+    border: none;
+    background: transparent;
+    border-radius: var(--radius-md);
+    color: var(--color-text-secondary);
+    /* Or red for emphasis */
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.logoutBtn:hover {
+    background-color: #fee2e2;
+    color: #ef4444;
+}
+
+/* Mobile Drawer Styles */
+.overlay {
+    display: none;
+}
+
+.closeHeader {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        /* Mobile Drawer State: Hidden by default */
+        top: 0;
+        left: 0;
+        /* Reset */
+        width: 280px;
+        /* Full drawer width always */
+        height: 100vh;
+        transform: translateX(-100%);
+        z-index: 1100;
+        /* Above top bar */
+        box-shadow: 4px 0 16px rgba(0, 0, 0, 0.15);
+        padding: 1.5rem;
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+
+    /* On mobile, text is always visible in drawer */
+    .logoText,
+    .navText {
+        opacity: 1;
+        transform: none;
+    }
+
+    .navItem,
+    .logoutBtn,
+    .header {
+        justify-content: flex-start;
+    }
+
+    .iconWrapper {
+        min-width: 24px;
+        /* Standard icon spacing */
+        margin-right: 1rem;
+    }
+
+    /* Mobile Header with Close Button */
+    .closeHeader {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        margin-bottom: 2rem;
+    }
+
+    .header {
+        display: none;
+        /* Hide default header in favor of closeHeader for mobile layout structure */
+    }
+
+    .closeBtn {
+        background: none;
+        border: none;
+        color: var(--color-text-secondary);
+        cursor: pointer;
+        padding: 0.5rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .closeBtn:hover {
+        background-color: var(--color-background);
+        color: var(--color-text-primary);
+    }
+
+    /* Overlay */
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+        display: block;
+    }
+
+    .overlay.open {
+        opacity: 1;
+        pointer-events: auto;
+    }
+}

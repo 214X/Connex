@@ -37,6 +37,10 @@ export default function HomeScreen() {
         <div className={styles.container}>
             {/* Hero Section */}
             <div className={styles.hero}>
+                <div className={styles.heroBackground}>
+                    <div className={styles.circle1}></div>
+                    <div className={styles.circle2}></div>
+                </div>
                 <div className={styles.heroContent}>
                     <h1 className={styles.welcomeTitle}>Welcome back, {displayName}!</h1>
                     <p className={styles.welcomeSubtitle}>
@@ -46,25 +50,9 @@ export default function HomeScreen() {
             </div>
 
             {/* Quick Actions / Tips */}
-            <h2 className={styles.sectionTitle}>Get Started with Connex</h2>
-
             <div className={styles.tipsGrid}>
-                {/* Tip 1: Profile */}
-                <div className={styles.tipCard}>
-                    <div className={styles.iconWrapper}>
-                        <FiUser />
-                    </div>
-                    <h3 className={styles.cardTitle}>Complete Your Profile</h3>
-                    <p className={styles.cardText}>
-                        A complete profile increases your visibility. Add your skills, experience, and photo.
-                    </p>
-                    <Link href={`/profiles/me`} className={styles.cardAction}>
-                        Go to Profile <FiArrowRight />
-                    </Link>
-                </div>
-
                 {/* Tip 2: Jobs */}
-                <div className={styles.tipCard}>
+                <Link href="/jobs" className={styles.tipCard}>
                     <div className={styles.iconWrapper}>
                         <FiBriefcase />
                     </div>
@@ -72,13 +60,13 @@ export default function HomeScreen() {
                     <p className={styles.cardText}>
                         Browse the latest job openings from top companies and apply today.
                     </p>
-                    <Link href="/jobs" className={styles.cardAction}>
+                    <div className={styles.cardAction}>
                         Browse Jobs <FiArrowRight />
-                    </Link>
-                </div>
+                    </div>
+                </Link>
 
                 {/* Tip 3: Network */}
-                <div className={styles.tipCard}>
+                <Link href="/companies" className={styles.tipCard}>
                     <div className={styles.iconWrapper}>
                         <FiSearch />
                     </div>
@@ -86,10 +74,10 @@ export default function HomeScreen() {
                     <p className={styles.cardText}>
                         Discover innovative companies and see what they have to offer.
                     </p>
-                    <Link href="/search" className={styles.cardAction}>
+                    <div className={styles.cardAction}>
                         Search Companies <FiArrowRight />
-                    </Link>
-                </div>
+                    </div>
+                </Link>
             </div>
         </div>
     );

@@ -12,12 +12,14 @@ import styles from "./ProjectList.module.css";
 interface ProjectListProps {
     projects: PersonalProfileProject[];
     isOwner: boolean;
+    isEditMode: boolean;
     onRefresh: () => void;
 }
 
 export default function ProjectList({
     projects,
     isOwner,
+    isEditMode,
     onRefresh,
 }: ProjectListProps) {
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -29,8 +31,6 @@ export default function ProjectList({
     const [shortDescription, setShortDescription] = useState("");
     const [description, setDescription] = useState("");
     const [link, setLink] = useState("");
-    const [startDate, setStartDate] = useState("");
-    const [endDate, setEndDate] = useState("");
 
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -40,8 +40,6 @@ export default function ProjectList({
         setShortDescription("");
         setDescription("");
         setLink("");
-        setStartDate("");
-        setEndDate("");
         setError(null);
     };
 
@@ -56,8 +54,6 @@ export default function ProjectList({
         setShortDescription(project.shortDescription || "");
         setDescription(project.description || "");
         setLink(project.link || "");
-        setStartDate(project.startDate || "");
-        setEndDate(project.endDate || "");
         setError(null);
         setIsEditModalOpen(true);
     };
@@ -82,8 +78,6 @@ export default function ProjectList({
                 shortDescription: shortDescription || undefined,
                 description: description || undefined,
                 link: link || undefined,
-                startDate: startDate || undefined,
-                endDate: endDate || undefined,
             });
             setIsAddModalOpen(false);
             onRefresh();
@@ -105,8 +99,6 @@ export default function ProjectList({
                 shortDescription: shortDescription || undefined,
                 description: description || undefined,
                 link: link || undefined,
-                startDate: startDate || undefined,
-                endDate: endDate || undefined,
             });
             setIsEditModalOpen(false);
             setEditingProject(null);
@@ -118,7 +110,7 @@ export default function ProjectList({
         }
     };
 
-    if (!isOwner && projects.length === 0) {
+    if (!isEditMode && projects.length === 0) {
         return null;
     }
 
@@ -126,7 +118,7 @@ export default function ProjectList({
         <div className={styles.container}>
             <div className={styles.header}>
                 <h3 className={styles.title}>Projects</h3>
-                {isOwner && (
+                {isOwner && isEditMode && (
                     <button className={styles.addButton} onClick={handleAddClick}>
                         <FiPlus size={16} /> <span>Add</span>
                     </button>
@@ -156,10 +148,7 @@ export default function ProjectList({
                                             </a>
                                         )}
                                     </div>
-                                    <span className={styles.itemType}>
-                                        {project.startDate ? new Date(project.startDate).getFullYear() : "?"} -
-                                        {project.endDate ? new Date(project.endDate).getFullYear() : "Present"}
-                                    </span>
+
                                     {project.shortDescription && (
                                         <p className={styles.itemDescription} style={{ fontWeight: 500 }}>
                                             {project.shortDescription}
@@ -172,7 +161,7 @@ export default function ProjectList({
                                     )}
                                 </div>
                             </div>
-                            {isOwner && (
+                            {isOwner && isEditMode && (
                                 <div className={styles.actions}>
                                     <button
                                         className={styles.actionButton}
@@ -239,26 +228,6 @@ export default function ProjectList({
                             placeholder="https://..."
                         />
                     </div>
-                    <div style={{ display: "flex", gap: "1rem" }}>
-                        <div className={styles.formGroup} style={{ flex: 1 }}>
-                            <label>Start Date</label>
-                            <input
-                                type="date"
-                                value={startDate}
-                                onChange={(e) => setStartDate(e.target.value)}
-                                className={styles.input}
-                            />
-                        </div>
-                        <div className={styles.formGroup} style={{ flex: 1 }}>
-                            <label>End Date</label>
-                            <input
-                                type="date"
-                                value={endDate}
-                                onChange={(e) => setEndDate(e.target.value)}
-                                className={styles.input}
-                            />
-                        </div>
-                    </div>
                     <div className={styles.formActions}>
                         <button type="button" onClick={() => setIsAddModalOpen(false)} className={styles.cancelButton}>Cancel</button>
                         <button type="submit" disabled={isLoading} className={styles.submitButton}>
@@ -307,26 +276,6 @@ export default function ProjectList({
                             onChange={(e) => setLink(e.target.value)}
                             className={styles.input}
                         />
-                    </div>
-                    <div style={{ display: "flex", gap: "1rem" }}>
-                        <div className={styles.formGroup} style={{ flex: 1 }}>
-                            <label>Start Date</label>
-                            <input
-                                type="date"
-                                value={startDate}
-                                onChange={(e) => setStartDate(e.target.value)}
-                                className={styles.input}
-                            />
-                        </div>
-                        <div className={styles.formGroup} style={{ flex: 1 }}>
-                            <label>End Date</label>
-                            <input
-                                type="date"
-                                value={endDate}
-                                onChange={(e) => setEndDate(e.target.value)}
-                                className={styles.input}
-                            />
-                        </div>
                     </div>
                     <div className={styles.formActions}>
                         <button type="button" onClick={() => setIsEditModalOpen(false)} className={styles.cancelButton}>Cancel</button>

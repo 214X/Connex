@@ -1,66 +1,90 @@
+/* ===== CARD CONTAINER ===== */
 .container {
     background-color: var(--color-surface);
-    border-radius: var(--radius-lg);
+    border-radius: 1rem;
     border: 1px solid var(--color-border);
-    margin-top: var(--spacing-lg);
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.04), 0 1px 2px -1px rgb(0 0 0 / 0.04);
+    transition: box-shadow 0.25s ease;
     overflow: hidden;
+
+    display: grid;
+    align-items: center;
+    justify-content: center;
 }
 
+.container:hover {
+    box-shadow: 0 4px 12px -2px rgb(0 0 0 / 0.08), 0 2px 6px -2px rgb(0 0 0 / 0.04);
+}
+
+/* ===== HEADER ===== */
 .header {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    padding: var(--spacing-md) var(--spacing-lg);
-    border-bottom: 1px solid var(--color-border);
-    background-color: var(--color-surface-hover);
+    padding: 1.25rem 1.5rem;
+    position: relative;
+    min-height: 3.5rem;
 }
 
 .title {
-    font-size: var(--font-size-md);
-    font-weight: var(--font-weight-semibold);
+    font-size: 1.1rem;
+    font-weight: 700;
     color: var(--color-text-primary);
     margin: 0;
+    letter-spacing: -0.01em;
 }
 
 .addButton {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: var(--spacing-xs);
-    background-color: var(--color-primary);
-    color: white;
-    border: none;
-    padding: var(--spacing-xs) var(--spacing-sm);
-    border-radius: var(--radius-md);
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-medium);
+    gap: 0.375rem;
+    background: transparent;
+    color: var(--color-primary);
+    border: 1.5px solid var(--color-primary);
+    padding: 0.375rem 0.875rem;
+    border-radius: 9999px;
+    font-size: 0.8125rem;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: all 0.2s ease;
 }
 
 .addButton:hover {
-    background-color: var(--color-primary-hover);
+    background-color: var(--color-primary);
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px -2px var(--color-primary);
 }
 
+/* ... (skipping content/file/actions sections for brevity in search, but they are between lines 56-191) ... */
+/* NOTE: The tool doesn't support skipping, so I must target specific chunks or use multi_replace if they are far apart. 
+   Here addButton is at top, uploadWrapper at bottom. best to use multi_replace or two calls. 
+   Actually, I can just replace addButton block, and then replace uploadWrapper block.
+*/
+
+/* ===== CONTENT ===== */
 .content {
-    padding: var(--spacing-md) var(--spacing-lg);
+    padding: 1rem 1.5rem 1.25rem;
+    max-width: 25rem;
 }
 
 .emptyText {
     color: var(--color-text-secondary);
-    font-size: var(--font-size-sm);
+    font-size: 0.875rem;
     text-align: center;
-    padding: var(--spacing-md);
+    padding: 1.5rem 1rem;
     margin: 0;
+    font-style: italic;
 }
 
-/* File Row */
+/* ===== FILE ROW ===== */
 .fileRow {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: var(--spacing-sm);
-    border-radius: var(--radius-md);
-    transition: background-color 0.2s;
+    padding: 0.875rem 1rem;
+    border-radius: 0.75rem;
+    transition: background-color 0.2s ease;
 }
 
 .fileRow:hover {
@@ -70,50 +94,56 @@
 .fileInfo {
     display: flex;
     align-items: center;
-    gap: var(--spacing-md);
+    gap: 1rem;
     min-width: 0;
+    flex: 1;
 }
 
 .fileIcon {
-    width: 44px;
-    height: 44px;
-    min-width: 44px;
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
     background: linear-gradient(135deg, #e53e3e, #c53030);
     color: white;
-    border-radius: var(--radius-md);
+    border-radius: 0.75rem;
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 1.25rem;
+    box-shadow: 0 2px 6px -1px rgb(229 62 62 / 0.3);
 }
 
 .fileDetails {
     display: flex;
     flex-direction: column;
     min-width: 0;
+    gap: 0.125rem;
 }
 
 .fileName {
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-medium);
+    font-size: 0.9375rem;
+    font-weight: 600;
     color: var(--color-text-primary);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 250px;
+    max-width: 280px;
+    line-height: 1.4;
 }
 
 .fileType {
-    font-size: var(--font-size-xs);
+    font-size: 0.75rem;
     color: var(--color-text-secondary);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.04em;
+    font-weight: 500;
 }
 
-/* Actions */
+/* ===== FILE ACTIONS ===== */
 .fileActions {
     display: flex;
     align-items: center;
-    gap: var(--spacing-xs);
+    gap: 0.375rem;
 }
 
 .downloadButton {
@@ -123,16 +153,19 @@
     background-color: var(--color-primary);
     color: white;
     border: none;
-    padding: var(--spacing-xs) var(--spacing-md);
-    border-radius: var(--radius-md);
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-medium);
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    font-size: 0.8125rem;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
 }
 
 .downloadButton:hover {
     background-color: var(--color-primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px -2px var(--color-primary);
 }
 
 .actionBtn {
@@ -142,19 +175,19 @@
     background: none;
     border: none;
     color: var(--color-text-secondary);
-    padding: var(--spacing-xs);
+    padding: 0.375rem;
     cursor: pointer;
-    border-radius: var(--radius-sm);
-    transition: all 0.2s;
+    border-radius: 0.5rem;
+    transition: all 0.15s ease;
 }
 
 .actionBtn:hover {
-    background-color: var(--color-border);
-    color: var(--color-text-primary);
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
 }
 
 .deleteBtn:hover {
-    background-color: #fee2e2;
+    background-color: #fef2f2;
     color: #ef4444;
 }
 
@@ -163,9 +196,11 @@
     cursor: not-allowed;
 }
 
-/* Utilities */
+/* ===== UTILITIES ===== */
 .uploadWrapper {
     display: flex;
+    position: absolute;
+    right: 1.5rem;
 }
 
 .replaceWrapper {

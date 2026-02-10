@@ -2,12 +2,12 @@
 .pageContainer {
     min-height: 100vh;
     width: 100%;
-
     display: flex;
     justify-content: center;
     align-items: flex-start;
-
     padding-top: 4rem;
+    padding-bottom: 6rem;
+    background-color: var(--color-background);
 }
 
 /* ===== CONTENT WRAPPER ===== */
@@ -20,19 +20,40 @@
     gap: 1.5rem;
 }
 
-/* ===== NAME HEADER ===== */
-.nameContainer {
-    width: 100%;
-    text-align: center;
-
-    border-radius: 8px;
-    background-color: var(--purple-hover);
-
-    padding: 1rem;
+/* ===== EDIT TOGGLE ===== */
+.editToggleWrapper {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 100;
 }
 
-/* ===== NAME TEXT ===== */
-.nameText {
-    font-size: 1.8rem;
+.editToggleButton {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-hover));
+    color: white;
+    padding: 0.8rem 2rem;
+    border-radius: 9999px;
     font-weight: 600;
+    font-size: 0.9375rem;
+    box-shadow: 0 6px 20px -4px rgba(78, 72, 217, 0.4);
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.editToggleButton:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 28px -4px rgba(78, 72, 217, 0.5);
+}
+
+.editToggleButton.active {
+    background: linear-gradient(135deg, #10B981, #059669);
+    box-shadow: 0 6px 20px -4px rgba(16, 185, 129, 0.4);
+}
+
+.editToggleButton.active:hover {
+    box-shadow: 0 8px 28px -4px rgba(16, 185, 129, 0.5);
 }

@@ -7,10 +7,11 @@ import styles from "./ExperienceList.module.css";
 interface ExperienceListProps {
     experiences: PersonalProfileExperience[];
     isOwner: boolean;
+    isEditMode: boolean;
     onExperiencesChange: () => void;
 }
 
-export default function ExperienceList({ experiences, isOwner, onExperiencesChange }: ExperienceListProps) {
+export default function ExperienceList({ experiences, isOwner, isEditMode, onExperiencesChange }: ExperienceListProps) {
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [editingExperience, setEditingExperience] = useState<PersonalProfileExperience | null>(null);
@@ -108,11 +109,16 @@ export default function ExperienceList({ experiences, isOwner, onExperiencesChan
         return null;
     }
 
+    // If not in edit mode and no experiences, don't show the section
+    if (!isEditMode && experiences.length === 0) {
+        return null;
+    }
+
     return (
         <div className={styles.container}>
             <div className={styles.header}>
                 <h3 className={styles.title}>Experience</h3>
-                {isOwner && (
+                {isOwner && isEditMode && (
                     <button className={styles.addButton} onClick={handleAddClick}>
                         <FiPlus size={16} /> <span>Add</span>
                     </button>
@@ -130,16 +136,17 @@ export default function ExperienceList({ experiences, isOwner, onExperiencesChan
                                 <div className={styles.itemContent}>
                                     <span className={styles.itemValue}>{exp.title}</span>
                                     <span className={styles.itemType}>
-                                        {exp.organization} •
-                                        {exp.startDate ? new Date(exp.startDate).getFullYear() : "?"} -
-                                        {exp.endDate ? new Date(exp.endDate).getFullYear() : "Present"}
+                                        {exp.organization}
+                                        {(exp.startDate || exp.endDate) && (
+                                            <> • {exp.startDate ? new Date(exp.startDate).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' }) : "?"} - {exp.endDate ? new Date(exp.endDate).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' }) : "Present"}</>
+                                        )}
                                     </span>
                                     {exp.description && (
                                         <p className={styles.itemDescription}>{exp.description}</p>
                                     )}
                                 </div>
                             </div>
-                            {isOwner && (
+                            {isOwner && isEditMode && (
                                 <div className={styles.actions}>
                                     <button
                                         className={styles.actionButton}

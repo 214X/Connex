@@ -14,10 +14,12 @@ public class CompanyJobApplicationItem {
 
     // Applicant details
     private Long applicantProfileId;
+    private Long applicantUserId;
     private String firstName;
     private String lastName;
     private String location;
     // can add avatarUrl here later if available
+    private String responseNote;
 
     public static CompanyJobApplicationItem from(JobApplication application) {
         CompanyJobApplicationItem item = new CompanyJobApplicationItem();
@@ -25,9 +27,11 @@ public class CompanyJobApplicationItem {
         item.appliedAt = application.getCreatedAt();
         item.status = application.getStatus();
         item.message = application.getMessage();
+        item.responseNote = application.getResponseNote();
 
         if (application.getApplicant() != null) {
             item.applicantProfileId = application.getApplicant().getId();
+            item.applicantUserId = application.getApplicant().getProfile().getUser().getId();
             item.firstName = application.getApplicant().getFirstName();
             item.lastName = application.getApplicant().getLastName();
             item.location = application.getApplicant().getLocation();
@@ -52,8 +56,16 @@ public class CompanyJobApplicationItem {
         return message;
     }
 
-    public Long getApplicantProfileId() {
-        return applicantProfileId;
+    public void setApplicantProfileId(Long applicantProfileId) {
+        this.applicantProfileId = applicantProfileId;
+    }
+
+    public Long getApplicantUserId() {
+        return applicantUserId;
+    }
+
+    public void setApplicantUserId(Long applicantUserId) {
+        this.applicantUserId = applicantUserId;
     }
 
     public String getFirstName() {
@@ -66,5 +78,17 @@ public class CompanyJobApplicationItem {
 
     public String getLocation() {
         return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getResponseNote() {
+        return responseNote;
+    }
+
+    public void setResponseNote(String responseNote) {
+        this.responseNote = responseNote;
     }
 }

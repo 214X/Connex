@@ -13,6 +13,7 @@ import {
 } from "@/lib/api/job/job.api";
 import JobPostingCard from "./JobPostingCard";
 import JobPostingModal from "./JobPostingModal";
+import JobDetailModal from "./JobDetailModal";
 import JobApplicationModal from "./JobApplicationModal";
 import CompanyJobApplicationsModal from "./CompanyJobApplicationsModal";
 import styles from "./JobPostingList.module.css";
@@ -35,6 +36,7 @@ export default function JobPostingList({ profileId, isOwner }: JobPostingListPro
     const [editingJob, setEditingJob] = useState<JobPosting | null>(null);
 
     const [applyingJob, setApplyingJob] = useState<JobPosting | null>(null);
+    const [selectedJob, setSelectedJob] = useState<JobPosting | null>(null);
     const [viewingApplicantsJob, setViewingApplicantsJob] = useState<JobPosting | null>(null);
 
     const fetchJobs = useCallback(async () => {
@@ -98,7 +100,12 @@ export default function JobPostingList({ profileId, isOwner }: JobPostingListPro
     };
 
     const handleApplyClick = (job: JobPosting) => {
+        setSelectedJob(null);
         setApplyingJob(job);
+    };
+
+    const handleCardClick = (job: JobPosting) => {
+        setSelectedJob(job);
     };
 
     const handleViewApplicantsClick = (job: JobPosting) => {
@@ -142,7 +149,7 @@ export default function JobPostingList({ profileId, isOwner }: JobPostingListPro
                             onEdit={handleEditClick}
                             onDelete={handleDeleteClick}
                             onToggleStatus={handleToggleStatus}
-                            onApply={isPersonal ? handleApplyClick : undefined}
+                            onClick={!isOwner && isPersonal ? handleCardClick : undefined}
                             onViewApplicants={isOwner ? handleViewApplicantsClick : undefined}
                         />
                     ))}
@@ -177,6 +184,16 @@ export default function JobPostingList({ profileId, isOwner }: JobPostingListPro
                     onClose={() => setViewingApplicantsJob(null)}
                     jobId={viewingApplicantsJob.id}
                     jobTitle={viewingApplicantsJob.title}
+                />
+            )}
+
+            {selectedJob && (
+                <JobDetailModal
+                    isOpen={!!selectedJob}
+                    onClose={() => setSelectedJob(null)}
+                    job={selectedJob}
+                    onApply={handleApplyClick}
+                    isPersonalUser={isPersonal}
                 />
             )}
         </div>

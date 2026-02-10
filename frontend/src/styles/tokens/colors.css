@@ -26,12 +26,17 @@
     --color-primary: var(--purple-primary);
     --color-primary-hover: var(--purple-hover);
     --color-primary-light: var(--purple-soft);
+    --color-success: #10B981;
+    /* Emerald 500 */
 
     --color-surface: var(--white-bg);
     --color-surface-hover: #f9fafb;
     --color-background: #f3f4f6;
 
     --color-border: #e5e7eb;
+    --color-border-hover: #d1d5db;
+
+    --color-primary-dark: var(--purple-dark-1);
 
     --color-text-primary: var(--black-primary-text);
     --color-text-secondary: var(--black-secondary-text);

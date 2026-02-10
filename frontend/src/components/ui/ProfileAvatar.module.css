@@ -4,17 +4,20 @@
 }
 
 .avatar {
-    width: 120px;
-    height: 120px;
+    width: 100%;
+    height: 100%;
     border-radius: 50%;
-    border: 4px solid var(--color-surface);
     object-fit: cover;
-    background-color: var(--color-surface);
+    /* Border is handled by parent wrapper in profile header, 
+       but if used standalone, we might want it. 
+       However, duplicate borders cause sizing issues.
+       Let's remove it here or make it optional. 
+       For now, removing to fix the "image larger than border" issue. */
 }
 
 .placeholder {
-    width: 120px;
-    height: 120px;
+    width: 100%;
+    height: 100%;
     border-radius: 50%;
     background-color: var(--color-primary);
     color: white;
@@ -23,7 +26,6 @@
     justify-content: center;
     font-size: 2.5rem;
     font-weight: bold;
-    border: 4px solid var(--color-surface);
 }
 
 .overlay {

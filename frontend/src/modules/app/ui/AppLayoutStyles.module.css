@@ -1,27 +1,70 @@
-.main {
-    min-height: 100dvh;
+.appContainer {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
-.header {
-    position: fixed;
-    top: 0;
-    left: 0;
+/* Removed .header styles */
 
-    width: 100%;
-    height: 5rem;
+.contentWrapper {
+    display: flex;
+    flex: 1;
+    padding-top: 0;
+    /* No top bar offset needed */
+}
 
-    z-index: 1000;
+.main {
+    flex: 1;
+    min-width: 0;
+    /* Prevent overflow issues in flex children */
+    padding-left: 0;
+    /* Mobile default */
+    transition: padding-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    background-color: var(--color-background);
+    /* Ensure background */
 }
 
 .navbarBack {
-    height: 5rem;
-    align-self: stretch;
-    background: linear-gradient(
-        0deg,
-        #ffffff,
-        #7e82f0,
-        #343ba5
-    );
-    background: white;
+    /* Not strictly needed if header is fixed/opaque, but keeping for compatibility if utilized elsewhere */
+    display: none;
+}
+
+/* Mobile Floating Menu Button */
+.mobileMenuBtn {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 800;
+    /* Below drawer (900/1100) but above content */
     background-color: white;
+    border: 1px solid var(--color-border);
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    color: var(--color-text-primary);
+    transition: background-color 0.2s;
+}
+
+.mobileMenuBtn:hover {
+    background-color: var(--color-surface-hover);
+    color: var(--color-primary);
+}
+
+/* Desktop: Sidebar is 80px fixed width (collapsed state default) */
+@media (min-width: 769px) {
+    .main {
+        padding-left: 80px;
+        /* Match minimal sidebar width */
+    }
+
+    .mobileMenuBtn {
+        display: none;
+        /* Hidden on desktop */
+    }
 }

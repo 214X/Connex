@@ -7,10 +7,11 @@ import styles from "./EducationList.module.css";
 interface EducationListProps {
     educations: PersonalProfileEducation[];
     isOwner: boolean;
+    isEditMode: boolean;
     onEducationsChange: () => void;
 }
 
-export default function EducationList({ educations, isOwner, onEducationsChange }: EducationListProps) {
+export default function EducationList({ educations, isOwner, isEditMode, onEducationsChange }: EducationListProps) {
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [editingEducation, setEditingEducation] = useState<PersonalProfileEducation | null>(null);
@@ -103,11 +104,16 @@ export default function EducationList({ educations, isOwner, onEducationsChange 
         return null;
     }
 
+    // If not in edit mode and no educations, don't show the section
+    if (!isEditMode && educations.length === 0) {
+        return null;
+    }
+
     return (
         <div className={styles.container}>
             <div className={styles.header}>
                 <h3 className={styles.title}>Education</h3>
-                {isOwner && (
+                {isOwner && isEditMode && (
                     <button className={styles.addButton} onClick={handleAddClick}>
                         <FiPlus size={16} /> <span>Add</span>
                     </button>
@@ -125,13 +131,14 @@ export default function EducationList({ educations, isOwner, onEducationsChange 
                                 <div className={styles.itemContent}>
                                     <span className={styles.itemValue}>{edu.schoolName}</span>
                                     <span className={styles.itemType}>
-                                        {edu.department && `${edu.department} • `}
-                                        {edu.startDate ? new Date(edu.startDate).getFullYear() : "?"} -
-                                        {edu.endDate ? new Date(edu.endDate).getFullYear() : "Present"}
+                                        {edu.department && `${edu.department}`}
+                                        {(edu.startDate || edu.endDate) && (
+                                            <>{edu.department ? ' • ' : ''}{edu.startDate ? new Date(edu.startDate).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' }) : "?"} - {edu.endDate ? new Date(edu.endDate).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' }) : "Present"}</>
+                                        )}
                                     </span>
                                 </div>
                             </div>
-                            {isOwner && (
+                            {isOwner && isEditMode && (
                                 <div className={styles.actions}>
                                     <button
                                         className={styles.actionButton}

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { FiMapPin, FiCheck, FiX } from "react-icons/fi";
 import Modal from "@/components/ui/Modal";
+import Link from "next/link";
 import { getJobApplications, updateApplicationStatus, CompanyJobApplicationItem, ApplicationStatus } from "@/lib/api/job/jobApplication.api";
 import styles from "./CompanyJobApplicationsModal.module.css";
 
@@ -20,6 +21,8 @@ export default function CompanyJobApplicationsModal({
     const [applications, setApplications] = useState<CompanyJobApplicationItem[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [action, setAction] = useState<{ appId: number, status: ApplicationStatus } | null>(null);
+    const [note, setNote] = useState("");
 
     useEffect(() => {
         if (isOpen) {
@@ -41,13 +44,28 @@ export default function CompanyJobApplicationsModal({
         }
     };
 
-    const handleStatusUpdate = async (applicationId: number, newStatus: ApplicationStatus) => {
+
+    const initiateAction = (appId: number, status: ApplicationStatus) => {
+        setAction({ appId, status });
+        setNote("");
+    };
+
+    const cancelAction = () => {
+        setAction(null);
+        setNote("");
+    };
+
+    const confirmAction = async () => {
+        if (!action) return;
+
         try {
-            await updateApplicationStatus(applicationId, newStatus);
+            await updateApplicationStatus(action.appId, action.status, note);
             // Optimistic update
             setApplications(prev => prev.map(app =>
-                app.applicationId === applicationId ? { ...app, status: newStatus } : app
+                app.applicationId === action.appId ? { ...app, status: action.status } : app
             ));
+            setAction(null);
+            setNote("");
         } catch (err) {
             console.error("Failed to update status", err);
             alert("Failed to update application status.");
@@ -76,7 +94,14 @@ export default function CompanyJobApplicationsModal({
                         <div key={app.applicationId} className={styles.applicationItem}>
                             <div className={styles.header}>
                                 <div className={styles.applicantInfo}>
-                                    <h4>{app.firstName} {app.lastName}</h4>
+                                    <Link href={`/profiles/${app.applicantUserId}`} className={styles.applicantNameLink} target="_blank">
+                                        <h4 className={styles.applicantName}>
+                                            {app.firstName} {app.lastName}
+                                        </h4>
+                                    </Link>
+                                    <span className={styles.appliedDate}>
+                                        Applied on {new Date(app.appliedAt).toLocaleDateString()}
+                                    </span>
                                     {app.location && (
                                         <div className={styles.applicantLocation}>
                                             <FiMapPin size={12} />
@@ -84,12 +109,9 @@ export default function CompanyJobApplicationsModal({
                                         </div>
                                     )}
                                 </div>
-                                <div className={styles.meta}>
-                                    <span className={`${styles.badge} ${styles[app.status]}`}>
-                                        {app.status}
-                                    </span>
-                                    <span className={styles.date}>{formatDate(app.appliedAt)}</span>
-                                </div>
+                                <span className={`${styles.statusBadge} ${styles[app.status.toLowerCase()]}`}>
+                                    {app.status}
+                                </span>
                             </div>
 
                             {app.message && (
@@ -98,22 +120,51 @@ export default function CompanyJobApplicationsModal({
                                 </div>
                             )}
 
+                            {/* Debug: Show response note if exists */}
+                            {app.responseNote && (
+                                <div className={styles.responseNote}>
+                                    <strong>Your Note:</strong> {app.responseNote}
+                                </div>
+                            )}
+
                             {(app.status === ApplicationStatus.APPLIED || app.status === ApplicationStatus.REVIEWING) && (
                                 <div className={styles.actions}>
-                                    <button
-                                        onClick={() => handleStatusUpdate(app.applicationId, ApplicationStatus.ACCEPTED)}
-                                        className={`${styles.actionButton} ${styles.acceptButton}`}
-                                        title="Accept Application"
-                                    >
-                                        <FiCheck size={16} /> Accept
-                                    </button>
-                                    <button
-                                        onClick={() => handleStatusUpdate(app.applicationId, ApplicationStatus.REJECTED)}
-                                        className={`${styles.actionButton} ${styles.rejectButton}`}
-                                        title="Reject Application"
-                                    >
-                                        <FiX size={16} /> Reject
-                                    </button>
+                                    {action?.appId === app.applicationId ? (
+                                        <div className={styles.actionForm}>
+                                            <textarea
+                                                className={styles.noteInput}
+                                                placeholder="Add a note to the applicant (optional)..."
+                                                value={note}
+                                                onChange={(e) => setNote(e.target.value)}
+                                                autoFocus
+                                            />
+                                            <div className={styles.formButtons}>
+                                                <button onClick={confirmAction} className={styles.confirmButton}>
+                                                    Confirm
+                                                </button>
+                                                <button onClick={cancelAction} className={styles.cancelButton}>
+                                                    Cancel
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <>
+                                            <button
+                                                onClick={() => initiateAction(app.applicationId, ApplicationStatus.ACCEPTED)}
+                                                className={`${styles.actionButton} ${styles.acceptButton}`}
+                                                title="Accept Application"
+                                            >
+                                                <FiCheck size={16} /> Accept
+                                            </button>
+                                            <button
+                                                onClick={() => initiateAction(app.applicationId, ApplicationStatus.REJECTED)}
+                                                className={`${styles.actionButton} ${styles.rejectButton}`}
+                                                title="Reject Application"
+                                            >
+                                                <FiX size={16} /> Reject
+                                            </button>
+                                        </>
+                                    )}
                                 </div>
                             )}
                         </div>

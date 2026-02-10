@@ -7,12 +7,18 @@ import styles from "./ContactList.module.css"; // Reusing ContactList styles as 
 interface LanguageListProps {
     languages: PersonalProfileLanguage[];
     isOwner: boolean;
+    isEditMode: boolean;
     onLanguagesChange: () => void;
 }
 
 const LANGUAGE_LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2", "Native"];
 
-export default function LanguageList({ languages, isOwner, onLanguagesChange }: LanguageListProps) {
+const getLevelIndex = (level: string): number => {
+    const idx = LANGUAGE_LEVELS.indexOf(level);
+    return idx >= 0 ? idx + 1 : 0;
+};
+
+export default function LanguageList({ languages, isOwner, isEditMode, onLanguagesChange }: LanguageListProps) {
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [editingLanguage, setEditingLanguage] = useState<PersonalProfileLanguage | null>(null);
@@ -80,7 +86,7 @@ export default function LanguageList({ languages, isOwner, onLanguagesChange }: 
         }
     };
 
-    if (!isOwner && languages.length === 0) {
+    if (!isEditMode && languages.length === 0) {
         return null;
     }
 
@@ -88,7 +94,7 @@ export default function LanguageList({ languages, isOwner, onLanguagesChange }: 
         <div className={styles.container}>
             <div className={styles.header}>
                 <h3 className={styles.title}>Languages</h3>
-                {isOwner && (
+                {isOwner && isEditMode && (
                     <button className={styles.addButton} onClick={handleAddClick}>
                         <FiPlus size={16} /> <span>Add</span>
                     </button>
@@ -105,10 +111,18 @@ export default function LanguageList({ languages, isOwner, onLanguagesChange }: 
                                 <div className={styles.iconWrapper}><FiGlobe /></div>
                                 <div className={styles.itemContent}>
                                     <span className={styles.itemValue}>{language.language}</span>
-                                    <span className={styles.itemType}>{language.level}</span>
+                                    <div className={styles.languageLevelBadge}>
+                                        {LANGUAGE_LEVELS.map((_, i) => (
+                                            <span
+                                                key={i}
+                                                className={`${styles.levelDot} ${i < getLevelIndex(language.level) ? styles.active : ''}`}
+                                            />
+                                        ))}
+                                        <span className={styles.levelText}>{language.level}</span>
+                                    </div>
                                 </div>
                             </div>
-                            {isOwner && (
+                            {isOwner && isEditMode && (
                                 <div className={styles.actions}>
                                     <button
                                         className={styles.actionButton}

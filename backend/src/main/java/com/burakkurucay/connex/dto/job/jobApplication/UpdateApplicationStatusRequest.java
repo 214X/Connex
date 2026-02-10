@@ -8,11 +8,21 @@ public class UpdateApplicationStatusRequest {
     @NotNull(message = "Status is required")
     private ApplicationStatus status;
 
+    private String note;
+
     public ApplicationStatus getStatus() {
         return status;
     }
 
     public void setStatus(ApplicationStatus status) {
         this.status = status;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 }
