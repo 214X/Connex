@@ -58,6 +58,9 @@ public class SecurityConfig {
                         .requestMatchers("/api/profiles/me").authenticated()
                         .requestMatchers("/api/profiles/me/**").authenticated()
 
+                        // 🔓 Public CV Access
+                        .requestMatchers(HttpMethod.GET, "/api/profiles/personal/*/cv").permitAll()
+
                         // 🔓 Public Search Domain
                         .requestMatchers("/api/search/**").permitAll()
 

@@ -5,6 +5,7 @@ import styles from "./PersonalProfileView.module.css";
 import { PersonalProfileData, getMyProfile } from "@/lib/api/profile/profile.api";
 
 import PersonalProfileHeader from "./components/PersonalProfileHeader";
+import CvCard from "./components/CvCard";
 import ContactList from "./components/ContactList";
 import EducationList from "./components/EducationList";
 import ExperienceList from "./components/ExperienceList";
@@ -57,6 +58,13 @@ export default function PersonalProfileView({
                     profileId={profileId}
                     isOwner={isOwner}
                     onProfileUpdate={refreshProfile}
+                />
+
+                <CvCard
+                    cvFileName={personal.cvFileName}
+                    profileId={profileId}
+                    isOwner={isOwner}
+                    onCvChange={refreshProfile}
                 />
 
                 <ContactList

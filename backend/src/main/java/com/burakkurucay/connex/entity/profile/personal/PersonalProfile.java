@@ -37,6 +37,9 @@ public class PersonalProfile {
     @Column(length = 255)
     private String location;
 
+    @OneToOne(mappedBy = "personalProfile", fetch = FetchType.LAZY)
+    private PersonalProfileCv cv;
+
     public PersonalProfile() {
         // JPA
     }
@@ -75,6 +78,10 @@ public class PersonalProfile {
         return location;
     }
 
+    public PersonalProfileCv getCv() {
+        return cv;
+    }
+
     // Setters
 
     public void setFirstName(String firstName) {
@@ -95,5 +102,9 @@ public class PersonalProfile {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public void setCv(PersonalProfileCv cv) {
+        this.cv = cv;
     }
 }

@@ -10,6 +10,7 @@ public class PersonalProfileResponse {
     private String profileDescription;
     private String phoneNumber;
     private String location;
+    private String cvFileName;
     private java.util.List<com.burakkurucay.connex.dto.profile.personal.contact.PersonalProfileContactDTO> contacts;
 
     public static PersonalProfileResponse from(PersonalProfile profile) {
@@ -26,11 +27,13 @@ public class PersonalProfileResponse {
         dto.profileDescription = profile.getProfileDescription();
         dto.phoneNumber = profile.getPhoneNumber();
         dto.location = profile.getLocation();
+        if (profile.getCv() != null) {
+            dto.cvFileName = profile.getCv().getOriginalFileName();
+        }
 
         dto.contacts = contactEntities.stream()
                 .map(com.burakkurucay.connex.dto.profile.personal.contact.PersonalProfileContactDTO::from)
                 .toList();
-
         return dto;
     }
 
@@ -56,6 +59,10 @@ public class PersonalProfileResponse {
 
     public String getLocation() {
         return location;
+    }
+
+    public String getCvFileName() {
+        return cvFileName;
     }
 
     public java.util.List<com.burakkurucay.connex.dto.profile.personal.contact.PersonalProfileContactDTO> getContacts() {

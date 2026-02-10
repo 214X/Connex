@@ -28,6 +28,7 @@ export interface PersonalProfileData {
     skills?: PersonalProfileSkill[];
     languages?: PersonalProfileLanguage[];
     projects?: PersonalProfileProject[];
+    cvFileName?: string | null;
     createdAt: string;
     updatedAt: string;
 }
@@ -538,4 +539,51 @@ export const deleteProject = async (
         }
         throw err;
     }
+};
+
+/* ---------- CV ---------- */
+
+export const uploadCv = async (file: File): Promise<ApiResponse<void>> => {
+    try {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const res = await authClient.post<ApiResponse<void>>(
+            "/api/profiles/personal/me/cv",
+            formData,
+            {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            }
+        );
+        return res.data;
+    } catch (err) {
+        if (axios.isAxiosError(err)) {
+            throw err.response?.data ?? err;
+        }
+        throw err;
+    }
+};
+
+export const deleteCv = async (): Promise<void> => {
+    try {
+        await authClient.delete("/api/profiles/personal/me/cv");
+    } catch (err) {
+        if (axios.isAxiosError(err)) {
+            throw err.response?.data ?? err;
+        }
+        throw err;
+    }
+};
+
+export const getCvUrl = (profileId: number): string => {
+    // Assuming backend URL is relative or proxied. If absolute needed, prepend BASE_URL.
+    // For now, return relative path which Axios/Browser handles regarding proxy.
+    // But for <a href> download, we might need full URL if not on same domain,
+    // or relative if served from same origin (Next.js proxy).
+    // Let's assume relative path works with Next.js proxy setup or same origin.
+    // If using external backend URL, strictly speaking we should prepend it.
+    // Given authClient setup usually has baseURL, we might need to access it or just hardcode relative.
+    return `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080"}/api/profiles/personal/${profileId}/cv`;
 };

@@ -73,6 +73,7 @@ public class ProfileResponse {
         private String profileDescription;
         private String phoneNumber;
         private String location;
+        private String cvFileName;
 
         private List<Contact> contacts;
         private List<EducationResponse> educations;
@@ -98,6 +99,9 @@ public class ProfileResponse {
             dto.profileDescription = profile.getProfileDescription();
             dto.phoneNumber = profile.getPhoneNumber();
             dto.location = profile.getLocation();
+            if (profile.getCv() != null) {
+                dto.cvFileName = profile.getCv().getOriginalFileName();
+            }
             dto.createdAt = profile.getProfile().getCreatedAt();
             dto.updatedAt = profile.getProfile().getUpdatedAt();
             dto.contacts = contacts.stream()
@@ -139,6 +143,10 @@ public class ProfileResponse {
 
         public String getLocation() {
             return location;
+        }
+
+        public String getCvFileName() {
+            return cvFileName;
         }
 
         public List<Contact> getContacts() {

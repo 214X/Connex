@@ -47,7 +47,6 @@
 
 .avatarWrapper {
     margin-top: -60px;
-    /* Pull avatar up into cover area */
     margin-bottom: var(--spacing-md);
     display: flex;
     justify-content: center;
@@ -111,7 +110,7 @@
     font-size: var(--font-size-sm);
 }
 
-/* Reusing Form Styles for Modal (or could be global) */
+/* Form / Modal Styles */
 .form {
     display: flex;
     flex-direction: column;

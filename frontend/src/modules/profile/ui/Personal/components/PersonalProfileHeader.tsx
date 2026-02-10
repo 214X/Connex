@@ -72,6 +72,7 @@ export default function PersonalProfileHeader({
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
+
     // Create initials for avatar placeholder
     const initials = `${firstName?.charAt(0) || ""}${lastName?.charAt(0) || ""}`;
 
@@ -126,6 +127,8 @@ export default function PersonalProfileHeader({
                             )}
                         </div>
                     )}
+
+
                 </div>
             </div>
 
