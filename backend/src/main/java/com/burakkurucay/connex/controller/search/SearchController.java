@@ -26,6 +26,21 @@ public class SearchController {
                 .toList();
     }
 
+    @GetMapping("/people")
+    public List<com.burakkurucay.connex.dto.profile.personal.PersonalProfileResponse> searchPeople(
+            @RequestParam String query) {
+        return searchService.searchPersonalProfiles(query).stream()
+                .map(com.burakkurucay.connex.dto.profile.personal.PersonalProfileResponse::from)
+                .toList();
+    }
+
+    @GetMapping("/jobs")
+    public List<com.burakkurucay.connex.dto.job.jobPosting.JobPostingResponse> searchJobs(@RequestParam String query) {
+        return searchService.searchJobs(query).stream()
+                .map(com.burakkurucay.connex.mapper.job.JobPostingMapper::toResponse)
+                .toList();
+    }
+
     @GetMapping("/companies/random")
     public List<CompanyProfileResponse> getRandomCompanies() {
         return searchService.getRandomCompanies().stream()

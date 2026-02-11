@@ -96,8 +96,24 @@ export default function PersonalProfileSearchPage() {
                                 <div className={styles.profileCard}>
                                     <div className={styles.cardHeader}>
                                         <div className={styles.avatarPlaceholder}>
-                                            {profile.firstName.charAt(0)}
-                                            {profile.lastName.charAt(0)}
+                                            {profile.profileImageUrl ? (
+                                                <img
+                                                    src={`${process.env.NEXT_PUBLIC_API_BASE_URL || ""}${profile.profileImageUrl}`}
+                                                    alt={`${profile.firstName} ${profile.lastName}`}
+                                                    className={styles.avatarImage}
+                                                    onError={(e) => {
+                                                        e.currentTarget.style.display = "none";
+                                                        e.currentTarget.parentElement!.classList.remove(styles.hasImage);
+                                                    }}
+                                                    onLoad={(e) => {
+                                                        e.currentTarget.parentElement!.classList.add(styles.hasImage);
+                                                    }}
+                                                />
+                                            ) : null}
+                                            <span className={styles.initials}>
+                                                {profile.firstName.charAt(0)}
+                                                {profile.lastName.charAt(0)}
+                                            </span>
                                         </div>
                                         <div className={styles.headerInfo}>
                                             <h3 className={styles.profileName}>

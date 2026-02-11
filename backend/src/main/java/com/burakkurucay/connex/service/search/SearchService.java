@@ -10,9 +10,16 @@ import java.util.List;
 public class SearchService {
 
     private final CompanyProfileRepository companyProfileRepository;
+    private final com.burakkurucay.connex.repository.profile.personal.PersonalProfileRepository personalProfileRepository;
+    private final com.burakkurucay.connex.repository.job.JobPostingRepository jobPostingRepository;
 
-    public SearchService(CompanyProfileRepository companyProfileRepository) {
+    public SearchService(
+            CompanyProfileRepository companyProfileRepository,
+            com.burakkurucay.connex.repository.profile.personal.PersonalProfileRepository personalProfileRepository,
+            com.burakkurucay.connex.repository.job.JobPostingRepository jobPostingRepository) {
         this.companyProfileRepository = companyProfileRepository;
+        this.personalProfileRepository = personalProfileRepository;
+        this.jobPostingRepository = jobPostingRepository;
     }
 
     /**
@@ -20,6 +27,20 @@ public class SearchService {
      */
     public List<CompanyProfile> searchCompanies(String query) {
         return companyProfileRepository.findByCompanyNameContainingIgnoreCase(query);
+    }
+
+    /**
+     * Search personal profiles (people) by name.
+     */
+    public List<com.burakkurucay.connex.entity.profile.personal.PersonalProfile> searchPersonalProfiles(String query) {
+        return personalProfileRepository.searchProfiles(query);
+    }
+
+    /**
+     * Search job postings by title or other criteria.
+     */
+    public List<com.burakkurucay.connex.entity.job.jobPosting.JobPosting> searchJobs(String query) {
+        return jobPostingRepository.searchPublishedJobs(query);
     }
 
     /**

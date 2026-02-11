@@ -150,6 +150,22 @@
     font-weight: 600;
     font-size: 1.2rem;
     text-transform: uppercase;
+    overflow: hidden;
+    /* Ensure image doesn't overflow */
+    position: relative;
+    /* For absolute positioning if needed, though flex works for centering initials */
+}
+
+.avatarImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+}
+
+.avatarPlaceholder.hasImage .initials {
+    display: none;
 }
 
 .headerInfo {

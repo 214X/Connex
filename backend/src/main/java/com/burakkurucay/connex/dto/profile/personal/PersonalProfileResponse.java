@@ -12,6 +12,7 @@ public class PersonalProfileResponse {
     private String phoneNumber;
     private String location;
     private String cvFileName;
+    private String profileImageUrl;
     private java.util.List<com.burakkurucay.connex.dto.profile.personal.contact.PersonalProfileContactDTO> contacts;
 
     public static PersonalProfileResponse from(PersonalProfile profile) {
@@ -36,6 +37,11 @@ public class PersonalProfileResponse {
         dto.contacts = contactEntities.stream()
                 .map(com.burakkurucay.connex.dto.profile.personal.contact.PersonalProfileContactDTO::from)
                 .toList();
+
+        if (profile.getProfile() != null) {
+            dto.profileImageUrl = "/api/profiles/" + profile.getProfile().getId() + "/avatar";
+        }
+
         return dto;
     }
 
@@ -45,6 +51,10 @@ public class PersonalProfileResponse {
 
     public Long getUserId() {
         return userId;
+    }
+
+    public String getProfileImageUrl() {
+        return profileImageUrl;
     }
 
     public String getFirstName() {

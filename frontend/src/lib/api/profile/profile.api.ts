@@ -614,17 +614,18 @@ export interface PersonalProfileSearchResult {
     profileDescription?: string | null;
     location?: string | null;
     cvFileName?: string | null;
+    profileImageUrl?: string | null;
 }
 
 export const searchPersonalProfiles = async (query: string): Promise<PersonalProfileSearchResult[]> => {
     try {
-        const res = await authClient.get<ApiResponse<PersonalProfileSearchResult[]>>(
-            "/api/profiles/personal/search",
+        const res = await authClient.get<PersonalProfileSearchResult[]>(
+            "/api/search/people",
             {
                 params: { query },
             }
         );
-        return res.data.data || [];
+        return res.data || [];
     } catch (err) {
         if (axios.isAxiosError(err)) {
             throw err.response?.data ?? err;

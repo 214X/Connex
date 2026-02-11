@@ -179,10 +179,10 @@ export const getCompanyPublicJobs = async (userId: number): Promise<JobPosting[]
 
 export const searchJobs = async (query: string): Promise<JobPosting[]> => {
     try {
-        const res = await authClient.get<ApiResponse<JobPosting[]>>("/jobs/search", {
-            params: { q: query }
+        const res = await authClient.get<JobPosting[]>("/api/search/jobs", {
+            params: { query }
         });
-        return res.data.data!;
+        return res.data || [];
     } catch (err) {
         if (axios.isAxiosError(err)) {
             throw err.response?.data ?? err;

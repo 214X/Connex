@@ -131,8 +131,4 @@ public class JobPostingService {
                 .orElseThrow(() -> new BusinessException("JOB_POSTING_NOT_FOUND"));
     }
 
-    @Transactional(readOnly = true)
-    public List<JobPosting> searchJobs(String query) {
-        return jobPostingRepository.searchPublishedJobs(query);
-    }
 }
