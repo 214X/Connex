@@ -5,6 +5,7 @@ import com.burakkurucay.connex.entity.profile.personal.PersonalProfile;
 public class PersonalProfileResponse {
 
     private Long id;
+    private Long userId; // Added for navigation
     private String firstName;
     private String lastName;
     private String profileDescription;
@@ -22,6 +23,7 @@ public class PersonalProfileResponse {
             java.util.List<com.burakkurucay.connex.entity.profile.personal.contact.PersonalProfileContact> contactEntities) {
         PersonalProfileResponse dto = new PersonalProfileResponse();
         dto.id = profile.getId();
+        dto.userId = profile.getProfile().getUser().getId();
         dto.firstName = profile.getFirstName();
         dto.lastName = profile.getLastName();
         dto.profileDescription = profile.getProfileDescription();
@@ -39,6 +41,10 @@ public class PersonalProfileResponse {
 
     public Long getId() {
         return id;
+    }
+
+    public Long getUserId() {
+        return userId;
     }
 
     public String getFirstName() {

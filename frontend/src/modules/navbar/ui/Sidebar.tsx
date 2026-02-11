@@ -104,6 +104,15 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                         <span className={styles.navText}>Companies</span>
                     </button>
 
+                    <button
+                        className={`${styles.navItem} ${isActive("/profiles/search") ? styles.active : ""}`}
+                        onClick={() => handleNavigation("/profiles/search")}
+                        title="Find People"
+                    >
+                        <div className={styles.iconWrapper}><FiUser size={22} /></div>
+                        <span className={styles.navText}>Find People</span>
+                    </button>
+
                 </nav>
 
                 <div className={styles.footer}>

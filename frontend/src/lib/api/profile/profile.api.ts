@@ -604,3 +604,31 @@ export const fetchCvBlob = async (profileId: number): Promise<Blob> => {
         throw err;
     }
 };
+/* ---------- SEARCH ---------- */
+
+export interface PersonalProfileSearchResult {
+    id: number;
+    userId: number;
+    firstName: string;
+    lastName: string;
+    profileDescription?: string | null;
+    location?: string | null;
+    cvFileName?: string | null;
+}
+
+export const searchPersonalProfiles = async (query: string): Promise<PersonalProfileSearchResult[]> => {
+    try {
+        const res = await authClient.get<ApiResponse<PersonalProfileSearchResult[]>>(
+            "/api/profiles/personal/search",
+            {
+                params: { query },
+            }
+        );
+        return res.data.data || [];
+    } catch (err) {
+        if (axios.isAxiosError(err)) {
+            throw err.response?.data ?? err;
+        }
+        throw err;
+    }
+};

@@ -253,6 +253,10 @@ public class ProfileService {
         return profile;
     }
 
+    public List<PersonalProfile> searchPersonalProfiles(String query) {
+        return personalProfileRepository.searchProfiles(query);
+    }
+
     // =========================================================================
     // Company Profile Operations (merged from CompanyProfileService)
     // =========================================================================

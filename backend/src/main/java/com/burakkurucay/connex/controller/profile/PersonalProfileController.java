@@ -106,6 +106,14 @@ public class PersonalProfileController {
         return PersonalProfileResponse.from(profile, contactService.getContactsByProfile(profile));
     }
 
+    @GetMapping("/search")
+    public ApiResponse<List<PersonalProfileResponse>> searchProfiles(@RequestParam(defaultValue = "") String query) {
+        List<PersonalProfile> profiles = profileService.searchPersonalProfiles(query);
+        return ApiResponse.success(profiles.stream()
+                .map(PersonalProfileResponse::from)
+                .toList());
+    }
+
     // =========================================================================
     // Contacts
     // =========================================================================
